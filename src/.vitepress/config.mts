@@ -135,6 +135,7 @@ const vitePressConfig = {
     optimizeDeps: {
       include: [
         'fastdom',
+        'fastdom/extensions/fastdom-promised',
         '@braintree/sanitize-url'
       ]
     }
