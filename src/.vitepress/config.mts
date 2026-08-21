@@ -45,7 +45,7 @@ const localSearchApiPlugin = () => ({
 
           // 4. Tìm kiếm trong bảng LanceDB
           const table = await db.openTable("wiki_chunks")
-          const results = await table.search(queryVector).limit(4).execute()
+          const results = await table.search(queryVector).limit(4).toArray()
 
           // 5. Trả về kết quả loại bỏ trường vector gốc để tối ưu tốc độ tải
           const cleanResults = results.map(item => ({
