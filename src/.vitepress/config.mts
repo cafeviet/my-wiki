@@ -131,7 +131,13 @@ const vitePressConfig = {
     returnToTopLabel: 'Trở lại đầu trang'
   },
   vite: {
-    plugins: [localSearchApiPlugin()]
+    plugins: [localSearchApiPlugin()],
+    optimizeDeps: {
+      include: [
+        'fastdom',
+        '@braintree/sanitize-url'
+      ]
+    }
   }
 }
 
