@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { withSidebar } from 'vitepress-sidebar'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import * as lancedb from '@lancedb/lancedb'
 import { pipeline } from '@huggingface/transformers'
 import path from 'path'
@@ -134,7 +135,7 @@ const vitePressConfig = {
   }
 }
 
-export default defineConfig(
+export default withMermaid(
   withSidebar(vitePressConfig, [
     {
       documentRootPath: 'src',
