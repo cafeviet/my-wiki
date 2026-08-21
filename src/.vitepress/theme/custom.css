@@ -1,0 +1,63 @@
+:root {
+  --vp-c-brand-1: #6366f1; /* Indigo */
+  --vp-c-brand-2: #818cf8;
+  --vp-c-brand-3: #4f46e5;
+  --vp-c-brand-soft: rgba(99, 102, 241, 0.16);
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+}
+
+.dark {
+  --vp-c-brand-1: #818cf8;
+  --vp-c-brand-2: #a5b4fc;
+  --vp-c-brand-3: #6366f1;
+  --vp-c-brand-soft: rgba(129, 140, 248, 0.16);
+}
+
+/* Background gradient layout for home page */
+.VPHero {
+  position: relative;
+  background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.12), transparent 500px),
+              radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.08), transparent 500px);
+}
+
+/* Premium card hover animations & glassmorphism for Home page features */
+.VPFeature {
+  border: 1px solid rgba(99, 102, 241, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 12px !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dark .VPFeature {
+  background-color: rgba(24, 24, 27, 0.6) !important;
+  border: 1px solid rgba(129, 140, 248, 0.15) !important;
+}
+
+.VPFeature:hover {
+  transform: translateY(-6px);
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2);
+}
+
+/* Elegant badges for items */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.badge.new {
+  background-color: rgba(236, 72, 153, 0.15);
+  color: #ec4899;
+}
+
+.badge.update {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}

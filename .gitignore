@@ -1,0 +1,7 @@
+node_modules/
+.temp/
+.cache/
+src/.vitepress/dist/
+src/.vitepress/cache/
+data/wiki-vector-db/
+*.log
