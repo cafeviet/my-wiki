@@ -1,10 +1,21 @@
-# Nghiên Cứu Khoa Học
+# Nghiên cứu
 
-Chào mừng bạn đến với chuyên mục lưu trữ các tài liệu nghiên cứu, ghi chép khoa học và tóm tắt học thuật.
+Các bài nghiên cứu được sắp xếp theo chủ đề. Mỗi bài nằm trong một thư mục riêng, gồm bản Markdown, thư mục `assets/` chứa sơ đồ, và `evidence/` chứa bằng chứng kiểm chứng (nếu có).
 
-## Các bài viết nghiên cứu hiện có
+## Chủ đề
 
-- [Nghiên cứu 1: Ứng dụng AI trong xử lý ngôn ngữ tự nhiên](./nghien-cuu-1.md)
+- [Agents](./agents/) — nguyên lý kiến trúc, harness engineering và hạ tầng vận hành agent AI.
+
+## Quy ước cấu trúc
+
+```text
+nghien-cuu/
+└── chu-de/
+    └── ten-bai/
+        ├── index.md            # bài chính (hoặc tách thành nhiều file .md)
+        ├── assets/             # sơ đồ HTML
+        └── evidence/           # bằng chứng kiểm chứng (nếu có)
+```
 
 > [!NOTE]
-> Bạn có thể tạo các thư mục con trong thư mục này (ví dụ: `nghien-cuu/sinh-hoc/`, `nghien-cuu/vat-ly/`) để phân loại sâu hơn. Hệ thống sẽ tự động quét và tạo thành các mục con dạng Collapsible trên Sidebar.
+> Thêm thư mục con mới trong `nghien-cuu/` để tạo chủ đề mới — sidebar tự động quét và hiển thị dạng mục có thể thu gọn.
