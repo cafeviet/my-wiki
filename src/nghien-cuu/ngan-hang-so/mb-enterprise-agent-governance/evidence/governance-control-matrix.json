@@ -1,0 +1,77 @@
+{
+  "governance_pillars": [
+    {
+      "code": "P1",
+      "name_vi": "Vận hành và Quản trị",
+      "name_en": "Operational Excellence and Governance",
+      "core_question": "Tổ chức có kiểm kê được Agent nào tồn tại, ai là chủ sở hữu, phiên bản và mức độ rủi ro đang vận hành?",
+      "primary_artifacts": ["Agent Registry", "Owner Directory", "Change Log", "Emergency Kill Switch"]
+    },
+    {
+      "code": "P2",
+      "name_vi": "An ninh và Thẩm quyền",
+      "name_en": "Security and Authority",
+      "core_question": "Agent hành động thay mặt ai, trong phạm vi nào, và điểm nào ngăn chặn được hành vi vượt quyền?",
+      "primary_artifacts": ["OAuth Token Exchange (RFC 8693)", "Workload Identity (SPIFFE)", "PEP Logs", "ABAC Rules"]
+    },
+    {
+      "code": "P3",
+      "name_vi": "Độ tin cậy Nghiệp vụ",
+      "name_en": "Business Reliability",
+      "core_question": "Kết quả nghiệp vụ có chính xác và phục hồi được khi mô hình hoặc công cụ gặp lỗi?",
+      "primary_artifacts": ["Golden Eval Suites", "Invariant Checks", "Saga Compensations", "Idempotency Keys"]
+    },
+    {
+      "code": "P4",
+      "name_vi": "Hiệu quả Hiệu năng Đầu cuối",
+      "name_en": "End-to-End Performance Efficiency",
+      "core_question": "Hành trình có đáp ứng cam kết thời gian SLA đối với khách hàng và luồng vận hành?",
+      "primary_artifacts": ["End-to-End Latency P95/P99", "Loop Step Timing", "Tool Call Overhead"]
+    },
+    {
+      "code": "P5",
+      "name_vi": "Tối ưu hóa Chi phí & Hiệu quả Kinh tế",
+      "name_en": "FinOps for AI and Cost Optimization",
+      "core_question": "Chi phí trên mỗi kết quả hợp lệ so với giá trị kinh doanh tạo ra là bao nhiêu?",
+      "primary_artifacts": ["Cost per Valid Outcome", "Token Consumption Attribution", "ROI Benchmark"]
+    },
+    {
+      "code": "P6",
+      "name_vi": "Mở rộng Bền vững và Tái sử dụng",
+      "name_en": "Sustainable Scale and Reuse",
+      "core_question": "Có tái sử dụng được công cụ, quản lý trùng lặp và thu hồi Agent hết vòng đời?",
+      "primary_artifacts": ["Dependency Graph", "Shared Tool Catalog", "Deprecation Policy"]
+    }
+  ],
+  "architectural_principles": [
+    { "code": "AP1", "title": "Tự chủ có giới hạn (Bounded Agency)", "pillar": "P1, P2, P3" },
+    { "code": "AP2", "title": "Thẩm quyền tường minh và theo ngữ cảnh (Explicit Contextual Authority)", "pillar": "P2, P1" },
+    { "code": "AP3", "title": "Mô hình đề xuất, chính sách cho phép (Model Proposes, Policy Authorizes)", "pillar": "P2, P3" },
+    { "code": "AP4", "title": "Bằng chứng trước hành động (Evidence Before Action)", "pillar": "P3, P1" },
+    { "code": "AP5", "title": "Mặc định truy vết và quy trách nhiệm (Observable and Accountable by Default)", "pillar": "P1-P3" },
+    { "code": "AP6", "title": "Hành vi là hiện vật được quản lý (Behavior as a Managed Artifact)", "pillar": "P1, P3, P6" },
+    { "code": "AP7", "title": "Phân tách nhiệm vụ và mức tự chủ theo rủi ro (Specialization and Risk-Proportionate Autonomy)", "pillar": "P2-P5" },
+    { "code": "AP8", "title": "Giới hạn thời gian và tài nguyên tiêu thụ (Bounded Consumption)", "pillar": "P3-P5" },
+    { "code": "AP9", "title": "Tập trung hóa khung quản trị, phi tập trung hóa năng lực thực thi (Common Governance, Flexible Execution)", "pillar": "P1, P2, P6" }
+  ],
+  "risk_tiers": {
+    "R1": {
+      "level": "Thông tin (Informational)",
+      "examples": ["Tra cứu văn bản chính sách", "FAQ nhân viên", "Tóm tắt tài liệu công khai"],
+      "default_authority": "Đọc (Read-only) trong phạm vi phân quyền của người dùng",
+      "controls": ["Data Freshness Check", "Retrieval ACL", "Hallucination Benchmark"]
+    },
+    "R2": {
+      "level": "Chuẩn bị & Thay đổi có thể thu hồi (Reversible Action)",
+      "examples": ["Soạn thảo tờ trình dự thảo", "Mở phiếu ghi nhận yêu cầu", "Phân loại hồ sơ tín dụng"],
+      "default_authority": "Ghi giới hạn (Scoped Write), có điều kiện thu hồi",
+      "controls": ["Human-in-the-loop confirmation", "Idempotency Key", "Rollback Plan", "Audit Trail"]
+    },
+    "R3": {
+      "level": "Giao dịch tài chính & Quyết định trọng yếu (High-Impact Action)",
+      "examples": ["Khởi tạo lệnh chuyển tiền", "Phê duyệt hạn mức tín dụng", "Điều chỉnh lãi suất"],
+      "default_authority": "Chỉ đề xuất (Proposal Only); hành động do hệ thống nghiệp vụ và con người phê duyệt",
+      "controls": ["Step-up Auth", "Dual Control / Maker-Checker", "Cryptographic Correlation ID", "Circuit Breaker"]
+    }
+  }
+}
