@@ -28,7 +28,7 @@ Tác giả, ngày và trọng tâm kỹ thuật trong bảng lấy từ hồ sơ
 
 ## Tổng thuật tiếng Việt
 
-Theo hồ sơ nghiên cứu của bài, tác giả tổ chức đánh giá agent LangGraph thành ba lớp: chất lượng hội thoại, điều phối hành động và chất lượng truy xuất. Phương án ban đầu ghép Langfuse để quan sát, Ragas cho các tiêu chí liên quan RAG và DeepEval cho kiểm thử/chấm điểm; các tình huống được mô tả bằng fixture YAML để có thể chạy lại cục bộ. Bài sau đó đặt bộ công cụ tự lắp ghép này cạnh AWS AgentCore nhằm xem xét lựa chọn nền tảng tích hợp hơn.
+Theo hồ sơ nghiên cứu, bài tổ chức đánh giá LangGraph thành ba lớp: chất lượng hội thoại, điều phối hành động và chất lượng truy xuất. Phương án ghép Langfuse để quan sát, Ragas cho metric RAG và DeepEval để kiểm thử/chấm điểm; tình huống được mô tả bằng fixture YAML nhằm chạy lại cục bộ. Bài sau đó đặt bộ công cụ tự lắp ghép này cạnh AWS AgentCore nhằm xem xét lựa chọn nền tảng tích hợp hơn.
 
 Điểm hữu ích là cách tách câu hỏi “câu trả lời có tốt không”, “agent có đi đúng đường không” và “ngữ cảnh truy xuất có phù hợp không”, thay vì nén tất cả vào một điểm. Tuy vậy, ví dụ code và Docker Compose trong bài gắn với phiên bản tại thời điểm viết. Chúng không chứng minh các SDK hiện hành còn tương thích hoặc hệ thống đã vận hành ổn định. Trước khi áp dụng, cần đối chiếu API mới, khóa phiên bản, chạy fixture trong môi trường cô lập và xác nhận cổng chất lượng thật sự làm pipeline thất bại khi metric không đạt.
 
