@@ -163,7 +163,7 @@ Bài phân chia chất lượng hội thoại, điều phối và truy xuất. P
 
 **[Agent evals in CI/CD: Promptfoo + DeepEval + Langfuse + GitHub Actions](https://numoru.com/en/contributions/evals-agentes-ci-cd-promptfoo)** — Numoru Engineering, 06/07/2026.
 
-Bài có mục kiến trúc, bộ dữ liệu chuẩn, kiểm tra suy giảm và pipeline; liên kết tới [agent-evals-template](https://github.com/numoru-ia/agent-evals-template). Phù hợp để tham khảo một lab nối nhiều công cụ.
+Bài có mục kiến trúc, bộ dữ liệu chuẩn, kiểm tra suy giảm và pipeline; liên kết tới [agent-evals-template](https://github.com/numoru-ia/agent-evals-template). Phù hợp để tham khảo một lab nối nhiều công cụ. Xem [tổng thuật tiếng Việt và phân tích kiến trúc A03](./agent-evals-cicd-promptfoo-deepeval-langfuse).
 
 **Nhận xét của báo cáo:** phải kiểm chứng rằng bước tính metric thực sự làm CI thất bại khi không đạt. Không mặc định mọi hàm `evaluate` đều tương đương assertion. Ngưỡng suy giảm, chi phí và ví dụ thương mại trong bài không được coi là benchmark độc lập; phần ví dụ minh họa của tác giả có ghi là trường hợp tổng hợp.
 
@@ -171,9 +171,9 @@ Bài có mục kiến trúc, bộ dữ liệu chuẩn, kiểm tra suy giảm và
 
 **[Agent Integration Patterns Guide](https://langeval.space/docs/11-Integration-Patterns)** — tài liệu dự án LangEval; không xác nhận được ngày xuất bản gốc.
 
-Mục 6 mô tả agent gửi dữ liệu cho Langfuse và DeepEval làm worker nền. Tài liệu so với cách kiểm tra hộp đen, proxy và callback, đồng thời nêu lý do tách việc chấm điểm và mở rộng worker.
+Mục 6 mô tả agent gửi dữ liệu cho Langfuse và DeepEval làm worker nền. Tài liệu so với cách kiểm tra hộp đen, proxy và callback, đồng thời nêu lý do tách việc chấm điểm và mở rộng worker. Xem [tổng thuật tiếng Việt và phân tích kiến trúc A04](./agent-integration-patterns-langfuse-deepeval).
 
-**Nhận xét của báo cáo:** nhãn kiến trúc doanh nghiệp được khuyến nghị là quan điểm của dự án. Trang có vị trí sơ đồ nhưng bản trích xuất văn bản hiện chưa hiển thị hình; agent phải kiểm tra cách render trước khi đưa vào wiki.
+**Nhận xét của báo cáo:** nhãn kiến trúc doanh nghiệp được khuyến nghị là quan điểm của dự án. Trang A04 dùng sơ đồ Mermaid do agent tự tổng hợp và ghi rõ nguồn gốc; build local được kiểm tra trong receipt T006.
 
 ### 2.10. Giới hạn và các giả định cần phản biện
 
