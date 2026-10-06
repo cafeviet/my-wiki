@@ -25,6 +25,8 @@ tags: [RAG, Langfuse, DeepEval, tracing, evaluation]
 | Chế độ | `ORIGINAL_SUMMARY` — Tổng thuật tiếng Việt |
 | Quyền dịch | Chưa tìm thấy quyền phái sinh rõ ràng trên bài; không áp dụng giấy phép của repository code cho nội dung blog |
 
+Bối cảnh rộng hơn: [EDD và kiến trúc đánh giá agent với Langfuse + DeepEval](../../kien-truc/edd-langfuse-deepeval/).
+
 ## Tổng thuật tiếng Việt
 
 Bài viết trình bày cách quan sát và đánh giá một pipeline RAG mà không bắt người dùng chờ mô hình chấm điểm. Theo thiết kế được tác giả mô tả, mỗi request tạo một callback Langfuse để LangGraph gom các bước vào cùng trace. Khi luồng trả lời đã đóng, dịch vụ đọc trạng thái cuối, gắn thông tin trích dẫn rồi mới lập tác vụ DeepEval; kết quả được ghi ngược về đúng `trace_id`.
