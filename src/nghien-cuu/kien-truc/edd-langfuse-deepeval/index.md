@@ -155,7 +155,7 @@ Bài mô tả callback Langfuse theo từng request, dữ liệu LangGraph và t
 
 **[Building an Eval Stack for a LangGraph Agent: From LangFuse to AWS AgentCore](https://topuzas.medium.com/building-an-eval-stack-for-a-langgraph-agent-from-langfuse-to-aws-agentcore-4bd494f3a2de)** — Ali Süleyman TOPUZ, 11/04/2026.
 
-Bài phân chia chất lượng hội thoại, điều phối và truy xuất. Phương án ban đầu dùng Langfuse, Ragas và DeepEval, sau đó so với AgentCore. Có ví dụ dữ liệu YAML và code chạy local.
+Bài phân chia chất lượng hội thoại, điều phối và truy xuất. Phương án ban đầu dùng Langfuse, Ragas và DeepEval, sau đó so với AgentCore. Có ví dụ dữ liệu YAML và code chạy local. Xem [tổng thuật tiếng Việt và phân tích kiến trúc A02](../../agents/langgraph-eval-stack-langfuse-deepeval-agentcore/).
 
 **Nhận xét của báo cáo:** thích hợp để đọc lý do chọn công cụ. Code và Docker Compose cần đối chiếu phiên bản hiện hành; bài viết không phải bằng chứng rằng các snippet chạy nguyên trạng trên phiên bản mới.
 
