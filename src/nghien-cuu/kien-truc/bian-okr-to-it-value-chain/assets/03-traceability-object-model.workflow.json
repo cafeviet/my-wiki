@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Mô hình đối tượng truy vết (Traceability Object Model)",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "03-truy-vet-doi-tuong.html"
+  },
+  "lanes": [
+    { "id": "biz", "label": "Nghiệp vụ — Business Direction & Execution" },
+    { "id": "arch", "label": "Kiến trúc — Enterprise Architecture" },
+    { "id": "it", "label": "CNTT — IT Demand & Delivery" },
+    { "id": "measure", "label": "Đo lường & đóng vòng — Business Outcome", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "p1", "label": "Vì sao? — Why", "fromCol": 0, "toCol": 1 },
+    { "id": "p2", "label": "Cái gì? — What", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "p3", "label": "Như thế nào? — How", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "nodes": [
+    { "id": "objective", "lane": "biz", "col": 0, "type": "backend", "label": "Objective", "sublabel": "unit strategy", "width": 148 },
+    { "id": "kr", "lane": "biz", "col": 1, "type": "backend", "label": "Key Result", "sublabel": "KR ≠ IT Req.", "width": 148 },
+    { "id": "initiative", "lane": "biz", "col": 2, "type": "backend", "label": "Business Initiative", "sublabel": "project concept", "width": 148 },
+    { "id": "biz_change", "lane": "biz", "col": 3, "type": "backend", "label": "Business Change", "sublabel": "project concept", "width": 148 },
+    { "id": "impact", "lane": "arch", "col": 3, "type": "security", "label": "Impact Assessment", "sublabel": "Capability/Process", "width": 148 },
+    { "id": "gap", "lane": "arch", "col": 4, "type": "security", "label": "Gap Analysis", "sublabel": "Current/Target", "width": 148 },
+    { "id": "it_demand", "lane": "it", "col": 4, "type": "cloud", "label": "IT Demand", "sublabel": "project concept", "width": 148 },
+    { "id": "it_initiative", "lane": "it", "col": 5, "type": "cloud", "label": "IT Initiative", "sublabel": "portfolio + roadmap", "width": 148 },
+    { "id": "release", "lane": "measure", "col": 4, "type": "cloud", "label": "Release", "sublabel": "build · test · ship", "width": 148 },
+    { "id": "outcome", "lane": "measure", "col": 5, "type": "messagebus", "label": "Business Outcome", "sublabel": "Actual vs Target", "width": 148 },
+    { "id": "measure_kr", "lane": "measure", "col": 2, "type": "security", "label": "Measure KR", "sublabel": "BU Mgmt / Direction", "width": 148 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "objective", "to": "kr", "variant": "emphasis" },
+    { "id": "e2", "from": "kr", "to": "initiative", "variant": "emphasis" },
+    { "id": "e3", "from": "initiative", "to": "biz_change" },
+    { "id": "e4", "from": "biz_change", "to": "impact", "label": "đánh giá", "variant": "emphasis", "role": "branch" },
+    { "id": "e5", "from": "impact", "to": "gap" },
+    { "id": "e6", "from": "gap", "to": "it_demand", "label": "IT Impact", "variant": "emphasis", "role": "branch" },
+    { "id": "e7", "from": "it_demand", "to": "it_initiative", "label": "cam kết" },
+    { "id": "e8", "from": "it_initiative", "to": "release", "variant": "emphasis", "role": "branch" },
+    { "id": "e9", "from": "release", "to": "outcome", "label": "adoption", "variant": "emphasis" },
+    { "id": "e10", "from": "outcome", "to": "measure_kr", "label": "đo lường", "variant": "emphasis" },
+    { "id": "e11", "from": "measure_kr", "to": "objective", "label": "đóng vòng (closed loop)", "variant": "security", "role": "return" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Truy vết đầu-cuối", "items": ["Objective → KR → Initiative → Business Change", "Business Change → Impact Assessment → Gap → IT Demand", "IT Demand → IT Initiative → Release → Outcome → Measure KR"] },
+    { "dot": "emerald", "title": "Ba cổng kiểm soát", "items": ["Business Change → Impact: cổng vào kiến trúc", "Gap → IT Demand: cổng vào CNTT", "Measure KR → Objective: cổng đóng vòng"] },
+    { "dot": "rose", "title": "Cảnh báo ngữ nghĩa", "items": ["Business Initiative / Change / IT Demand = project concept", "Không trình bày như BIAN Service Domain chính thức", "KR không phải IT Requirement"] }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "WeKnora — Model Routing & 9Router Gateway Architecture",
+    "quality_profile": "showcase",
+    "viewBox": [1200, 720]
+  },
+  "components": [
+    { "id": "weknora_app", "type": "backend", "label": "WeKnora App", "sublabel": "Go Gin Core :8085", "brand": "docker", "pos": [60, 200], "size": [160, 70], "tag": "Core RAG" },
+    { "id": "pgvector", "type": "database", "label": "PostgreSQL", "sublabel": "pgvector (ParadeDB)", "brand": "postgresql", "pos": [60, 440], "size": [160, 64], "tag": "Dense Vector" },
+    { "id": "nine_router", "type": "backend", "label": "9Router Gateway", "sublabel": "Host :20127 (Bearer Token)", "pos": [420, 200], "size": [190, 70], "tag": "AI Reverse Proxy" },
+    { "id": "ollama_host", "type": "backend", "label": "Ollama Local", "sublabel": "Host :11434 (BGE-M3)", "pos": [420, 440], "size": [190, 64], "tag": "Embedding Host" },
+    { "id": "gemini_group", "type": "external", "label": "Google Gemini", "sublabel": "ag/gemini-3.7-flash", "pos": [800, 120], "size": [180, 64], "tag": "Fast Synthesis" },
+    { "id": "deepseek_group", "type": "external", "label": "DeepSeek Native", "sublabel": "ds/deepseek-reasoner", "pos": [800, 240], "size": [180, 64], "tag": "Deep Thinking" },
+    { "id": "gateway_group", "type": "external", "label": "Multi-Provider Hub", "sublabel": "kr/auto & claude-sonnet", "pos": [800, 360], "size": [180, 64], "tag": "Resilience" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Docker Network (weknora_network)", "wraps": ["weknora_app", "pgvector"] },
+    { "kind": "region", "label": "Host Surface (host.docker.internal)", "wraps": ["nine_router", "ollama_host"] },
+    { "kind": "security-group", "label": "Upstream Providers (Managed by 9Router)", "wraps": ["gemini_group", "deepseek_group", "gateway_group"] }
+  ],
+  "connections": [
+    { "id": "app-router", "from": "weknora_app", "to": "nine_router", "label": "Chat /v1 API", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "id": "app-ollama", "from": "weknora_app", "to": "ollama_host", "label": "Embeddings API", "variant": "default", "fromSide": "right", "toSide": "left" },
+    { "id": "app-pg", "from": "weknora_app", "to": "pgvector", "label": "pgvector store", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "router-gemini", "from": "nine_router", "to": "gemini_group", "label": "ag/ prefix", "variant": "emphasis", "fromSide": "top", "toSide": "left" },
+    { "id": "router-deepseek", "from": "nine_router", "to": "deepseek_group", "label": "ds/ prefix", "fromSide": "right", "toSide": "left" },
+    { "id": "router-gateway", "from": "nine_router", "to": "gateway_group", "label": "kr/ prefix", "variant": "dashed", "fromSide": "bottom", "toSide": "left" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "9Router Local Gateway", "items": ["Runs on Windows host port 20127, exposes standard OpenAI /v1 endpoint", "Docker containers authenticate with Bearer API Key via host.docker.internal:20127"] },
+    { "dot": "emerald", "title": "Model Catalog", "items": ["ag/gemini-3.7-flash: ultra-fast synthesis and natural response generation", "ds/deepseek-reasoner: multi-hop chain-of-thought analysis for complex queries", "kr/auto: dynamic failover and quota-safe routing across providers"] },
+    { "dot": "violet", "title": "Decoupled Embeddings", "items": ["Embeddings served offline via Ollama BGE-M3 (host:11434)", "Zero token consumption for indexing, vector search preserved in pgvector"] }
+  ]
+}

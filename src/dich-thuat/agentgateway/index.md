@@ -2,6 +2,7 @@
 
 Các bài dịch từ tài liệu dự án [agentgateway](https://agentgateway.dev/) — cổng kết nối (gateway) mã nguồn mở cho lưu lượng HTTP, gRPC, MCP, A2A và LLM.
 
+- [Hướng dẫn sử dụng Agentgateway Standalone](./huong-dan-dung-standalone/huong-dan-dung-standalone.md) — Hướng dẫn cài đặt, cấu hình flat YAML, chạy với Docker Compose, Web UI và định tuyến LLM/MCP.
 - [Agentgateway: kiến trúc Kubernetes và mô hình C4](./agentgateway-kubernetes-c4/agentgateway-kubernetes-c4.md) — Năm hình theo thứ tự tổng quan, C1, C2, C3 controller và Deployment.
 - [Kiến trúc agentgateway trên Kubernetes](./kien-truc-agentgateway-tren-kubernetes/kien-truc-agentgateway-tren-kubernetes.md)
 - [Gateway API](./gateway-api/gateway-api.md) — Mức độ tuân thủ (conformance) Kubernetes Gateway API, các extension riêng (BackendTLSPolicy, header CEL, extAuth, HTTP filter) và tiêu chí so sánh các bản triển khai.

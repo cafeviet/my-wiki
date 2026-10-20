@@ -1,0 +1,85 @@
+[
+  {
+    "title": "Nguồn gốc: Quản trị Agent Doanh nghiệp Ngân hàng",
+    "url": "http://localhost:6677/nghien-cuu/ngan-hang-so/mb-enterprise-agent-governance/",
+    "resolved_url": "http://localhost:6677/nghien-cuu/ngan-hang-so/mb-enterprise-agent-governance/",
+    "status": 200
+  },
+  {
+    "title": "Anthropic — Building effective agents",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "resolved_url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "status": 200,
+    "ledger_output": "[1] https://www.anthropic.com/engineering/building-effective-agents",
+    "evidence_file": "source-02.txt"
+  },
+  {
+    "title": "Google Cloud — Agent harness",
+    "url": "https://cloud.google.com/discover/agent-harness",
+    "resolved_url": "https://cloud.google.com/discover/agent-harness",
+    "status": 200,
+    "ledger_output": "[2] https://cloud.google.com/discover/agent-harness",
+    "evidence_file": "source-03.txt"
+  },
+  {
+    "title": "AWS — Agentic AI Lens",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html",
+    "resolved_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html",
+    "status": 200,
+    "ledger_output": "[3] https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html",
+    "evidence_file": "source-04.txt"
+  },
+  {
+    "title": "AWS — Alignment (AGENTSEC04)",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04.html",
+    "resolved_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04.html",
+    "status": 200,
+    "ledger_output": "[4] https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04.html",
+    "evidence_file": "source-05.txt"
+  },
+  {
+    "title": "AWS — Evaluation (AGENTOPS06)",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06.html",
+    "resolved_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06.html",
+    "status": 200,
+    "ledger_output": "[5] https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06.html",
+    "evidence_file": "source-06.txt"
+  },
+  {
+    "title": "AWS — Legacy integration (AGENTREL06)",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06.html",
+    "resolved_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06.html",
+    "status": 200,
+    "ledger_output": "[6] https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06.html",
+    "evidence_file": "source-07.txt"
+  },
+  {
+    "title": "AWS — Reasoning cost (AGENTCOST01)",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01.html",
+    "resolved_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01.html",
+    "status": 200,
+    "ledger_output": "[7] https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01.html",
+    "evidence_file": "source-08.txt"
+  },
+  {
+    "title": "NIST — Zero Trust Architecture",
+    "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+    "resolved_url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+    "status": 200,
+    "ledger_output": "[8] https://csrc.nist.gov/pubs/sp/800/207/final",
+    "evidence_file": "source-09.txt"
+  },
+  {
+    "title": "RFC 8693 — OAuth 2.0 Token Exchange",
+    "url": "https://www.rfc-editor.org/rfc/rfc8693",
+    "resolved_url": "https://www.rfc-editor.org/info/rfc8693/",
+    "status": 200,
+    "ledger_output": "[9] https://www.rfc-editor.org/rfc/rfc8693",
+    "evidence_file": "source-10.txt"
+  },
+  {
+    "title": "OWASP — Excessive Agency",
+    "url": "https://genai.owasp.org/llmrisk/llm06-excessive-agency/",
+    "error": "404 Client Error: Not Found for url: https://genai.owasp.org/llmrisk/llm06-excessive-agency/"
+  }
+]

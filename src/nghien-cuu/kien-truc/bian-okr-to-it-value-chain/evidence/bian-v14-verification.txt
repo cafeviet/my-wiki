@@ -1,0 +1,237 @@
+Official BIAN V14 Service Landscape verification — raw extraction
+Source: https://bian.org/servicelandscape-14-0-0/  (data files under /data/)
+Fetched: 2026-09-15 (Asia/Bangkok) by task t_1f6e9b6a
+
+The object_*.html pages are JavaScript shells; the authoritative content is in:
+  data/all_objects_data_13.js .. data/all_objects_data_20.js   (objects: id, name, type, documentation)
+  data/all_objects_relations.js                                (relations: aggregates, composed of, is part of, ...)
+Extracted locally with a read-only JSON parse. No content was modified.
+
+================================================================================
+1. Business Unit Direction
+================================================================================
+Page:  https://bian.org/servicelandscape-14-0-0/object_16.html?object=48451  (Class)
+       https://bian.org/servicelandscape-14-0-0/object_13.html?object=48450  (Capability)
+IDs :  Capability 48450 | Class 48451
+
+Capability 48450 — name="Business Unit Direction", type="Capability"
+  1. Role Definition: Define and orchestrate business unit activity against the unit
+     business strategy and operating plan
+  2. Example of Use: Business unit management direct business unit resources to meet
+     the operating plan commitments
+
+Class 48451 — name="Business Unit Direction", type="Class"
+  ** 1. Role ** Define and orchestrate business unit activity against the unit business
+     strategy and operating plan
+  ** 2. Examples of use ** Business unit management direct business unit resources to
+     meet the operating plan commitments
+  ** 3.Executive Summary **
+  ** 4. Key Features **
+  ** General comment **
+
+Relations:
+  Capability 48450:
+    is equal to      -> 48451
+    is part of       -> 216768   (Business Command and Control [Capability])
+    aggregated by    -> 146505   (Unit Management [Grouping])
+    realized by      -> 117775, 117776, 118198, 121292, 121293, 123024, 123025,
+                        124481, 126380, 129027, 169207, 270425, 36396, 95219
+  Parent chain:
+    216768 Business Command and Control [Capability]
+      composed of: 31228, 36980 (Business Unit Management), 43919, 48246,
+                   48450 (Business Unit Direction), 48978
+      is part of : 216836
+
+================================================================================
+2. Business Unit Management
+================================================================================
+Page:  https://bian.org/servicelandscape-14-0-0/object_15.html?object=36980  (Capability)
+       (Class 36981)
+IDs :  Capability 36980 | Class 36981
+
+Capability 36980 — name="Business Unit Management", type="Capability"
+  1. Role Definition: Handles the oversight and management of a general organizational
+     business unit. This includes the definition and implementation of the management
+     plan, overseeing ongoing activity and performance assessments and troubleshooting
+     issues that might arise
+  2. Example of Use: A business unit consolidates activity and performance details for
+     periodic internal management reporting
+  3. Executive Summary: Track and report on business unit activity and financial
+     performance
+  4. Key Features: Determine the unit management plan (includes roles and
+     responsibilities, assigned activities, deliverables and budgetary aspects)
+     Monitor resource utilization and re-focus activity and assignments to remain on plan
+     Track and assess unit performance and troubleshoot major operational issues
+
+Class 36981 — name="Business Unit Management", type="Class" — same Role/Features text.
+
+Relations:
+  Capability 36980:
+    is equal to      -> 36981
+    is part of       -> 216768   (Business Command and Control [Capability])
+    aggregated by    -> 146505 (Unit Management [Grouping]), 216768, 73319 (Wave 3 [Plateau])
+    gets input from  -> 33507
+  Parent chain:
+    216768 Business Command and Control [Capability]  is part of -> 216836
+    146505 Unit Management [Grouping] aggregates: 36980 (Business Unit Management),
+           43919, 48246, 48450 (Business Unit Direction), 48978
+    ==> Business Unit Management and Business Unit Direction are siblings in the same
+        Unit Management grouping.
+  Note (verified): the BIAN documentation for Business Unit Management names
+    "performance assessments", "re-focus activity and assignments to remain on plan"
+    and "track and assess unit performance", but does NOT name OKR / Key Result /
+    KPI objects. See section 7 "What BIAN does NOT define".
+
+================================================================================
+3. Enterprise Architecture
+================================================================================
+Page:  https://bian.org/servicelandscape-14-0-0/object_14.html?object=29101  (Capability)
+       (Class 35592)
+IDs :  Capability 29101 | Class 35592
+
+Capability 29101 — name="Enterprise Architecture", type="Capability"
+  1. Role Definition: Develop and maintain a comprehensive array of enterprise
+     architectural designs and blueprints that reflect the corporate strategy, plan and
+     operational configuration of the enterprise. Support the adoption of the business
+     architecture throughout all procedure and systems development and deployment
+     activities. Typical domains of Enterprise Architecture include Strategy
+     Architecture, Business Architecture, Information Architecture, Application
+     Architecture, Data Architecture, Technology Architecture, Physical Architecture,
+     Security Architecture and all kind of sub-archtiectures.
+  2. Example of Use: Example of use: Business planning specialists define target
+     business blueprints for staffing and information system/application support for
+     the enterprise
+  3. Executive Summary: Define and maintain comprehensive business architectural
+     definitions/blueprints to help organize/direct the business
+  4. Key Features: Support the interpretation and adoption of enterprise business
+     architecture; Define information system blueprints; Define organizational
+     blueprints; Define market segmentation and business performance measures;
+     Define business legal entity and geographic distribution models
+
+Relations:
+  Capability 29101:
+    is equal to      -> 35592
+    is part of       -> 216772   (Business Direction [Capability])
+    aggregated by    -> 146489, 216772, 73314 (Wave 5 [Plateau])
+  Parent chain:
+    216772 Business Direction [Capability]
+      composed of: 28880, 28978, 29101 (Enterprise Architecture), 33629, 34120
+      is part of : 216836
+    ==> Enterprise Architecture sits under a DIFFERENT parent (Business Direction)
+        than Business Unit Management/Direction (Business Command and Control),
+        which is why this project treats it as an independent layer.
+
+================================================================================
+4. IT Systems Direction
+================================================================================
+Page:  https://bian.org/servicelandscape-14-0-0/object_16.html?object=44281  (Capability)
+       (Class 44282)
+IDs :  Capability 44281 | Class 44282
+
+Capability 44281 — name="IT Systems Direction", type="Capability"
+  1. Role Definition: Define, communicate and direct the execution of the IT strategy
+     and plan in support of the broader enterprise business strategy, plan and policies
+  2. Example of Use: The IT unit develops its plan and budget for systems development
+     and operations for the business
+  (no 3./4. sections published)
+
+Class 44282 — name="IT Systems Direction", type="Class" — identical text.
+
+Relations:
+  Capability 44281:
+    is equal to      -> 44282
+    is part of       -> 216832   (IT Management [Capability])
+    aggregated by    -> 30837    (Business Direction [Grouping])
+    realized by      -> 117656, 118410, 119257, 122280, 123122, 123678, 126345,
+                        127803, 129086, 131779, 169551, 264769, 264787, 95219
+  Parent chain:
+    216832 IT Management [Capability]
+      composed of: 32097, 34170, 37168, 38385, 39606, 42048, 44281 (IT Systems
+                   Direction), 44493, 47161, 47491, 48176 (System Development),
+                   48208, 49098
+      is part of : 216836
+    ==> IT Systems Direction and System Development are siblings under IT Management.
+
+================================================================================
+5. Solution Development (grouping) and System Development
+================================================================================
+Page:  https://bian.org/servicelandscape-14-0-0/object_31.html?object=48386  (Grouping)
+       https://bian.org/servicelandscape-14-0-0/object_45.html?object=95219  (Direct)
+
+Grouping 48386 — name="Solution Development", type="Grouping"
+  documentation: Manage IT standards and development environments. Manage and
+                 administer systems development and testing activities, develop and
+                 maintain production applications
+
+  Relations:
+    aggregates -> 42048, 48176 (System Development [Capability]), 48208, 49098
+
+Capability 48176 — name="System Development", type="Capability"
+  1. Role Definition: Manage and execute the multi-threaded development of application
+     solutions spanning bespoke development and commercial package integration
+  2. Example of Use: A new product design results in the need to extend functionality
+     on existing product fulfillment applications
+  3. Executive Summary: Develop new, enhance existing applications and integrate
+     package based systems solutions
+  4. Key Features: Agree functional requirements; Develop functional and technical
+     specifications; Develop, test and integrate software
+
+Class 48177 — name="System Development", type="Class" — identical text.
+  Relations:
+    is equal to    -> 48177
+    is part of     -> 216832   (IT Management [Capability])
+    aggregated by  -> 167220, 216832, 48386 (Solution Development [Grouping]), 73310
+                      (Wave 1 [Plateau]), 73329
+
+NOTE on the two Solution Development groupings:
+  Two objects named "Solution Development" exist in the V14.0.0 bundle:
+    162063 (Grouping) - parent 216772 Business Direction, part of a different
+                        aggregation set
+    48386  (Grouping) - the one referenced by the task input URL (?object=48386),
+                        which aggregates System Development 48176.
+  The task URL pins 48386, so 48386 is the authoritative grouping for this article.
+
+================================================================================
+6. Direct (business interaction, referenced by the input URL object=95219)
+================================================================================
+ID 95219 — name="Direct", type="Business interaction"
+  documentation: Define the policies, goals & objectives and strategies for an
+                 organizational entity or unit. Example: Direct a division of the
+                 enterprise.
+
+  Note: "Direct" is a Business interaction, NOT a Business Capability / Service Domain.
+  It appears in the "realized by" relation of both Business Unit Direction (48450) and
+  IT Systems Direction (44281) - i.e. "Direct" expresses the act of directing, and is
+  shared between the business-side and the IT-side direction capabilities.
+
+================================================================================
+7. What BIAN V14 does NOT define (checked, negative evidence)
+================================================================================
+Searched all 126,911 object records loaded from data/all_objects_data_*.js for names:
+  - "OKR" / "Objective and Key Result"  : 0 matches
+  - "Key Result"                        : 0 matches
+  - "Measure" (as a Service Domain)     : not present as a Capability name
+  - "Business Initiative"               : not present as a Capability name
+  - "Business Change"                   : not present as a Capability name
+  - "IT Demand"                         : not present as a Capability name
+  => OKR, KR, Business Initiative, Business Change and IT Demand are project-level
+     model concepts in this article, NOT official BIAN Service Domain names.
+     This matches the caveat already stated in the task input.
+
+================================================================================
+8. Extraction command log (all read-only)
+================================================================================
+curl -sL -o all_objects_data_mapping.js  https://bian.org/servicelandscape-14-0-0/data/all_objects_data_mapping.js
+curl -sL -o all_objects_relations.js     https://bian.org/servicelandscape-14-0-0/data/all_objects_relations.js
+curl -sL -o all_objects_data_15.js       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_15.js
+curl -sL -o all_objects_on_views.js      https://bian.org/servicelandscape-14-0-0/data/all_objects_on_views.js
+curl -sL -o d13.js                       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_13.js
+curl -sL -o d14.js                       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_14.js
+curl -sL -o d16.js                       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_16.js
+curl -sL -o d31.js                       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_31.js
+curl -sL -o d45.js                       https://bian.org/servicelandscape-14-0-0/data/all_objects_data_45.js
+plus d17..d20.js; then a read-only Python JSON parse of the object/relation maps.
+
+Local scratch dir: %LOCALAPPDATA%\Temp\bian
+Object data files carry the BiZZdesign MIT licence header on object_*.html (the
+browser shell), not on the data files themselves.

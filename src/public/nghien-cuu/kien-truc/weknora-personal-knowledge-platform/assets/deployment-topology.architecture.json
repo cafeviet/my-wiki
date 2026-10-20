@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "WeKnora Docker Core — Deployment Architecture",
+    "quality_profile": "showcase",
+    "viewBox": [1200, 720]
+  },
+  "components": [
+    { "id": "browser", "type": "external", "label": "Web Browser", "sublabel": "User Interface", "pos": [50, 180], "size": [130, 60] },
+    { "id": "local_client", "type": "external", "label": "Local Client / Agent", "sublabel": "REST / Health", "pos": [50, 320], "size": [130, 60] },
+    { "id": "my_wiki", "type": "frontend", "label": "my-wiki", "sublabel": "VitePress :6677", "pos": [50, 480], "size": [130, 60] },
+    { "id": "harness", "type": "backend", "label": "Harness Git", "sublabel": "harness-opensource :8080", "pos": [260, 480], "size": [150, 60] },
+    { "id": "frontend", "type": "frontend", "label": "WeKnora UI", "sublabel": "Nginx :80", "pos": [260, 180], "size": [140, 60] },
+    { "id": "app", "type": "backend", "label": "WeKnora App", "sublabel": "Go Gin :8085", "pos": [480, 240], "size": [150, 70], "tag": "Core API" },
+    { "id": "docreader", "type": "backend", "label": "DocReader", "sublabel": "Python gRPC :50051", "pos": [720, 110], "size": [150, 60] },
+    { "id": "postgres", "type": "database", "label": "ParadeDB Postgres", "sublabel": "pg17 + pgvector :5432", "brand": "postgresql", "pos": [720, 260], "size": [160, 64] },
+    { "id": "redis", "type": "database", "label": "Redis", "sublabel": "Asynq :6379", "brand": "redis", "pos": [720, 400], "size": [150, 60] },
+    { "id": "vol_pg", "type": "database", "label": "postgres-data", "sublabel": "Named Volume", "pos": [980, 260], "size": [140, 60] },
+    { "id": "vol_files", "type": "cloud", "label": "data-files", "sublabel": "/data/files", "pos": [480, 430], "size": [150, 60] },
+    { "id": "vol_tmp", "type": "cloud", "label": "docreader-tmp", "sublabel": "/tmp/docreader", "pos": [980, 110], "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "WeKnora Core Network (weknora_WeKnora-network)", "wraps": ["frontend", "app", "docreader", "postgres", "redis"] },
+    { "kind": "security-group", "label": "Existing Workloads (Untouched)", "wraps": ["harness"] }
+  ],
+  "connections": [
+    { "id": "browser-frontend", "from": "browser", "to": "frontend", "label": "HTTP :80", "variant": "emphasis" },
+    { "id": "client-app", "from": "local_client", "to": "app", "label": "HTTP :8085" },
+    { "id": "wiki-harness", "from": "my_wiki", "to": "harness", "label": "Git :8080", "variant": "dashed" },
+    { "id": "frontend-app", "from": "frontend", "to": "app", "label": "proxy :8080" },
+    { "id": "app-docreader", "from": "app", "to": "docreader", "label": "gRPC :50051", "fromSide": "top", "toSide": "left" },
+    { "id": "app-postgres", "from": "app", "to": "postgres", "label": "SQL / Vector", "fromSide": "right", "toSide": "left" },
+    { "id": "app-redis", "from": "app", "to": "redis", "label": "Asynq / Cache", "fromSide": "right", "toSide": "left" },
+    { "id": "postgres-vol", "from": "postgres", "to": "vol_pg", "label": "persist" },
+    { "id": "app-volfiles", "from": "app", "to": "vol_files", "label": "upload", "fromSide": "bottom", "toSide": "top", "labelDy": 30 },
+    { "id": "docreader-voltmp", "from": "docreader", "to": "vol_tmp", "label": "cache" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Core Services", "items": ["Vue 3 UI on Nginx port 80", "Go Gin backend on host port 8085", "ParadeDB pg17 with pgvector & BM25"] },
+    { "dot": "amber", "title": "Port Isolation", "items": ["Harness Git continues untouched on port 8080", "Internal Postgres, Redis, DocReader not exposed"] },
+    { "dot": "emerald", "title": "Durability", "items": ["Persistent data in Docker Named Volumes", "Safe restart verified without state loss"] }
+  ]
+}

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent & Harness — Từ Model Intelligence đến Reliable Agent Execution</title>
+<style>
+:root{
+  --navy:#071d35;--navy-2:#0d2b4d;--blue:#1268b3;--cyan:#18a8c9;--sky:#eaf6fb;
+  --paper:#f7fafc;--white:#fff;--ink:#10243a;--muted:#587086;--line:#cfe0ec;
+  --green:#16866b;--amber:#b56b14;--red:#b73939;--shadow:0 24px 70px rgba(6,32,57,.16);
+  --radius:28px;--safe-x:96px;--safe-top:76px;--safe-bottom:108px;
+}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#061423;color:var(--ink)}
+body{font-family:"Aptos","Segoe UI Variable","Segoe UI",Arial,sans-serif}
+button{font:inherit}.stage{position:fixed;inset:0;overflow:hidden}
+.deck{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;background:var(--paper);box-shadow:var(--shadow);overflow:hidden}
+.slide{position:absolute;inset:0;display:none;padding:var(--safe-top) var(--safe-x) var(--safe-bottom);background:var(--paper);overflow:hidden}
+.slide.active{display:block}.slide.dark{background:var(--navy);color:var(--white)}
+.slide.tint{background:linear-gradient(125deg,#f8fbfd 0 70%,#e8f5fb 70%)}
+.slide::after{content:attr(data-section);position:absolute;right:94px;top:52px;font-size:18px;line-height:1;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.slide.dark::after{color:#8eb0cd}.eyebrow{font-size:22px;line-height:1.25;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:800;margin:0 0 22px}
+.dark .eyebrow{color:#6fd4e8}h1,h2,h3,p{margin-top:0}h1{font-family:"Arial Narrow","Aptos Display","Segoe UI",sans-serif;font-size:92px;line-height:.98;letter-spacing:-.045em;margin-bottom:28px;max-width:1580px}
+h2{font-family:"Arial Narrow","Aptos Display","Segoe UI",sans-serif;font-size:66px;line-height:1.04;letter-spacing:-.032em;margin-bottom:20px;max-width:1550px}h3{font-size:30px;line-height:1.15;margin-bottom:14px}
+.lead{font-size:32px;line-height:1.34;color:var(--muted);max-width:1480px;margin-bottom:34px;text-wrap:pretty}.dark .lead{color:#b9cedf}.accent{color:var(--blue)}.dark .accent{color:#72d8eb}
+.big-quote{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:54px;line-height:1.2;letter-spacing:-.02em;max-width:1500px;border-top:2px solid var(--cyan);padding-top:24px;margin:44px 0}
+.grid{display:grid;gap:26px}.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}.cols-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:30px 34px;box-shadow:0 10px 30px rgba(14,58,91,.06)}.dark .card{background:#0d2a47;border-color:#244967;box-shadow:none}.card p{font-size:24px;line-height:1.38;color:var(--muted);margin:0}.dark .card p{color:#b9cedf}.card strong{display:block;font-size:28px;margin-bottom:10px}
+.card .num{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:58px;font-weight:800;color:var(--blue);line-height:1;margin-bottom:16px}.dark .card .num{color:#6fd4e8}
+.pill{display:inline-flex;align-items:center;gap:10px;border-radius:999px;background:var(--sky);color:var(--blue);padding:9px 17px;font-size:19px;font-weight:800;letter-spacing:.03em}.dark .pill{background:#173c5d;color:#8ee2ef}
+.flow{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:48px}.node{min-width:230px;text-align:center;padding:27px 25px;border:2px solid var(--line);border-radius:24px;background:#fff;font-size:29px;font-weight:800}.dark .node{background:#0d2a47;border-color:#2a5877}.arrow{font-size:42px;color:var(--cyan);font-weight:900}.loop{position:relative;width:1040px;height:430px;margin:38px auto 0}.loop .node{position:absolute}.loop .n1{left:405px;top:0}.loop .n2{right:0;top:168px}.loop .n3{left:405px;bottom:0}.loop .n4{left:0;top:168px}.loop .arr{position:absolute;color:var(--cyan);font-size:48px;font-weight:900}.loop .a1{right:260px;top:60px;transform:rotate(35deg)}.loop .a2{right:260px;bottom:64px;transform:rotate(145deg)}.loop .a3{left:260px;bottom:64px;transform:rotate(215deg)}.loop .a4{left:260px;top:60px;transform:rotate(325deg)}
+.arch{display:grid;grid-template-columns:1fr 1.25fr 1fr;align-items:stretch;gap:34px;margin-top:42px}.arch>div{border-radius:30px;padding:36px;text-align:center}.model{background:var(--navy);color:#fff}.harness{background:#e8f5fb;border:3px solid #8dd3e4}.env{background:#fff;border:2px dashed #9ab5c8}.arch .label{font-size:22px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--blue)}.arch h3{font-size:44px;margin:24px 0 18px}.arch p{font-size:25px;line-height:1.4;margin:0;color:var(--muted)}.arch .model p{color:#c5d8e7}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center;height:760px}.formula{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:66px;line-height:1.18;font-weight:850;letter-spacing:-.03em}.formula .op{color:var(--cyan);padding:0 15px}.support{font-size:25px;line-height:1.5;color:var(--muted)}
+.table{width:100%;border-collapse:separate;border-spacing:0;font-size:24px;margin-top:28px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff}.table th,.table td{padding:19px 26px;border-bottom:1px solid var(--line);text-align:left}.table th{background:#eaf4f9;color:var(--navy);font-size:22px;text-transform:uppercase;letter-spacing:.06em}.table tr:last-child td{border-bottom:0}.table td:first-child{font-weight:750}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:38px}.metric{padding:32px;border-top:4px solid var(--cyan);background:#fff}.metric .value{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:74px;font-weight:850;line-height:1;color:var(--navy)}.metric .label{font-size:23px;color:var(--muted);line-height:1.35;margin-top:14px}
+.compare{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;margin-top:40px}.compare .side{min-height:490px;padding:38px 42px;border-radius:28px;background:#fff;border:1px solid var(--line)}.compare .side.strong{background:var(--navy);color:#fff;border:0}.compare .vs{text-align:center;font-size:23px;font-weight:850;color:var(--muted)}.compare ul,.bullets{margin:22px 0 0;padding-left:28px}.compare li,.bullets li{font-size:25px;line-height:1.48;margin-bottom:10px}.compare .strong li{color:#d5e4ef}
+.compare.compact .side{min-height:300px;padding:28px 34px}.compare.compact .flow{margin-top:24px}.compare.compact .node{min-width:180px;padding:22px 18px;font-size:25px}
+.failure{display:grid;grid-template-columns:150px 1fr 470px;gap:32px;align-items:center;margin-top:54px}.failure .index{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:108px;font-weight:900;color:#c9dce7;text-align:center}.failure .problem{font-size:41px;line-height:1.12;font-weight:800}.failure .problem small{display:block;font-size:24px;line-height:1.45;font-weight:500;color:var(--muted);margin-top:20px}.failure .cap{background:var(--navy);color:#fff;border-radius:28px;padding:32px}.failure .cap .pill{margin-bottom:18px}.failure .cap strong{font-size:31px}.failure .cap p{font-size:22px;line-height:1.4;color:#c8dbe8;margin:12px 0 0}
+.matrix{display:grid;grid-template-columns:180px repeat(2,1fr);grid-template-rows:100px repeat(2,1fr);height:620px;margin-top:34px;gap:12px}.matrix .axis{display:flex;align-items:center;justify-content:center;text-align:center;font-size:21px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.matrix .quad{padding:34px 38px;border-radius:26px;background:#fff;border:1px solid var(--line)}.matrix .quad:nth-child(4),.matrix .quad:nth-child(7){background:#e9f6fa}.matrix .quad h3{font-size:38px;color:var(--blue)}.matrix .quad ul{font-size:24px;line-height:1.45;padding-left:24px;margin:16px 0 0}
+.chart{position:relative;height:590px;margin:30px 80px 0;border-left:4px solid var(--ink);border-bottom:4px solid var(--ink)}.chart .y{position:absolute;left:-110px;top:225px;transform:rotate(-90deg);font-size:22px;font-weight:800;color:var(--muted)}.chart .x{position:absolute;right:0;bottom:-55px;font-size:22px;font-weight:800;color:var(--muted)}.chart .curve{position:absolute;left:80px;bottom:45px;width:1220px;height:430px;border-top:7px solid var(--cyan);border-radius:100% 25% 0 0;transform:rotate(-14deg)}.dot{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 9px rgba(18,104,179,.15)}.chart .d1{left:180px;bottom:105px}.chart .d2{left:520px;bottom:205px}.chart .d3{left:900px;bottom:350px}.chart .d4{right:170px;top:55px}.chart .tag{position:absolute;font-size:22px;font-weight:800}.chart .t1{left:125px;bottom:145px}.chart .t2{left:460px;bottom:245px}.chart .t3{left:840px;bottom:390px}.chart .t4{right:60px;top:5px}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:70px}.step{position:relative;padding:56px 25px 0;border-top:5px solid var(--line)}.step::before{content:"";position:absolute;top:-15px;left:24px;width:26px;height:26px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 9px #dff4f8}.step strong{font-size:28px;display:block;margin-bottom:12px}.step p{font-size:22px;line-height:1.4;color:var(--muted);margin:0}
+.footer{position:absolute;left:96px;right:96px;bottom:48px;display:flex;justify-content:space-between;align-items:center;font-size:18px;color:var(--muted);letter-spacing:.04em}.dark .footer{color:#88a9c4}.footer .brand{font-weight:850;color:var(--blue)}.dark .footer .brand{color:#6fd4e8}
+.notes{display:none;position:absolute;left:96px;right:96px;bottom:86px;z-index:20;background:#fff9db;color:#443b19;border:1px solid #e7d78a;border-radius:18px;padding:19px 25px;font-size:20px;line-height:1.35;box-shadow:0 14px 44px rgba(0,0,0,.15)}.notes.show{display:block}
+.controls{position:fixed;right:20px;bottom:18px;z-index:100;display:flex;gap:8px;align-items:center;background:rgba(5,20,34,.88);backdrop-filter:blur(10px);border:1px solid #2b465d;border-radius:14px;padding:8px;color:#fff}.controls button{width:42px;height:42px;border:0;border-radius:9px;background:#17344c;color:#fff;cursor:pointer;font-size:20px}.controls button:hover,.controls button:focus-visible{background:#1e6387;outline:3px solid #8bdced;outline-offset:2px}.counter{min-width:74px;text-align:center;font-size:17px;font-weight:800}.progress{position:fixed;left:0;right:0;bottom:0;height:6px;background:#17334b;z-index:120}.progress>span{display:block;height:100%;background:var(--cyan);transition:width .2s ease}
+.editing .editable{outline:2px dashed var(--cyan);outline-offset:4px;border-radius:5px}.edit-badge{display:none;position:fixed;left:18px;bottom:18px;z-index:130;background:#fff;color:var(--navy);border-radius:10px;padding:10px 16px;font-size:17px;font-weight:850}.editing .edit-badge{display:block}
+.kicker{font-size:25px;font-weight:800;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase}.slide.active.title-slide{display:grid;grid-template-columns:1.2fr .8fr;align-items:center}.title-slide .orb{width:600px;height:600px;border-radius:50%;border:2px solid #2a5371;position:relative;margin-left:auto}.orb::before,.orb::after{content:"";position:absolute;border-radius:50%;border:2px solid #1b6d8a}.orb::before{inset:80px}.orb::after{inset:170px}.orb .core{position:absolute;inset:250px;border-radius:50%;background:var(--cyan);box-shadow:0 0 55px rgba(24,168,201,.5)}.orb .axis{position:absolute;left:-90px;right:-90px;top:298px;height:2px;background:#28516e;transform:rotate(-22deg)}
+.slide.active.full-center{display:grid;place-content:center;text-align:center}.full-center h2{font-size:84px;max-width:1500px}.full-center .lead{margin-inline:auto}.statement{font-family:"Arial Narrow","Aptos Display",sans-serif;font-size:74px;line-height:1.12;font-weight:850;letter-spacing:-.035em;max-width:1600px}.statement small{display:block;font-family:"Aptos","Segoe UI",sans-serif;font-size:26px;line-height:1.4;color:var(--muted);letter-spacing:0;font-weight:500;margin-top:28px}
+code{font-family:"Cascadia Mono","Consolas",monospace}.mono{font-family:"Cascadia Mono","Consolas",monospace}.tagline{font-size:28px;line-height:1.45;color:#c5dae8;max-width:1200px}.source{font-size:17px;color:var(--muted);margin-top:18px}.dark .source{color:#88a9c4}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@page{size:16in 9in;margin:0}@media print{html,body{overflow:visible;background:#fff}.stage{position:static;display:block;overflow:visible}.deck{position:relative;left:auto;top:auto;width:1920px;height:auto;transform:none!important;box-shadow:none}.slide{position:relative;display:block!important;width:1920px;height:1080px;page-break-after:always}.controls,.progress,.edit-badge,.notes{display:none!important}}
+</style>
+</head>
+<body>
+<main class="stage"><div class="deck" id="deck">
+
+<section class="slide dark title-slide active" data-section="Seminar" data-title="AI Agent & Harness">
+  <div><p class="kicker editable">AI AGENT &amp; HARNESS</p><h1 class="editable">Từ Model Intelligence đến <span class="accent">Reliable Agent Execution</span></h1><p class="tagline editable">Tại sao cùng một model nhưng năng lực hệ thống có thể khác biệt — và Harness Engineering biến reasoning thành hành động đáng tin cậy như thế nào.</p></div>
+  <div class="orb" aria-hidden="true"><div class="axis"></div><div class="core"></div></div>
+  <aside class="notes">Mở bằng sự khác biệt giữa “model thông minh” và “hệ thống làm việc đáng tin cậy”. Không định nghĩa Harness ngay; dẫn người nghe qua Agent loop trước.</aside>
+  <footer class="footer"><span class="brand">AI AGENT &amp; HARNESS</span><span>Executive Seminar</span></footer>
+</section>
+
+<section class="slide" data-section="01 — Agent" data-title="Đừng bắt đầu bằng Harness">
+  <p class="eyebrow editable">Câu hỏi mở đầu</p><h2 class="editable">ChatGPT, Codex, Claude Code và một Agent tự xử lý ticket <span class="accent">khác nhau ở đâu?</span></h2>
+  <p class="lead editable">Một model tạo đầu ra. Một Agent theo đuổi mục tiêu trong môi trường và điều chỉnh hành động theo quan sát.</p>
+  <div class="compare">
+    <div class="side"><span class="pill">LLM</span><div class="flow"><div class="node">Input</div><div class="arrow">→</div><div class="node">Model</div><div class="arrow">→</div><div class="node">Output</div></div></div>
+    <div class="vs">KHÁC</div>
+    <div class="side strong"><span class="pill">AGENT</span><h3 style="font-size:40px;margin-top:34px">Goal + Environment</h3><ul><li>Quan sát trạng thái</li><li>Lập kế hoạch và hành động</li><li>Nhận phản hồi</li><li>Điều chỉnh cho tới khi hoàn thành</li></ul></div>
+  </div>
+  <aside class="notes">Hỏi người nghe trước khi hiển thị nửa phải. Điểm cần chốt: Agent không chỉ trả lời; Agent tạo thay đổi trong một môi trường.</aside><footer class="footer"><span class="brand">01</span><span>Model output ≠ Agent outcome</span></footer>
+</section>
+
+<section class="slide dark" data-section="02 — Agent loop" data-title="Agent là một vòng lặp">
+  <p class="eyebrow editable">Mental model #1</p><h2 class="editable">Agent là một <span class="accent">vòng lặp có mục tiêu</span>, không phải một lần gọi model</h2>
+  <div class="loop" aria-label="Agent loop"><div class="node n1">OBSERVE</div><div class="node n2">REASON</div><div class="node n3">ACT</div><div class="node n4">ADJUST</div><span class="arr a1">↘</span><span class="arr a2">↙</span><span class="arr a3">↖</span><span class="arr a4">↗</span></div>
+  <p class="lead editable" style="text-align:center;margin:10px auto 0">Model cung cấp reasoning. Hệ thống phải duy trì vòng lặp và kết nối nó với thế giới thực.</p>
+  <aside class="notes">Nhấn mạnh loop: Observe → Reason → Act → Observe → Adjust. Đây là nền để hiểu tại sao cần state, tool, verification và stop condition.</aside><footer class="footer"><span class="brand">02</span><span>Observe → Reason → Act → Adjust</span></footer>
+</section>
+
+<section class="slide tint" data-section="03 — Architecture" data-title="Agent = Model + Harness + Environment">
+  <p class="eyebrow editable">Mental model #2</p><h2 class="editable">Agent vận hành khi ba lớp <span class="accent">phối hợp đúng vai trò</span></h2>
+  <div class="arch"><div class="model"><span class="label" style="color:#70d4e7">Reason</span><h3>MODEL</h3><p>Reasoning<br>Planning<br>Decision</p></div><div class="harness"><span class="label">Enable + Control</span><h3>HARNESS</h3><p>Context · Tools · State<br>Permission · Verify · Trace</p></div><div class="env"><span class="label">Real world</span><h3>ENVIRONMENT</h3><p>Code · Data · API<br>Business systems</p></div></div>
+  <div class="big-quote editable">Model quyết định. Harness tạo điều kiện và kiểm soát. Environment là thế giới Agent tác động vào.</div>
+  <aside class="notes">Đây là cấu trúc xương sống. Không đồng nhất Agent với model; Agent là hệ thống có khả năng hành động.</aside><footer class="footer"><span class="brand">03</span><span>Ba lớp, ba trách nhiệm</span></footer>
+</section>
+
+<section class="slide" data-section="04 — Harness" data-title="Harness nằm quanh Agent loop">
+  <p class="eyebrow editable">Harness là gì?</p><h2 class="editable">Harness là <span class="accent">lớp kỹ thuật bao quanh Agent loop</span></h2>
+  <div class="split" style="height:700px"><div><div class="statement editable">Context + Tools + State + Execution + Control + Feedback<small>để một model thực hiện công việc như một Agent hiệu quả và đáng tin cậy.</small></div></div><div class="card" style="padding:36px"><span class="pill">AGENT LOOP</span><div class="flow" style="flex-direction:column;margin-top:22px;gap:10px"><div class="node">Context &amp; State</div><div class="arrow">↓</div><div class="node" style="background:var(--navy);color:#fff">MODEL</div><div class="arrow">↓</div><div class="node">Tool Call</div><div class="arrow">↓</div><div class="node">Environment</div></div></div></div>
+  <aside class="notes">Đọc định nghĩa một lần. Harness không phải một component đơn; nó là tập hợp cơ chế quanh loop.</aside><footer class="footer"><span class="brand">04</span><span>Harness = lớp vận hành quanh loop</span></footer>
+</section>
+
+<section class="slide dark" data-section="05 — Enable / Control" data-title="Harness vừa trao năng lực vừa kiểm soát">
+  <p class="eyebrow editable">Distinction quan trọng</p><h2 class="editable">Harness không chỉ là guardrail — nó đồng thời <span class="accent">Enable</span> và <span class="accent">Control</span></h2>
+  <div class="grid cols-2" style="margin-top:58px"><div class="card" style="padding:46px"><p class="kicker">ENABLE — TRAO NĂNG LỰC</p><h3 style="font-size:48px">Làm được nhiều hơn</h3><div class="flow"><div class="node">Context</div><div class="node">Tools</div><div class="node">State</div></div></div><div class="card" style="padding:46px"><p class="kicker">CONTROL — KIỂM SOÁT</p><h3 style="font-size:48px">Làm đúng và biết khi sai</h3><div class="flow"><div class="node">Policy</div><div class="node">Verify</div><div class="node">Trace</div></div></div></div>
+  <p class="lead editable" style="text-align:center;margin:48px auto 0">Tension cốt lõi của Harness Engineering: tăng capability mà không đánh mất boundary.</p>
+  <aside class="notes">Phân biệt Harness với guardrail, CI/CD hoặc workflow. Các thành phần đó chỉ là một phần của Harness.</aside><footer class="footer"><span class="brand">05</span><span>Capability đi cùng boundary</span></footer>
+</section>
+
+<section class="slide" data-section="06 — Industry evidence" data-title="Harness Engineering thay đổi công việc kỹ sư">
+  <p class="eyebrow editable">OpenAI — Harness Engineering</p><h2 class="editable">Khi Agent làm implementation, engineering chuyển sang <span class="accent">thiết kế môi trường làm việc cho Agent</span></h2>
+  <div class="metric-row"><div class="metric"><div class="value editable">~1M</div><div class="label editable">dòng code trong thử nghiệm phát triển sản phẩm bằng Codex</div></div><div class="metric"><div class="value editable">~1.500</div><div class="label editable">pull request được nêu trong nội dung nguồn</div></div><div class="metric"><div class="value editable">~10×</div><div class="label editable">ước tính nhanh hơn phát triển thủ công</div></div></div>
+  <div class="compare compact" style="margin-top:30px"><div class="side"><span class="pill">OLD</span><div class="flow"><div class="node">Engineer</div><div class="arrow">→</div><div class="node">Code</div></div></div><div class="vs">→</div><div class="side strong"><span class="pill">AGENT-FIRST</span><div class="flow"><div class="node">Engineer</div><div class="arrow">→</div><div class="node">Harness</div><div class="arrow">→</div><div class="node">Agent</div></div></div></div>
+  <p class="source">Số liệu trình bày theo nội dung seminar do người dùng cung cấp; deck không bổ sung nguồn ngoài.</p>
+  <aside class="notes">Lesson không phải “Codex viết code nhanh”, mà là vai trò kỹ sư dịch chuyển sang context, tools, environment và feedback loops.</aside><footer class="footer"><span class="brand">06</span><span>Engineer → Harness → Agent → Code</span></footer>
+</section>
+
+<section class="slide tint" data-section="07 — Same model" data-title="Cùng model, năng lực hệ thống khác nhau">
+  <p class="eyebrow editable">Anthropic — Same model, different harness</p><h2 class="editable">Model capability giống nhau, nhưng <span class="accent">system capability có thể rất khác</span></h2>
+  <div class="compare compact"><div class="side"><span class="pill">SOLO AGENT</span><h3 style="font-size:40px;margin-top:24px">~20 phút · ~$9</h3><ul><li>Claude Opus</li><li>Core gameplay không hoạt động</li><li>Harness tối thiểu</li></ul></div><div class="vs">VS</div><div class="side strong"><span class="pill">FULL HARNESS</span><h3 style="font-size:40px;margin-top:24px">~6 giờ · ~$200</h3><ul><li>Planner → Generator → Evaluator</li><li>16 features / 10 sprint</li><li>Sản phẩm hoạt động</li></ul></div></div>
+  <div class="big-quote editable" style="font-size:38px;margin:28px 0 12px">Bài học không phải “Harness luôn tốt hơn” — mà là Harness thay đổi đáng kể năng lực của toàn hệ thống.</div>
+  <p class="source">Số liệu trình bày theo nội dung seminar do người dùng cung cấp.</p>
+  <aside class="notes">Cố ý đặt chi phí/thời gian cùng chất lượng đầu ra. Full Harness đắt hơn; quyết định phải dựa trên yêu cầu reliability.</aside><footer class="footer"><span class="brand">07</span><span>Same model ≠ same system</span></footer>
+</section>
+
+<section class="slide dark" data-section="08 — Industry pattern" data-title="Harness đã vượt ra ngoài AI coding">
+  <p class="eyebrow editable">DeepSeek và organizational progression</p><h2 class="editable"><span class="accent">Agent = Model + Harness</span> là abstraction cho Agent nói chung</h2>
+  <div class="flow" style="margin-top:50px"><div class="node">Environment</div><div class="node">Tools</div><div class="node">Skills</div><div class="node">Sessions</div><div class="node">Sandbox</div><div class="node">Storage</div></div>
+  <div class="timeline" style="margin-top:88px"><div class="step"><strong>OpenAI</strong><p>Harness Engineering</p></div><div class="step"><strong>Anthropic</strong><p>Harness Design</p></div><div class="step"><strong>DeepSeek</strong><p>Model + Harness</p></div><div class="step"><strong>Talkdesk</strong><p>Harness Delivery</p></div><div class="step"><strong>Timee</strong><p>Harness Group</p></div></div>
+  <p class="lead editable" style="margin-top:52px">Harness xuất hiện ở cấp kiến trúc, thực hành kỹ thuật, delivery model và năng lực tổ chức.</p>
+  <aside class="notes">Dùng progression để chuyển từ ví dụ riêng lẻ sang xu hướng ngành. Không khẳng định đây là một mô hình tổ chức duy nhất.</aside><footer class="footer"><span class="brand">08</span><span>Architecture → Practice → Organization</span></footer>
+</section>
+
+<section class="slide full-center" data-section="09 — Failure modes" data-title="Bắt đầu từ failure mode">
+  <div><p class="eyebrow editable">Tại sao Agent cần Harness?</p><h2 class="editable">Đừng bắt đầu từ component.<br><span class="accent">Hãy bắt đầu từ failure mode.</span></h2><p class="lead editable">Tám vấn đề vận hành giải thích trực tiếp tám năng lực cốt lõi của Harness.</p></div>
+  <aside class="notes">Đây là chuyển đoạn lớn nhất của seminar. Từ khái niệm sang vấn đề thực tế.</aside><footer class="footer"><span class="brand">09</span><span>Failure mode → Harness capability</span></footer>
+</section>
+
+<section class="slide" data-section="10 — Failure 1–2" data-title="Đúng context và đúng tools">
+  <p class="eyebrow editable">KNOW + DO</p><h2 class="editable">Agent có thể <span class="accent">không biết đủ</span> — hoặc biết nhưng <span class="accent">không làm được</span></h2>
+  <div class="grid cols-2" style="margin-top:42px"><div class="card"><div class="num">01</div><h3>Missing / Wrong Context</h3><p>Architecture, source code, business rule, convention, quyết định trước đó và runtime state không tự xuất hiện trong model.</p><div class="big-quote" style="font-size:31px;margin-bottom:0">Right context at the right time.</div></div><div class="card"><div class="num">02</div><h3>Know ≠ Can Do</h3><p>Model biết cách query database nhưng cần API, MCP, CLI, browser, Git, Jira hoặc test runner để biến reasoning thành action.</p><div class="flow"><div class="node">Reasoning</div><div class="arrow">→</div><div class="node">Tool</div><div class="arrow">→</div><div class="node">Action</div></div></div></div>
+  <aside class="notes">Context không phải càng nhiều càng tốt. Tools là bridge từ ngôn ngữ sang hành động có tác động thật.</aside><footer class="footer"><span class="brand">10</span><span>Context Engineering + Tooling</span></footer>
+</section>
+
+<section class="slide dark" data-section="11 — Failure 3–4" data-title="Capability cần boundary và state">
+  <p class="eyebrow editable">CONTROL + CONTINUITY</p><h2 class="editable">Tool càng mạnh, <span class="accent">boundary càng quan trọng</span>; task càng dài, state càng phải bền</h2>
+  <div class="grid cols-2" style="margin-top:46px"><div class="card"><div class="num">03</div><h3>Permission &amp; Isolation</h3><div class="flow" style="margin:30px 0"><div class="node">Agent</div><div class="arrow">→</div><div class="node">Permission</div><div class="arrow">→</div><div class="node">Sandbox</div></div><p>Shell, database, production API, Git và cloud credential biến tool use thành security problem.</p></div><div class="card"><div class="num">04</div><h3>State &amp; Memory</h3><p style="margin-bottom:22px"><strong>Context</strong> — Agent cần gì ngay lúc này?</p><p style="margin-bottom:22px"><strong>Memory</strong> — Agent đã học gì trước đây?</p><p><strong>State</strong> — Công việc đang ở đâu?</p></div></div>
+  <aside class="notes">Phân biệt rõ Context, Memory, State. Nếu state chỉ nằm trong context window, hết session là mất tiến độ.</aside><footer class="footer"><span class="brand">11</span><span>Capability + Boundary + Continuity</span></footer>
+</section>
+
+<section class="slide" data-section="12 — Failure 5" data-title="Evidence quyết định DONE">
+  <p class="eyebrow editable">Self-assessment problem</p><h2 class="editable">Agent không được tự quyết định <span class="accent">“DONE”</span></h2>
+  <div class="split" style="height:590px"><div><div class="statement editable">“I have completed the task.”<small>Nhưng test chưa chạy, migration còn thiếu, requirement chưa đủ hoặc security chưa kiểm tra.</small></div></div><div><div class="flow" style="flex-direction:column;gap:10px"><div class="node">Artifact</div><div class="arrow">↓</div><div class="node">Evidence</div><div class="arrow">↓</div><div class="node">Evaluator</div><div class="arrow">↓</div><div class="node" style="background:var(--navy);color:#fff">PASS / FAIL</div></div></div></div>
+  <div class="big-quote editable" style="font-size:44px;margin:10px 0">Agent không quyết định DONE. <strong>Evidence quyết định DONE.</strong></div>
+  <aside class="notes">Đây là câu có sức nặng nhất với đội kỹ thuật. Chuyển verification từ lời tuyên bố sang artifact và bằng chứng.</aside><footer class="footer"><span class="brand">12</span><span>Verification over self-assessment</span></footer>
+</section>
+
+<section class="slide tint" data-section="13 — Failure 6" data-title="Agent loop cần stop condition">
+  <p class="eyebrow editable">Loop control</p><h2 class="editable">Một Agent loop không kiểm soát có thể <span class="accent">khuếch đại giả định sai</span></h2>
+  <div class="flow" style="margin-top:65px"><div class="node">Wrong assumption</div><div class="arrow">→</div><div class="node">Wrong action</div><div class="arrow">→</div><div class="node">Biased observation</div><div class="arrow">→</div><div class="node">Reinforce</div></div>
+  <div class="grid cols-4" style="margin-top:78px"><div class="card"><strong>Timeout</strong><p>Giới hạn thời gian</p></div><div class="card"><strong>Budget</strong><p>Token, chi phí, số bước</p></div><div class="card"><strong>Evaluator</strong><p>Kiểm tra tiến triển</p></div><div class="card"><strong>Escalation</strong><p>Dừng và chuyển người</p></div></div>
+  <aside class="notes">Retry không phải luôn tốt; retry trên giả định sai chỉ làm vòng lặp tệ hơn. Cần stop condition và escalation.</aside><footer class="footer"><span class="brand">13</span><span>Timeout · Budget · Evaluate · Escalate</span></footer>
+</section>
+
+<section class="slide dark" data-section="14 — Failure 7–8" data-title="Trace trajectory và enforce policy">
+  <p class="eyebrow editable">OBSERVABILITY + POLICY</p><h2 class="editable">Đúng kỹ thuật chưa chắc <span class="accent">được tổ chức chấp nhận</span></h2>
+  <div class="grid cols-2" style="margin-top:46px"><div class="card"><div class="num">07</div><h3>Trace toàn bộ trajectory</h3><div class="flow" style="flex-wrap:wrap"><div class="node">Goal</div><div class="node">Plan</div><div class="node">Tool Call</div><div class="node">Observation</div><div class="node">Outcome</div></div><p style="margin-top:22px">Không chỉ hỏi “error gì?”, mà hỏi “tại sao Agent quyết định như vậy?”.</p></div><div class="card"><div class="num">08</div><h3>Policy &amp; Guardrail</h3><p>Code có thể compile, test pass và chạy được nhưng vẫn vi phạm architecture, dùng thư viện cấm, truy cập dữ liệu sai quyền hoặc bypass approval.</p><div class="big-quote" style="font-size:32px;margin-bottom:0">Technically correct ≠ organizationally acceptable.</div></div></div>
+  <aside class="notes">Observability phải ghi được trajectory, không chỉ log lỗi cuối. Policy cần kiểm tra cả kỹ thuật và chuẩn tổ chức.</aside><footer class="footer"><span class="brand">14</span><span>Trace decisions · Enforce policy</span></footer>
+</section>
+
+<section class="slide" data-section="15 — Architecture" data-title="Tám vấn đề tạo thành Harness Architecture">
+  <p class="eyebrow editable">Failure mode → Capability</p><h2 class="editable">Harness Architecture được suy ra từ <span class="accent">những gì Agent có thể làm sai</span></h2>
+  <table class="table"><thead><tr><th>Problem — Vấn đề</th><th>Harness capability — Năng lực</th></tr></thead><tbody><tr><td>Agent không biết đủ</td><td>Context</td></tr><tr><td>Agent không hành động được</td><td>Tools</td></tr><tr><td>Agent có quá nhiều quyền</td><td>Permission + Isolation</td></tr><tr><td>Agent mất trạng thái</td><td>State + Memory</td></tr><tr><td>Agent tự đánh giá</td><td>Verification</td></tr><tr><td>Agent loop vô hạn</td><td>Loop Control</td></tr><tr><td>Không biết Agent làm gì</td><td>Observability</td></tr><tr><td>Agent vi phạm nguyên tắc</td><td>Policy / Guardrail</td></tr></tbody></table>
+  <aside class="notes">Đây là slide tổng hợp; có thể dừng 30 giây để người nghe chụp hoặc ghi lại.</aside><footer class="footer"><span class="brand">15</span><span>8 failure modes → 8 capabilities</span></footer>
+</section>
+
+<section class="slide dark" data-section="16 — Framework" data-title="KNOW · DO · CONTROL · LEARN">
+  <p class="eyebrow editable">Framework trung tâm</p><h2 class="editable">Bốn câu hỏi đủ để thiết kế một <span class="accent">Harness có chủ đích</span></h2>
+  <div class="matrix"><div></div><div class="axis">Agent biết gì?</div><div class="axis">Agent làm được gì?</div><div class="axis">ENABLE</div><div class="quad"><h3>KNOW</h3><ul><li>Context</li><li>Knowledge</li><li>Memory</li></ul></div><div class="quad"><h3>DO</h3><ul><li>Tools</li><li>Environment</li><li>Runtime</li></ul></div><div class="axis">CONTROL + LEARN</div><div class="quad"><h3>CONTROL</h3><ul><li>Permission</li><li>Isolation</li><li>Policy / Guardrail</li></ul></div><div class="quad"><h3>LEARN</h3><ul><li>State · Trace</li><li>Evaluation · Feedback</li><li>Evidence</li></ul></div></div>
+  <aside class="notes">Đây là framework nên nhắc lại ở cuối. KNOW, DO, CONTROL, LEARN giúp review thiết kế Agent mà không lệ thuộc vendor.</aside><footer class="footer"><span class="brand">16</span><span>KNOW · DO · CONTROL · LEARN</span></footer>
+</section>
+
+<section class="slide" data-section="17 — Fit-for-risk" data-title="Harness phụ thuộc autonomy và risk">
+  <p class="eyebrow editable">Không phải càng nhiều càng tốt</p><h2 class="editable">Harness strength phải tăng theo <span class="accent">autonomy và consequence</span></h2>
+  <div class="chart"><span class="y">HARNESS STRENGTH</span><span class="x">AUTONOMY / RISK →</span><div class="curve"></div><span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="tag t1">Chatbot</span><span class="tag t2">Research Agent</span><span class="tag t3">Coding Agent</span><span class="tag t4">Production Agent</span></div>
+  <aside class="notes">Tóm tắt tài liệu không cần cùng mức sandbox, approval và verification như deploy production.</aside><footer class="footer"><span class="brand">17</span><span>Risk-based Harness design</span></footer>
+</section>
+
+<section class="slide tint" data-section="18 — Cost" data-title="Tối thiểu nhưng đủ reliability">
+  <p class="eyebrow editable">Harness cũng có cost</p><h2 class="editable">Mục tiêu không phải Maximum Harness — mà là <span class="accent">Minimum Harness đạt reliability yêu cầu</span></h2>
+  <div class="split" style="height:610px"><div><div class="formula"><span>MINIMUM HARNESS</span><br><span class="op">×</span> REQUIRED CONTROLS<br><span class="op">=</span> REQUIRED RELIABILITY</div></div><div class="grid cols-2"><div class="card"><strong>Thời gian</strong><p>Planner, evaluator và retry làm execution dài hơn.</p></div><div class="card"><strong>Token / Chi phí</strong><p>Nhiều model call và context hơn.</p></div><div class="card"><strong>Hạ tầng</strong><p>Sandbox, trace, storage và scheduling.</p></div><div class="card"><strong>Độ phức tạp</strong><p>Thêm cơ chế cần vận hành và cải tiến.</p></div></div></div>
+  <aside class="notes">Liên hệ lại ví dụ Anthropic: Full Harness tốt hơn về outcome nhưng đắt hơn đáng kể. Thiết kế theo risk, không theo phong trào.</aside><footer class="footer"><span class="brand">18</span><span>Fit-for-purpose, not maximum</span></footer>
+</section>
+
+<section class="slide dark" data-section="19 — Adaptive system" data-title="Harness phải học từ failure">
+  <p class="eyebrow editable">Harness evolution</p><h2 class="editable">Failure không chỉ là sự cố — đó là <span class="accent">dữ liệu cải tiến Harness</span></h2>
+  <div class="timeline" style="grid-template-columns:repeat(6,1fr);margin-top:100px"><div class="step"><strong>EXECUTE</strong><p>Agent làm việc</p></div><div class="step"><strong>CAPTURE</strong><p>Trace, intervention, failure</p></div><div class="step"><strong>LEARN</strong><p>Tìm root cause</p></div><div class="step"><strong>GOVERN</strong><p>Sửa context, tool, gate, policy</p></div><div class="step"><strong>DEPLOY</strong><p>Harness tốt hơn</p></div><div class="step"><strong>REPEAT</strong><p>Đo outcome mới</p></div></div>
+  <div class="big-quote editable" style="margin-top:90px">CAPTURE → LEARN → GOVERN biến Harness thành một <strong>Adaptive System</strong>.</div>
+  <aside class="notes">Rule cố định sẽ lạc hậu. Harness tốt tiến hóa theo dữ liệu failure và can thiệp của con người.</aside><footer class="footer"><span class="brand">19</span><span>CAPTURE → LEARN → GOVERN</span></footer>
+</section>
+
+<section class="slide" data-section="20 — Platform" data-title="Từ local harness đến shared platform">
+  <p class="eyebrow editable">Scale-out</p><h2 class="editable">Khi số Agent tăng, các vấn đề Harness <span class="accent">lặp lại giữa các team</span></h2>
+  <div class="split" style="height:590px"><div><div class="flow" style="flex-direction:column;gap:10px"><div class="node">Developer</div><div class="arrow">↓</div><div class="node">Agent</div><div class="arrow">↓</div><div class="node">Local Harness</div></div></div><div><div class="flow" style="align-items:stretch"><div style="display:grid;gap:12px"><div class="node">Agent A</div><div class="node">Agent B</div><div class="node">Agent C</div><div class="node">Agent D</div></div><div class="arrow" style="align-self:center">→</div><div class="node" style="display:grid;place-items:center;background:var(--navy);color:#fff;min-width:460px">SHARED HARNESS<br>CAPABILITY</div></div></div></div>
+  <p class="lead editable" style="text-align:center;margin:0 auto">Context · Tools · Sandbox · Identity · Observability · Evaluation · Policy không nên được xây lại ở từng team.</p>
+  <aside class="notes">Điểm chuyển từ engineering practice sang platform capability xuất hiện khi pattern lặp lại và cần chuẩn hóa.</aside><footer class="footer"><span class="brand">20</span><span>Local pattern → Shared capability</span></footer>
+</section>
+
+<section class="slide tint" data-section="21 — Ownership" data-title="Shared capability cần ownership">
+  <p class="eyebrow editable">Organizational capability</p><h2 class="editable">Shared Harness chỉ bền khi có <span class="accent">ownership rõ ràng</span></h2>
+  <div class="flow" style="margin-top:62px"><div class="node">More Agents</div><div class="arrow">→</div><div class="node">Repeated Problems</div><div class="arrow">→</div><div class="node">Shared Harness</div><div class="arrow">→</div><div class="node">Need Ownership</div></div>
+  <div class="grid cols-4" style="margin-top:74px"><div class="card"><strong>AI Platform</strong><p>Nền tảng AI dùng chung</p></div><div class="card"><strong>Developer Platform</strong><p>Tích hợp developer experience</p></div><div class="card"><strong>Agent Platform</strong><p>Runtime và governance cho Agent</p></div><div class="card"><strong>Federated Model</strong><p>Chuẩn chung, thực thi phân tán</p></div></div>
+  <div class="big-quote editable" style="font-size:36px">Timee lập Agent Harness Group là một organizational pattern — không phải mô hình duy nhất.</div>
+  <aside class="notes">Không mở đầu bằng đề xuất lập team. Dẫn từ nhu cầu ownership. Tổ chức có thể đặt capability này ở nhiều mô hình khác nhau.</aside><footer class="footer"><span class="brand">21</span><span>Platform capability needs ownership</span></footer>
+</section>
+
+<section class="slide dark" data-section="22 — Decision framework" data-title="Năm câu hỏi để bắt đầu">
+  <p class="eyebrow editable">Áp dụng ngay</p><h2 class="editable">Thiết kế Harness bắt đầu bằng <span class="accent">năm câu hỏi vận hành</span></h2>
+  <div class="grid cols-3" style="margin-top:42px"><div class="card"><div class="num">01</div><strong>Goal</strong><p>Agent phải đạt outcome nào?</p></div><div class="card"><div class="num">02</div><strong>Environment</strong><p>Agent tác động lên hệ thống nào?</p></div><div class="card"><div class="num">03</div><strong>Risk</strong><p>Sai sót gây hậu quả gì?</p></div><div class="card"><div class="num">04</div><strong>Evidence</strong><p>Bằng chứng nào xác nhận DONE?</p></div><div class="card"><div class="num">05</div><strong>Learning loop</strong><p>Failure được capture và cải tiến ra sao?</p></div><div class="card" style="display:grid;place-items:center;text-align:center;background:#123b5c"><strong style="font-size:38px">Sau đó mới chọn<br><span class="accent">components</span></strong></div></div>
+  <aside class="notes">Slide này chuyển nội dung lý thuyết thành checklist thảo luận kiến trúc. Không bắt đầu bằng việc mua tool hoặc chọn framework.</aside><footer class="footer"><span class="brand">22</span><span>Goal · Environment · Risk · Evidence · Learning</span></footer>
+</section>
+
+<section class="slide" data-section="23 — Mental model" data-title="Agent system end-to-end">
+  <p class="eyebrow editable">Mental model cuối cùng</p><h2 class="editable">Harness kết nối <span class="accent">intelligence</span> với <span class="accent">outcome</span></h2>
+  <div class="flow" style="margin-top:80px"><div class="node">GOAL</div><div class="arrow">→</div><div class="node" style="background:var(--navy);color:#fff">AGENT<br><small style="font-size:20px;font-weight:500">MODEL</small></div><div class="arrow">→</div><div class="node" style="min-width:560px;background:#e8f5fb;border-color:#79cadc">HARNESS<br><small style="font-size:20px;font-weight:600">KNOW · DO · CONTROL · LEARN</small></div><div class="arrow">→</div><div class="node">ENVIRONMENT</div><div class="arrow">→</div><div class="node">OUTCOME</div></div>
+  <div class="grid cols-4" style="margin-top:95px"><div><h3>Agent</h3><p class="support">Ai thực hiện công việc?</p></div><div><h3>Model</h3><p class="support">Năng lực suy luận đến từ đâu?</p></div><div><h3>Harness</h3><p class="support">Biết gì, làm gì, được phép gì, biết đúng ra sao?</p></div><div><h3>Environment</h3><p class="support">Agent tác động lên thế giới nào?</p></div></div>
+  <aside class="notes">Nhắc lại KNOW, DO, CONTROL, LEARN. Đây là slide tổng hợp trước thông điệp kết thúc.</aside><footer class="footer"><span class="brand">23</span><span>Goal → Agent → Harness → Environment → Outcome</span></footer>
+</section>
+
+<section class="slide dark full-center" data-section="24 — Conclusion" data-title="System capability là tích số">
+  <div><p class="eyebrow editable">Kết luận</p><div class="formula" style="font-size:84px;color:#fff"><span class="editable">MODEL CAPABILITY</span><br><span class="op">×</span><br><span class="editable">HARNESS QUALITY</span><br><span class="op">=</span><br><span class="accent editable">AGENT SYSTEM CAPABILITY</span></div></div>
+  <aside class="notes">Model và Harness là tích số: một phía gần 0 thì system capability cũng suy giảm. Đây là thông điệp chốt để ghi nhớ.</aside><footer class="footer"><span class="brand">24</span><span>Better decisions × reliable execution</span></footer>
+</section>
+
+<section class="slide dark title-slide" data-section="25 — Closing" data-title="Harness Engineering">
+  <div><p class="kicker editable">THÔNG ĐIỆP KẾT THÚC</p><h1 class="editable">Better Models make better decisions.<br><span class="accent">Better Harnesses turn decisions into reliable actions.</span></h1><p class="tagline editable">Khi Agent autonomy tăng, bài toán của tổ chức chuyển từ “sử dụng AI” sang “thiết kế môi trường để AI tự làm việc an toàn, hiệu quả và có thể kiểm soát”.</p></div>
+  <div class="orb" aria-hidden="true"><div class="axis"></div><div class="core"></div></div>
+  <aside class="notes">Kết thúc bằng chuyển dịch của tổ chức. Harness Engineering là không gian thiết kế environment, controls và feedback để Agent tạo outcome đáng tin cậy.</aside><footer class="footer"><span class="brand">25</span><span>Harness Engineering</span></footer>
+</section>
+
+</div></main>
+<div class="controls" aria-label="Điều khiển trình chiếu"><button id="prev" aria-label="Slide trước">←</button><span class="counter" id="counter">1 / 25</span><button id="next" aria-label="Slide sau">→</button><button id="noteBtn" aria-label="Bật tắt ghi chú">N</button><button id="editBtn" aria-label="Bật tắt chỉnh sửa">E</button></div>
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div><div class="edit-badge">EDIT MODE · Nhấn E để thoát</div>
+<script>
+(()=>{
+  const slides=[...document.querySelectorAll('.slide')],deck=document.getElementById('deck');
+  const counter=document.getElementById('counter'),bar=document.getElementById('progressBar');
+  const storageKey='hslide-ai-agent-harness-v1';
+  let index=Math.min(Math.max(parseInt(localStorage.getItem(storageKey+'-slide')||'0',10),0),slides.length-1);
+  let notesOn=false,editOn=false;
+  const isTyping=()=>{const e=document.activeElement;return e&&(e.matches('input,textarea,select')||e.isContentEditable)};
+  slides.forEach((slide,si)=>slide.querySelectorAll('.editable').forEach((el,ei)=>{const key=`${storageKey}-edit-${si}-${ei}`;el.dataset.editKey=key;const saved=localStorage.getItem(key);if(saved!==null)el.innerHTML=saved;}));
+  function render(){slides.forEach((s,i)=>{s.classList.toggle('active',i===index);const n=s.querySelector('.notes');if(n)n.classList.toggle('show',i===index&&notesOn)});counter.textContent=`${index+1} / ${slides.length}`;bar.style.width=`${((index+1)/slides.length)*100}%`;localStorage.setItem(storageKey+'-slide',index);document.title=`${index+1}/${slides.length} — ${slides[index].dataset.title}`;requestAnimationFrame(checkOverflow)}
+  function go(n){if(editOn&&isTyping())return;index=Math.min(Math.max(n,0),slides.length-1);render()}
+  function toggleNotes(){notesOn=!notesOn;render()}
+  function toggleEdit(){editOn=!editOn;document.body.classList.toggle('editing',editOn);slides.forEach(s=>s.querySelectorAll('.editable').forEach(el=>{el.contentEditable=editOn?'true':'false';el.spellcheck=false}));if(!editOn&&document.activeElement?.isContentEditable)document.activeElement.blur()}
+  document.getElementById('prev').onclick=()=>go(index-1);document.getElementById('next').onclick=()=>go(index+1);document.getElementById('noteBtn').onclick=toggleNotes;document.getElementById('editBtn').onclick=toggleEdit;
+  document.addEventListener('input',e=>{if(editOn&&e.target.dataset?.editKey)localStorage.setItem(e.target.dataset.editKey,e.target.innerHTML)});
+  document.addEventListener('keydown',e=>{if(isTyping())return;const k=e.key;if(['ArrowRight','PageDown',' '].includes(k)){e.preventDefault();go(index+1)}else if(['ArrowLeft','PageUp'].includes(k)){e.preventDefault();go(index-1)}else if(k==='Home'){e.preventDefault();go(0)}else if(k==='End'){e.preventDefault();go(slides.length-1)}else if(k.toLowerCase()==='n'){toggleNotes()}else if(k.toLowerCase()==='e'){toggleEdit()}});
+  function scale(){const viewport=window.visualViewport;const width=viewport?.width||innerWidth;const height=viewport?.height||innerHeight;const s=Math.min(width/1920,height/1080);deck.style.transform=`translate(-50%,-50%) scale(${s})`}
+  function checkOverflow(){const s=slides[index],safeBottom=972;[...s.children].filter(el=>!el.matches('.footer,.notes')).forEach(el=>{const bottom=el.offsetTop+el.offsetHeight;if(bottom>safeBottom)console.warn(`[hSlide overflow] slide ${index+1}:`,el,bottom)})}
+  addEventListener('resize',scale);window.visualViewport?.addEventListener('resize',scale);scale();render();
+})();
+</script>
+</body>
+</html>

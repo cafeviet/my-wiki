@@ -1,0 +1,387 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3400" height="2730" viewBox="0 0 3400 2730" role="img" aria-labelledby="title desc">
+<title id="title">2. Sơ đồ tô-pô ranh giới tin cậy chuẩn hóa — Kiến trúc ứng dụng</title>
+<desc id="desc">Tô-pô gồm bảy phân lớp và nền tảng định danh hỗ trợ: kênh khởi tạo, quản trị tập trung ngoài luồng, thực thi trên Kubernetes, cổng tác tử L7 dùng chung, hai lớp kiểm soát chiều ra độc lập, hệ thống đích và dữ liệu gốc, quan sát và kiểm chứng. Giữ nguyên 31 quan hệ có hướng của sơ đồ cung cấp.</desc>
+<defs>
+<marker id="arrow-main" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#28547C"/></marker>
+<marker id="arrow-access" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#718596"/></marker>
+<marker id="arrow-policy" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#137E78"/></marker>
+<marker id="arrow-kill" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#BD515B"/></marker>
+<marker id="arrow-evidence" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#8268A1"/></marker>
+<marker id="arrow-evaluation" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0,0 L11,5 L0,10 Z" fill="#8268A1"/></marker>
+</defs><g font-family="DejaVu Sans, Arial, sans-serif">
+<rect x="0" y="0" width="3400" height="2730" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.6"/>
+<rect x="0" y="0" width="14" height="2730" rx="0" fill="#28547C" stroke="none" stroke-width="1.6"/>
+<text x="60" y="67" font-size="43" font-weight="700" fill="#18344D" text-anchor="start">2 · TÔ-PÔ RANH GIỚI TIN CẬY CHUẨN HÓA</text>
+<text x="60" y="110" font-size="25" font-weight="400" fill="#526A7F" text-anchor="start">Kiến trúc ứng dụng (Application Architecture) · Nền tảng tác tử AI doanh nghiệp (Enterprise Agent Platform)</text>
+<path d="M60,150 H130" fill="none" stroke="#28547C" stroke-width="5" marker-end="url(#arrow-main)"/>
+<text x="145" y="157" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Thực thi / Execution</text>
+<path d="M660,150 H730" fill="none" stroke="#718596" stroke-width="3" marker-end="url(#arrow-access)"/>
+<text x="745" y="157" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Dữ liệu &amp; sự kiện / Data &amp; Event</text>
+<path d="M1390,150 H1460" fill="none" stroke="#137E78" stroke-width="3" stroke-dasharray="10 7" marker-end="url(#arrow-policy)"/>
+<text x="1475" y="157" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Chính sách / Policy</text>
+<path d="M1980,150 H2050" fill="none" stroke="#BD515B" stroke-width="3" stroke-dasharray="10 7" marker-end="url(#arrow-kill)"/>
+<text x="2065" y="157" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Dừng khẩn / Kill Switch</text>
+<path d="M2600,150 H2670" fill="none" stroke="#8268A1" stroke-width="3" stroke-dasharray="10 7" marker-end="url(#arrow-evidence)"/>
+<text x="2685" y="157" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Bằng chứng / Evidence</text>
+<g transform="translate(0,45)">
+<rect x="55" y="150" width="640" height="1250" rx="17" fill="#F1F8F6" stroke="#137E78" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="79" y="175" width="6" height="44" rx="3" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="100" y="199" font-size="29" font-weight="700" fill="#137E78" text-anchor="start">QUẢN TRỊ TẬP TRUNG</text>
+<text x="100" y="232" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Control Plane · Ngoài luồng (Out-of-band)</text>
+<text x="105" y="1240" font-size="23" font-weight="700" fill="#137E78" text-anchor="start">Không xử lý giao dịch trực tiếp</text>
+<text x="105" y="1273" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">No Direct Transaction Processing</text>
+<text x="105" y="1330" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Danh mục · Chính sách · Phản ứng sự cố</text>
+<rect x="770" y="150" width="2430" height="230" rx="17" fill="#F7F9FB" stroke="#718596" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="794" y="175" width="6" height="44" rx="3" fill="#718596" stroke="none" stroke-width="1.6"/>
+<text x="815" y="199" font-size="29" font-weight="700" fill="#718596" text-anchor="start">KÊNH / TÁC VỤ KHỞI TẠO</text>
+<text x="815" y="232" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Initiation Channels · Đầu vào cần kiểm soát (Untrusted Input)</text>
+<rect x="740" y="415" width="2500" height="1005" rx="20" fill="#FCFDFE" stroke="#C8D5E1" stroke-width="2"/>
+<text x="780" y="438" font-size="20" font-weight="700" fill="#28547C" text-anchor="start">NỀN TẢNG AGENT ĐƯỢC PHÊ DUYỆT / APPROVED AGENT PLATFORM</text>
+<rect x="770" y="450" width="2430" height="405" rx="17" fill="#F3F8FC" stroke="#638CAB" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="794" y="475" width="6" height="44" rx="3" fill="#638CAB" stroke="none" stroke-width="1.6"/>
+<text x="815" y="499" font-size="29" font-weight="700" fill="#638CAB" text-anchor="start">MÔI TRƯỜNG THỰC THI</text>
+<text x="815" y="532" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Execution Plane · Kubernetes Pods / Sandboxed Containers</text>
+<rect x="770" y="915" width="2430" height="495" rx="17" fill="#F1F9F7" stroke="#137E78" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="794" y="940" width="6" height="44" rx="3" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="815" y="964" font-size="29" font-weight="700" fill="#137E78" text-anchor="start">CỔNG KIỂM SOÁT TÁC TỬ</text>
+<text x="815" y="997" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Agent Gateways Plane · Cùng nền tảng L7 (Shared Platform)</text>
+<rect x="770" y="1450" width="2430" height="280" rx="17" fill="#FCFAF4" stroke="#A08244" stroke-width="2" stroke-dasharray="9 7"/>
+<text x="2020" y="1512" font-size="30" font-weight="700" fill="#A08244" text-anchor="middle">KIỂM SOÁT CHIỀU RA</text>
+<text x="2020" y="1547" font-size="24" font-weight="400" fill="#526A7F" text-anchor="middle">Egress &amp; Perimeter Control</text>
+<text x="2020" y="1610" font-size="26" font-weight="700" fill="#A08244" text-anchor="middle">Quản trị độc lập</text>
+<text x="2020" y="1643" font-size="23" font-weight="400" fill="#526A7F" text-anchor="middle">Independently Administered</text>
+<rect x="770" y="1770" width="2430" height="400" rx="17" fill="#FBFAF6" stroke="#A08244" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="794" y="1795" width="6" height="44" rx="3" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="815" y="1819" font-size="29" font-weight="700" fill="#A08244" text-anchor="start">HỆ THỐNG ĐÍCH &amp; DỮ LIỆU GỐC</text>
+<text x="815" y="1852" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Target Systems &amp; Source Data</text>
+<rect x="55" y="1480" width="640" height="690" rx="17" fill="#FBFAF6" stroke="#A08244" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="79" y="1505" width="6" height="44" rx="3" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="100" y="1529" font-size="29" font-weight="700" fill="#A08244" text-anchor="start">ĐỊNH DANH &amp; BÍ MẬT</text>
+<text x="100" y="1562" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Identity &amp; Secrets · Nền tảng dùng chung</text>
+<text x="105" y="1880" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Hỗ trợ xác thực đầu vào (Ingress)</text>
+<text x="105" y="1920" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Định danh khối xử lý (Workload Identity)</text>
+<text x="105" y="1960" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Xoay vòng bí mật (Secret Rotation)</text>
+<text x="105" y="2070" font-size="21" font-weight="700" fill="#A08244" text-anchor="start">Cấu phần hỗ trợ từ bảng mô tả</text>
+<text x="105" y="2105" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Support Component from the Provided Table</text>
+<rect x="55" y="2245" width="3245" height="265" rx="17" fill="#FAF7FD" stroke="#8268A1" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="79" y="2270" width="6" height="44" rx="3" fill="#8268A1" stroke="none" stroke-width="1.6"/>
+<text x="100" y="2294" font-size="29" font-weight="700" fill="#8268A1" text-anchor="start">QUAN SÁT &amp; KIỂM CHỨNG</text>
+<text x="100" y="2327" font-size="22" font-weight="400" fill="#526A7F" text-anchor="start">Assurance &amp; Observability · OTel / Kibana / Grafana · Kiểm toán tách riêng (Separate Audit)</text>
+<g data-edge="UI-IN"><title>UI → IN</title>
+<path d="M1235,355 L1235,405 L1770,405 L1770,520" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1235,355 L1235,405 L1770,405 L1770,520" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="EVT-IN"><title>EVT → IN</title>
+<path d="M1935,355 L1935,520" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1935,355 L1935,520" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="PA-IN"><title>PA → IN</title>
+<path d="M2695,355 L2695,400 L2090,400 L2090,520" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2695,355 L2695,400 L2090,400 L2090,520" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="IN-RT"><title>IN → RT</title>
+<path d="M1915,650 L1915,670" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1915,650 L1915,670" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="RT-DB"><title>RT ↔ DB</title>
+<path d="M2180,745 L2520,745" fill="none" stroke="#FFFFFF" stroke-width="9.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2180,745 L2520,745" fill="none" stroke="#718596" stroke-width="3.3" stroke-linejoin="round" stroke-linecap="round" marker-start="url(#arrow-access)" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="RT-MG"><title>RT → MG</title>
+<path d="M1650,715 L1560,715 L1560,1010 L1230,1010 L1230,1025" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1650,715 L1560,715 L1560,1010 L1230,1010 L1230,1025" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="RT-A2A"><title>RT → A2A</title>
+<path d="M1840,825 L1840,1025" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1840,825 L1840,1025" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="A2A-RT"><title>A2A → RT</title>
+<path d="M2010,1025 L2010,825" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2010,1025 L2010,825" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="RT-TG"><title>RT → TG</title>
+<path d="M2140,825 L2140,865 L2810,865 L2810,1025" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2140,825 L2140,865 L2810,865 L2810,1025" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="RT-KB"><title>RT → KB</title>
+<path d="M1740,825 L1740,880 L752,880 L752,1740 L1950,1740 L1950,1860" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1740,825 L1740,880 L752,880 L752,1740 L1950,1740 L1950,1860" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="TG-PDP"><title>TG ↔ PDP</title>
+<path d="M2600,1180 L2600,1225" fill="none" stroke="#FFFFFF" stroke-width="9.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2600,1180 L2600,1225" fill="none" stroke="#137E78" stroke-width="3.3" stroke-linejoin="round" stroke-linecap="round" marker-start="url(#arrow-policy)" marker-end="url(#arrow-policy)"/>
+</g>
+<g data-edge="A2A-PDP"><title>A2A ↔ PDP</title>
+<path d="M2180,1100 L2280,1100 L2280,1225" fill="none" stroke="#FFFFFF" stroke-width="9.3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2180,1100 L2280,1100 L2280,1225" fill="none" stroke="#137E78" stroke-width="3.3" stroke-linejoin="round" stroke-linecap="round" marker-start="url(#arrow-policy)" marker-end="url(#arrow-policy)"/>
+</g>
+<g data-edge="MG-EG_NET"><title>MG → EG_NET</title>
+<path d="M1230,1180 L1230,1500" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1230,1180 L1230,1500" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="EG_NET-MODEL"><title>EG_NET → MODEL</title>
+<path d="M1230,1685 L1230,1860" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1230,1685 L1230,1860" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="TG-EG_API"><title>TG → EG_API</title>
+<path d="M2910,1180 L2910,1500" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2910,1180 L2910,1500" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="EG_API-SOR"><title>EG_API → SOR</title>
+<path d="M2770,1685 L2770,1860" fill="none" stroke="#FFFFFF" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2770,1685 L2770,1860" fill="none" stroke="#28547C" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-main)"/>
+</g>
+<g data-edge="SOR-BUS"><title>SOR → BUS</title>
+<path d="M2770,2015 L2770,2050" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2770,2015 L2770,2050" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="BUS-IN"><title>BUS → IN</title>
+<path d="M3080,2100 L3215,2100 L3215,485 L2250,485 L2250,575 L2180,575" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M3080,2100 L3215,2100 L3215,485 L2250,485 L2250,575 L2180,575" fill="none" stroke="#718596" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-access)"/>
+</g>
+<g data-edge="REG-PAP"><title>REG → PAP</title>
+<path d="M375,465 L375,570" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M375,465 L375,570" fill="none" stroke="#137E78" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-policy)"/>
+</g>
+<g data-edge="PAP-PDP"><title>PAP → PDP</title>
+<path d="M645,685 L715,685 L715,1320 L1930,1320" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M645,685 L715,685 L715,1320 L1930,1320" fill="none" stroke="#137E78" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-policy)"/>
+</g>
+<g data-edge="PAP-IN"><title>PAP → IN</title>
+<path d="M645,610 L725,610 L725,575 L1650,575" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M645,610 L725,610 L725,575 L1650,575" fill="none" stroke="#137E78" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-policy)"/>
+</g>
+<g data-edge="KS-IN"><title>KS → IN</title>
+<path d="M645,1050 L703,1050 L703,550 L1650,550" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M645,1050 L703,1050 L703,550 L1650,550" fill="none" stroke="#BD515B" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-kill)"/>
+</g>
+<g data-edge="KS-TG"><title>KS → TG</title>
+<path d="M645,1120 L700,1120 L700,1425 L3160,1425 L3160,1150 L2970,1150" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M645,1120 L700,1120 L700,1425 L3160,1425 L3160,1150 L2970,1150" fill="none" stroke="#BD515B" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-kill)"/>
+</g>
+<g data-edge="RT-TRACE"><title>RT → TRACE</title>
+<path d="M1650,790 L728,790 L728,2200 L1250,2200 L1250,2340" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1650,790 L728,790 L728,2200 L1250,2200 L1250,2340" fill="none" stroke="#8268A1" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-evidence)"/>
+</g>
+<g data-edge="TG-AUDIT"><title>TG → AUDIT</title>
+<path d="M2970,1120 L3330,1120 L3330,2220 L2180,2220 L2180,2340" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2970,1120 L3330,1120 L3330,2220 L2180,2220 L2180,2340" fill="none" stroke="#8268A1" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-evidence)"/>
+</g>
+<g data-edge="SOR-AUDIT"><title>SOR → AUDIT</title>
+<path d="M3080,1970 L3270,1970 L3270,2235 L2350,2235 L2350,2340" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M3080,1970 L3270,1970 L3270,2235 L2350,2235 L2350,2340" fill="none" stroke="#8268A1" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 7" marker-end="url(#arrow-evidence)"/>
+</g>
+<g data-edge="TRACE-EVAL"><title>TRACE → EVAL</title>
+<path d="M1220,2485 L1220,2500 L2880,2500 L2880,2485" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M1220,2485 L1220,2500 L2880,2500 L2880,2485" fill="none" stroke="#8268A1" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-evaluation)"/>
+</g>
+<g data-edge="AUDIT-EVAL"><title>AUDIT → EVAL</title>
+<path d="M2405,2410 L2600,2410" fill="none" stroke="#FFFFFF" stroke-width="8.7" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M2405,2410 L2600,2410" fill="none" stroke="#8268A1" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrow-evaluation)"/>
+</g>
+<g id="node-UI" data-node-id="UI"><title>UI</title>
+<rect x="975" y="240" width="520" height="115" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="976" y="250" width="5" height="95" rx="2" fill="#718596" stroke="none" stroke-width="1.6"/>
+<text x="1478" y="263" font-size="16" font-weight="700" fill="#718596" text-anchor="end">UI</text>
+<text x="996" y="283" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Kênh tương tác có kiểm soát</text>
+<text x="996" y="314" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Web / App / Teams</text>
+</g>
+<g id="node-EVT" data-node-id="EVT"><title>EVT</title>
+<rect x="1675" y="240" width="520" height="115" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="1676" y="250" width="5" height="95" rx="2" fill="#718596" stroke="none" stroke-width="1.6"/>
+<text x="2178" y="263" font-size="16" font-weight="700" fill="#718596" text-anchor="end">EVT</text>
+<text x="1696" y="283" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Tác vụ theo lịch &amp; sự kiện</text>
+<text x="1696" y="314" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Scheduler / Kafka Event</text>
+</g>
+<g id="node-PA" data-node-id="PA"><title>PA</title>
+<rect x="2435" y="240" width="520" height="115" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="2436" y="250" width="5" height="95" rx="2" fill="#718596" stroke="none" stroke-width="1.6"/>
+<text x="2938" y="263" font-size="16" font-weight="700" fill="#718596" text-anchor="end">PA</text>
+<text x="2456" y="283" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Tác tử cá nhân đã đăng ký</text>
+<text x="2456" y="314" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Personal Agent · Registered</text>
+</g>
+<g id="node-REG" data-node-id="REG"><title>REG</title>
+<rect x="105" y="310" width="540" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="106" y="320" width="5" height="135" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="628" y="333" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">REG</text>
+<text x="126" y="353" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Danh mục &amp; chủ sở hữu</text>
+<text x="126" y="384" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Agent / Tool / Model Registry</text>
+<text x="126" y="409" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Chủ sở hữu (Owner)</text>
+</g>
+<g id="node-PAP" data-node-id="PAP"><title>PAP</title>
+<rect x="105" y="570" width="540" height="180" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="106" y="580" width="5" height="160" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="628" y="593" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">PAP</text>
+<text x="126" y="613" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Quản trị chính sách</text>
+<text x="126" y="644" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Policy Administration</text>
+<text x="126" y="669" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Mức rủi ro (Risk Tier)</text>
+<text x="126" y="694" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Cổng phát hành (Release Gate)</text>
+</g>
+<g id="node-KS" data-node-id="KS"><title>KS</title>
+<rect x="105" y="990" width="540" height="160" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="106" y="1000" width="5" height="140" rx="2" fill="#BD515B" stroke="none" stroke-width="1.6"/>
+<text x="628" y="1013" font-size="16" font-weight="700" fill="#BD515B" text-anchor="end">KS</text>
+<text x="126" y="1033" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Dừng khẩn cấp</text>
+<text x="126" y="1064" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Kill Switch</text>
+<text x="126" y="1089" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Quy trình sự cố (Incident Workflow)</text>
+</g>
+<g id="node-IN" data-node-id="IN"><title>IN</title>
+<rect x="1650" y="520" width="530" height="130" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="1651" y="530" width="5" height="110" rx="2" fill="#28547C" stroke="none" stroke-width="1.6"/>
+<text x="2163" y="543" font-size="16" font-weight="700" fill="#28547C" text-anchor="end">IN</text>
+<text x="1671" y="563" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Điểm kiểm soát đầu vào</text>
+<text x="1671" y="594" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Ingress PEP · Keycloak OIDC</text>
+<text x="1671" y="619" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Envoy / Kong · Xác thực (Authentication)</text>
+</g>
+<g id="node-RT" data-node-id="RT"><title>RT</title>
+<rect x="1650" y="670" width="530" height="155" rx="11" fill="#FFFFFF" stroke="#28547C" stroke-width="2.3"/>
+<rect x="1651" y="680" width="5" height="135" rx="2" fill="#28547C" stroke="none" stroke-width="1.6"/>
+<text x="2163" y="693" font-size="16" font-weight="700" fill="#28547C" text-anchor="end">RT</text>
+<text x="1671" y="713" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Bộ máy thực thi tác tử</text>
+<text x="1671" y="744" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Agent &amp; Harness Runtime</text>
+<text x="1671" y="769" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">K8s Pods / Sandboxed Containers</text>
+<text x="1671" y="794" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">ReAct · Ngữ cảnh (Context) · Checkpoint</text>
+</g>
+<g id="node-DB" data-node-id="DB"><title>DB</title>
+<path d="M2520,688 C2520,664 3070,664 3070,688 V807 C3070,831 2520,831 2520,807 Z" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.8"/>
+<ellipse cx="2795.0" cy="688" rx="275.0" ry="18" fill="#F2F6FA" stroke="#BBCBD6" stroke-width="1.5"/>
+<text x="3053" y="718" font-size="16" font-weight="700" fill="#28547C" text-anchor="end">DB</text>
+<text x="2541" y="725" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Trạng thái &amp; điểm khôi phục</text>
+<text x="2541" y="756" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">State DB &amp; Checkpoint</text>
+<text x="2541" y="781" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Phân vùng Session_ID / User_ID</text>
+<text x="2541" y="806" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Không lưu bí mật (No Secrets)</text>
+</g>
+<g id="node-MG" data-node-id="MG"><title>MG</title>
+<rect x="960" y="1025" width="530" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="961" y="1035" width="5" height="135" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="1473" y="1048" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">MG</text>
+<text x="981" y="1068" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Cổng mô hình có kiểm soát</text>
+<text x="981" y="1099" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Model Gateway PEP</text>
+<text x="981" y="1124" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Định tuyến · Ẩn dữ liệu · Hạn mức</text>
+<text x="981" y="1149" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Routing · Redaction · Quota</text>
+</g>
+<g id="node-A2A" data-node-id="A2A"><title>A2A</title>
+<rect x="1650" y="1025" width="530" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="1651" y="1035" width="5" height="135" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="2163" y="1048" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">A2A</text>
+<text x="1671" y="1068" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Cổng phân giao tác tử</text>
+<text x="1671" y="1099" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Agent-to-Agent PEP</text>
+<text x="1671" y="1124" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Phân giao &amp; chuyển giao tác vụ</text>
+<text x="1671" y="1149" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Task Delegation &amp; Handoff</text>
+</g>
+<g id="node-TG" data-node-id="TG"><title>TG</title>
+<rect x="2440" y="1025" width="530" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="2441" y="1035" width="5" height="135" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="2953" y="1048" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">TG</text>
+<text x="2461" y="1068" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Cổng công cụ có kiểm soát</text>
+<text x="2461" y="1099" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Tool / MCP PEP</text>
+<text x="2461" y="1124" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Lược đồ nghiêm ngặt · Phân quyền</text>
+<text x="2461" y="1149" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Strict Schema · Tool AuthZ</text>
+</g>
+<g id="node-PDP" data-node-id="PDP"><title>PDP</title>
+<rect x="1930" y="1225" width="900" height="165" rx="11" fill="#FFFFFF" stroke="#137E78" stroke-width="2.3"/>
+<rect x="1931" y="1235" width="5" height="145" rx="2" fill="#137E78" stroke="none" stroke-width="1.6"/>
+<text x="2813" y="1248" font-size="16" font-weight="700" fill="#137E78" text-anchor="end">PDP</text>
+<text x="1951" y="1268" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Điểm quyết định chính sách</text>
+<text x="1951" y="1299" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">PDP / ABAC Engine · OPA / Cedar</text>
+<text x="1951" y="1324" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Subject · Action · Resource · Context</text>
+<text x="1951" y="1349" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Từ chối khi lỗi / không đủ quyền (Fail-closed)</text>
+</g>
+<g id="node-EG_NET" data-node-id="EG_NET"><title>EG_NET</title>
+<rect x="960" y="1500" width="640" height="185" rx="11" fill="#FFFFFF" stroke="#A08244" stroke-width="2.3"/>
+<rect x="961" y="1510" width="5" height="165" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="1583" y="1523" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">EG_NET</text>
+<text x="981" y="1543" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Kiểm soát mạng chiều ra</text>
+<text x="981" y="1574" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Network Egress Proxy / Firewall / NetworkPolicy</text>
+<text x="981" y="1600" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Bao phủ MG &amp; Agent Pods (Coverage)</text>
+<text x="981" y="1626" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Miền/IP cho phép (Domain/IP Allowlist)</text>
+<text x="981" y="1652" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Chủ quản: An ninh mạng / Hạ tầng</text>
+</g>
+<g id="node-EG_API" data-node-id="EG_API"><title>EG_API</title>
+<rect x="2440" y="1500" width="640" height="185" rx="11" fill="#FFFFFF" stroke="#A08244" stroke-width="2.3"/>
+<rect x="2441" y="1510" width="5" height="165" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="3063" y="1523" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">EG_API</text>
+<text x="2461" y="1543" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Cổng API doanh nghiệp</text>
+<text x="2461" y="1574" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Enterprise API Gateway</text>
+<text x="2461" y="1600" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Bảo vệ hệ thống gốc (SoR Protection)</text>
+<text x="2461" y="1626" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">mTLS · Hạn lưu lượng (Rate Limits)</text>
+<text x="2461" y="1652" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Chủ quản: Tích hợp / Chủ hệ thống</text>
+</g>
+<g id="node-MODEL" data-node-id="MODEL"><title>MODEL</title>
+<rect x="960" y="1860" width="640" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="961" y="1870" width="5" height="135" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="1583" y="1883" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">MODEL</text>
+<text x="981" y="1903" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Cụm mô hình AI</text>
+<text x="981" y="1934" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">AI Model Cluster</text>
+<text x="981" y="1959" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">GPU nội bộ / Cloud được duyệt</text>
+<text x="981" y="1984" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Internal GPUs / Approved Cloud</text>
+</g>
+<g id="node-KB" data-node-id="KB"><title>KB</title>
+<rect x="1710" y="1860" width="640" height="155" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="1711" y="1870" width="5" height="135" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="2333" y="1883" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">KB</text>
+<text x="1731" y="1903" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Dịch vụ tri thức</text>
+<text x="1731" y="1934" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Knowledge Service</text>
+<text x="1731" y="1959" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Vector DB · Quyền tài liệu (Document ACL)</text>
+<text x="1731" y="1984" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Kiểm tra quyền tại thời điểm truy xuất</text>
+</g>
+<g id="node-SOR" data-node-id="SOR"><title>SOR</title>
+<rect x="2440" y="1860" width="640" height="155" rx="11" fill="#FFFFFF" stroke="#28547C" stroke-width="2.3"/>
+<rect x="2441" y="1870" width="5" height="135" rx="2" fill="#28547C" stroke="none" stroke-width="1.6"/>
+<text x="3063" y="1883" font-size="16" font-weight="700" fill="#28547C" text-anchor="end">SOR</text>
+<text x="2461" y="1903" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Hệ thống nghiệp vụ gốc</text>
+<text x="2461" y="1934" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Systems of Record · Core / LOS / CRM / Payment Hub</text>
+<text x="2461" y="1959" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Thẩm quyền cuối cùng (Final Authorization)</text>
+<text x="2461" y="1984" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Bất biến nghiệp vụ · Phê duyệt · Commit</text>
+</g>
+<g id="node-BUS" data-node-id="BUS"><title>BUS</title>
+<rect x="2440" y="2050" width="640" height="115" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="2441" y="2060" width="5" height="95" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="3063" y="2073" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">BUS</text>
+<text x="2461" y="2093" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Kênh sự kiện &amp; đối soát</text>
+<text x="2461" y="2124" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Kafka Event Bus · Outbox / Inbox</text>
+<text x="2461" y="2149" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Đối soát (Reconciliation) · Idempotency</text>
+</g>
+<g id="node-ID" data-node-id="ID"><title>ID</title>
+<rect x="105" y="1600" width="540" height="220" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="106" y="1610" width="5" height="200" rx="2" fill="#A08244" stroke="none" stroke-width="1.6"/>
+<text x="628" y="1623" font-size="16" font-weight="700" fill="#A08244" text-anchor="end">ID</text>
+<text x="126" y="1643" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Nền tảng định danh dùng chung</text>
+<text x="126" y="1674" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Keycloak (IdP) · HashiCorp Vault</text>
+<text x="126" y="1699" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">OIDC / RFC 8693 · X.509</text>
+<text x="126" y="1724" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Định danh người dùng &amp; khối xử lý</text>
+<text x="126" y="1749" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">User &amp; Workload Identity</text>
+</g>
+<g id="node-TRACE" data-node-id="TRACE"><title>TRACE</title>
+<rect x="600" y="2340" width="680" height="145" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="601" y="2350" width="5" height="125" rx="2" fill="#8268A1" stroke="none" stroke-width="1.6"/>
+<text x="1263" y="2363" font-size="16" font-weight="700" fill="#8268A1" text-anchor="end">TRACE</text>
+<text x="621" y="2383" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Truy vết &amp; giám sát vận hành</text>
+<text x="621" y="2414" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Trace / Metrics / Logs · OTel</text>
+<text x="621" y="2439" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Elasticsearch / Kibana · Grafana</text>
+</g>
+<g id="node-AUDIT" data-node-id="AUDIT"><title>AUDIT</title>
+<rect x="1575" y="2340" width="830" height="145" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="1576" y="2350" width="5" height="125" rx="2" fill="#8268A1" stroke="none" stroke-width="1.6"/>
+<text x="2388" y="2363" font-size="16" font-weight="700" fill="#8268A1" text-anchor="end">AUDIT</text>
+<text x="1596" y="2383" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Kho bằng chứng kiểm toán</text>
+<text x="1596" y="2414" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Audit Evidence Store · Logic WORM</text>
+<text x="1596" y="2439" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Lưu trữ bất biến, tách riêng khỏi nhật ký vận hành</text>
+</g>
+<g id="node-EVAL" data-node-id="EVAL"><title>EVAL</title>
+<rect x="2600" y="2340" width="640" height="145" rx="11" fill="#FFFFFF" stroke="#BBCBD6" stroke-width="1.5"/>
+<rect x="2601" y="2350" width="5" height="125" rx="2" fill="#8268A1" stroke="none" stroke-width="1.6"/>
+<text x="3223" y="2363" font-size="16" font-weight="700" fill="#8268A1" text-anchor="end">EVAL</text>
+<text x="2621" y="2383" font-size="26" font-weight="700" fill="#18344D" text-anchor="start">Đánh giá &amp; vận hành</text>
+<text x="2621" y="2414" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Evals / Drift / FinOps / Incident</text>
+<text x="2621" y="2439" font-size="21" font-weight="400" fill="#526A7F" text-anchor="start">Đánh giá · Độ lệch · Chi phí · Sự cố</text>
+</g>
+<text x="1870" y="879" font-size="18" font-weight="700" fill="#28547C" text-anchor="start">Phân giao</text>
+<text x="1870" y="905" font-size="18" font-weight="400" fill="#526A7F" text-anchor="start">Delegation</text>
+<text x="2050" y="952" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Chuyển giao / Handoff</text>
+<text x="3160" y="1758" font-size="19" font-weight="400" fill="#526A7F" text-anchor="end">Sự kiện quay về Ingress</text>
+</g>
+<text x="60" y="2600" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">PEP: Điểm thực thi chính sách (Policy Enforcement Point) · PDP: Điểm quyết định chính sách (Policy Decision Point) · ABAC: Phân quyền theo thuộc tính (Attribute-Based Access Control)</text>
+<text x="60" y="2635" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">PDP xét Chủ thể / Hành động / Tài nguyên / Ngữ cảnh (Subject / Action / Resource / Context) · WORM: Ghi một lần, đọc nhiều lần (Write Once, Read Many)</text>
+<text x="60" y="2670" font-size="20" font-weight="400" fill="#526A7F" text-anchor="start">Khung nét đứt: ranh giới logic và trách nhiệm quản trị (Logical &amp; Ownership Boundaries) · Cùng nền tảng không đồng nghĩa cùng quyền · Giao cắt đường nối không biểu thị liên kết.</text>
+</g></svg>

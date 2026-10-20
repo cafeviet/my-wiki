@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ngữ cảnh hệ thống</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f8fb;--paper2:#f1f1f6;--ink:#2f3038;--muted:#676b7a;--soft:#85899a;--rule:rgba(47,48,56,.12);--accent:#6366f1;--accent-tint:rgba(99,102,241,.10);--link:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{padding:24px;font-family:Geist,system-ui,sans-serif}header{max-width:1120px;margin:0 auto 20px}.eyebrow{margin:0 0 8px;font:500 8px/1 Geist Mono,monospace;letter-spacing:.18em;color:var(--accent)}h1{margin:0;font:400 32px/1.05 Instrument Serif,serif}.subtitle{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.5}figure{margin:0 auto;max-width:1120px;overflow-x:auto}svg{display:block;width:100%;height:auto;min-width:720px}footer{max-width:1120px;margin:16px auto 0;padding-top:12px;border-top:1px solid var(--rule);font:400 8px/1.5 Geist Mono,monospace;color:var(--soft)}
+@media(max-width:700px){body{padding:16px}h1{font-size:28px}}
+@media(prefers-color-scheme:dark){:root{--paper:#18181b;--paper2:#27272a;--ink:#f4f4f5;--muted:#a1a1aa;--soft:#71717a;--rule:rgba(244,244,245,.12);--accent:#818cf8;--accent-tint:rgba(129,140,248,.14);--link:#a5b4fc}}
+</style></head><body><header><p class="eyebrow">C4 · LEVEL 1</p><h1>Ngữ cảnh hệ thống</h1><p class="subtitle">Một workspace tri thức local-first; Ollama là tích hợp tùy chọn, không nằm trong Local Wiki.</p></header><figure><svg viewBox="0 0 960 480" role="img" aria-labelledby="context-title context-desc">
+<title id="context-title">Ngữ cảnh hệ thống Local Wiki</title><desc id="context-desc">Người dùng đọc tài liệu và hỏi đáp trong Local Wiki; hệ thống truy xuất kho tri thức cục bộ và tùy chọn gọi Ollama trên cùng máy.</desc><defs>
+<marker id="context-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#676b7a"/></marker>
+<marker id="context-accent" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#6366f1"/></marker>
+<marker id="context-link" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#4f46e5"/></marker>
+<style>.n{font:600 12px Geist,sans-serif;fill:#2f3038}.s{font:400 8px Geist Mono,monospace;fill:#676b7a}.t{font:500 8px Geist Mono,monospace;letter-spacing:.12em;fill:#85899a}.al{font:500 8px Geist Mono,monospace;letter-spacing:.06em;fill:#676b7a}@media(prefers-color-scheme:dark){.n{fill:#f4f4f5}.s,.al{fill:#a1a1aa}.t{fill:#71717a}}</style>
+</defs>
+<rect width="960" height="480" fill="var(--paper)"/>
+<rect x="280" y="72" width="400" height="300" rx="8" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.35)" stroke-dasharray="4 4"/>
+<rect x="300" y="64" width="144" height="20" rx="4" fill="var(--paper)"/><text x="372" y="78" text-anchor="middle" class="t">LOCAL BOUNDARY</text>
+<!-- connectors -->
+<line x1="224" y1="220" x2="348" y2="220" stroke="#4f46e5" stroke-width="1.2" marker-end="url(#context-link)"/>
+<rect x="252" y="196" width="72" height="12" rx="2" fill="var(--paper)"/><text x="288" y="204" text-anchor="middle" class="al">DOCS · ASK</text>
+<path d="M612 196 H740" fill="none" stroke="#676b7a" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#context-arrow)"/>
+<rect x="644" y="172" width="64" height="12" rx="2" fill="var(--paper)"/><text x="676" y="180" text-anchor="middle" class="al">PROMPT</text>
+<path d="M740 248 H612" fill="none" stroke="#676b7a" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#context-arrow)"/>
+<rect x="644" y="260" width="64" height="12" rx="2" fill="var(--paper)"/><text x="676" y="268" text-anchor="middle" class="al">STREAM</text>
+<!-- nodes -->
+<rect x="64" y="168" width="160" height="104" rx="8" fill="rgba(103,107,122,.10)" stroke="#85899a"/>
+<rect x="76" y="180" width="40" height="16" rx="4" fill="transparent" stroke="rgba(103,107,122,.45)"/><text x="96" y="192" text-anchor="middle" class="t">USER</text>
+<text x="144" y="220" text-anchor="middle" class="n">Người dùng</text><text x="144" y="240" text-anchor="middle" class="s">browser · local machine</text>
+<rect x="348" y="144" width="264" height="152" rx="8" fill="var(--accent-tint)" stroke="#6366f1" stroke-width="1.2"/>
+<rect x="364" y="160" width="56" height="16" rx="4" fill="rgba(99,102,241,.14)"/><text x="392" y="172" text-anchor="middle" class="t" style="fill:#6366f1">SYSTEM</text>
+<text x="480" y="216" text-anchor="middle" class="n">Local Wiki &amp; RAG Chatbot</text><text x="480" y="240" text-anchor="middle" class="s">VitePress · Vector Search · Chat UI</text><text x="480" y="260" text-anchor="middle" class="s">local-first knowledge workspace</text>
+<rect x="740" y="168" width="160" height="104" rx="8" fill="rgba(47,48,56,.03)" stroke="rgba(47,48,56,.30)"/>
+<rect x="752" y="180" width="56" height="16" rx="4" fill="transparent" stroke="rgba(103,107,122,.45)"/><text x="780" y="192" text-anchor="middle" class="t">OPTION</text>
+<text x="820" y="220" text-anchor="middle" class="n">Ollama</text><text x="820" y="240" text-anchor="middle" class="s">localhost:11434</text>
+<line x1="40" y1="416" x2="920" y2="416" stroke="var(--rule)"/>
+<text x="48" y="440" class="t">LEGEND</text><rect x="144" y="428" width="16" height="16" rx="4" fill="var(--accent-tint)" stroke="#6366f1"/><text x="168" y="440" class="s">Hệ thống chính</text><path d="M320 436 H352" stroke="#676b7a" stroke-dasharray="5 4"/><text x="364" y="440" class="s">Tích hợp tùy chọn</text><path d="M548 436 H580" stroke="#4f46e5"/><text x="592" y="440" class="s">Tương tác web</text>
+</svg></figure><footer>LOCAL WIKI · ARCHITECTURE DOCUMENTATION · STATIC DIAGRAM</footer></body></html>

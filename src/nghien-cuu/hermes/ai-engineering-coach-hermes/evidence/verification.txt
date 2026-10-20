@@ -1,0 +1,51 @@
+AI Engineering Coach for Hermes — verification evidence
+Captured: 2026-09-09
+
+[unit tests]
+test_normalizes_tokens_and_counts_tools_once ... ok
+test_snapshot_never_returns_message_bodies ... ok
+test_detects_retry_and_missing_context ... ok
+test_failed_verification_and_prompt_break_do_not_hide_findings ... ok
+test_verification_command_clears_no_verification_rule ... ok
+Ran 5 tests
+OK
+
+[Python compilation]
+python -m compileall -q .
+exit code: 0
+
+[Desktop JavaScript syntax]
+node --check desktop/plugin.js
+exit code: 0
+
+[Hermes plugin doctor]
+Plugin Doctor: C:\Users\ADMIN\AppData\Local\hermes\plugins\ai-engineering-coach
+manifest: ai-engineering-coach 0.1.0 (standalone)
+OK: runtime discovery, manifest parsing, import, and registration passed
+registrations: 0 tool(s), 0 hook(s)
+
+[Hermes plugin registry]
+ai-engineering-coach | enabled | 0.1.0 | source=user
+
+[Mounted backend routes — fresh Hermes web_server process]
+/api/plugins/ai-engineering-coach/health
+/api/plugins/ai-engineering-coach/snapshot
+/api/plugins/ai-engineering-coach/reanalyze
+Unauthenticated TestClient requests returned HTTP 401, confirming the normal Hermes dashboard authentication middleware protects the namespace.
+
+[Production adapter smoke — active state.db]
+schema_version: 1
+sessions analyzed (limit=100): 25
+model values: 4
+distinct tools: 26
+insights: 118
+privacy.mode: local-read-only
+privacy.message_bodies_returned: false
+privacy.writes_to_session_store: false
+exit code: 0
+
+[Desktop runtime]
+Settings > Plugins inventoried AI Engineering Coach from the unified plugin folder.
+Desktop toggle enabled successfully.
+AI Coach navigation row appeared in the Hermes sidebar without an error toast.
+See ../assets/plugin-enabled.png and ../assets/ai-coach-sidebar.png.

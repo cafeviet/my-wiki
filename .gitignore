@@ -5,3 +5,5 @@ src/.vitepress/dist/
 src/.vitepress/cache/
 data/wiki-vector-db/
 *.log
+/.agent
+/.agents

@@ -76,6 +76,9 @@ const vitePressConfig = {
   lang: 'vi-VN',
   srcDir: '.',
   cleanUrls: true,
+  ignoreDeadLinks: [/localhost/],
+  markdown: { html: true },
+  head: [['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }]],
   themeConfig: {
     logo: {
       light: 'https://img.icons8.com/fluency/48/library.png',

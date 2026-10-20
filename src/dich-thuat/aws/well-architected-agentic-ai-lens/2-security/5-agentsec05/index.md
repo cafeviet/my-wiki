@@ -1,0 +1,42 @@
+# Khả năng quan sát và chống chối bỏ (non-repudiation) của agent
+
+Nếu không có việc ghi log và khả năng truy vết đúng cách, các hành động của agent không thể được điều tra hay quy kết. Agent hoạt động tự chủ trên nhiều dịch vụ, công cụ (Tools) và nguồn dữ liệu, tạo ra các chuỗi tương tác phức tạp khó tái dựng về sau. Khả năng quan sát (observability) thông qua ghi log, truy vết phân tán (distributed tracing) và lưu trữ tạo phẩm quyết định (decision artifact) hỗ trợ các cuộc điều tra bảo mật, báo cáo tuân thủ và cải thiện liên tục hành vi của agent.
+
+Hai quyết định chi phối câu hỏi này. Thứ nhất, bạn giữ bản ghi nào về hành vi của agent, nó cư trú ở đâu, và nó được bảo vệ chống can thiệp bởi chính agent như thế nào. Thứ hai, bạn theo dõi một yêu cầu duy nhất qua các agent, công cụ và các ranh giới bất đồng bộ ra sao để bất kỳ hành động nào cũng có thể được tái dựng đầu-cuối.
+
+| AGENTSEC05: Bạn triển khai khả năng quan sát và ngăn chặn sự chối bỏ như thế nào? |
+| --- |
+|  |
+
+## Mục tiêu năng lực
+
+- Các quyết định, chuỗi suy luận, lần gọi công cụ và các bước trung gian của agent được ghi lại vào kho lưu trữ có bằng chứng chống can thiệp (tamper-evident), có thể truy vấn, nằm ngoài phạm vi vận hành của chính agent.
+- Mọi hành động được ghi log mang nguồn khởi tạo đã khiến agent hành động, dù là một phiên người dùng con người, một sự kiện ngược dòng, một lịch, hay một agent khác, nên các hành động được ghi log thường có thể truy ngược tới thứ đã kích hoạt chúng.
+- Một định danh tương quan duy nhất, độc lập với trace ID của hệ thống truy vết, tồn tại qua các ranh giới bất đồng bộ và kết nối mọi span, log và tạo phẩm quyết định được sinh trong một yêu cầu.
+- Các trường nhạy cảm được che (mask) hoặc lược bỏ (redact) trước khi log tới kho lưu trữ dài hạn, nên tính đầy đủ của các bản ghi hành vi không xung đột với các nghĩa vụ bảo vệ dữ liệu.
+- Các điều tra viên bảo mật có thể tái dựng chuỗi tương tác agent đầy đủ cho các yêu cầu trong quá khứ, mà không phải dựa vào lời tường thuật của chính agent về suy luận của nó.
+
+## Các cấp độ trưởng thành
+
+Các cấp độ này tóm tắt diện mạo của từng giai đoạn trưởng thành đối với khả năng quan sát và chống chối bỏ của agent như một tổng thể.
+
+| Cấp | Tên | Diện mạo |
+| --- | --- | --- |
+| 1 | Khởi đầu (Initial) | Chỉ các đầu ra cuối cùng của agent được ghi lại, thường tới các log ứng dụng dùng chung thông tin xác thực và vòng đời với chính agent. Suy luận trung gian, các lần gọi công cụ và việc quy kết trigger bị mất. Log có thể thay đổi (mutable), dữ liệu nhạy cảm không được che, và không có cách thực tế nào để tái dựng cách agent đi đến một kết luận nhất định. |
+| 2 | Manh nha (Emerging) | [Ghi log lần gọi mô hình Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html) được bật, chuyển các prompt và phản hồi tới một đích duy nhất được chọn dựa trên nhu cầu truy cập và lưu giữ: [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) cho khả năng nhìn thấy vận hành hoặc [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) cho việc lưu giữ. [AWS CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) được bật trên các tài khoản agent. Trace ID được sinh trong từng dịch vụ, nhưng việc tương quan qua các ranh giới bất đồng bộ là cục bộ, và việc bảo vệ dữ liệu nhạy cảm không nhất quán. |
+| 3 | Được định nghĩa (Defined) | Các tạo phẩm quyết định và log CloudTrail được chuyển tới một bucket [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) riêng trong một tài khoản Log Archive tách biệt, căn chỉnh với [AWS Security Reference Architecture](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/welcome.html), với [versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) được bật và các bucket policy từ chối delete và overwrite. [Kiểm chứng tệp log CloudTrail (log file validation)](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html) được bật. [Bảo vệ dữ liệu Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/mask-sensitive-log-data.html) che các mẫu nhạy cảm phổ biến. [AWS Distro for OpenTelemetry](https://aws-otel.github.io/) trang bị cho mã của agent, các correlation ID được lan truyền qua [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html#sqs-message-attributes) và [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events.html), và [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) tạo ra các trace đầu-cuối. |
+| 4 | Chủ động (Proactive) | [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-telemetry.html) ghi lại các phân cấp phiên, trace và span bao gồm suy luận của agent, các lần gọi công cụ và các thao tác bộ nhớ. [AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) liên tục chấm điểm độ đúng đắn, tính hữu ích, độ chính xác lựa chọn công cụ và độ an toàn, với các cảnh báo về trôi dạt điểm. Việc lưu giữ có bằng chứng chống can thiệp đạt được qua các bucket policy từ chối delete và overwrite, MFA delete, và (nơi các yêu cầu tuân thủ đòi hỏi) [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) ở chế độ governance sau khi cân nhắc kỹ các hàm ý vận hành. [Amazon Athena](https://docs.aws.amazon.com/athena/latest/ug/what-is.html) với [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/components-overview.html#data-catalog-intro) làm cho kho tạo phẩm có thể truy vấn, và các truy vấn điều tra tiêu chuẩn được ghi tài liệu. |
+| 5 | Tối ưu (Optimized) | Lưu giữ phân tầng chuyển các tạo phẩm từ [CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SettingLogRetention.html) qua [Amazon S3 Standard](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) tới [Amazon Glacier](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html#sc-glacier) với các chuyển tiếp [S3 Lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) tự động gắn với các thẻ phân loại dữ liệu. [Các khóa AWS KMS do khách hàng quản lý](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) với xoay vòng tự động bảo vệ mọi đích log. Các truy vấn tại thời điểm điều tra trả về câu trả lời trong một cửa sổ điều tra mục tiêu được xác định cho từng khách hàng dựa trên khối lượng dữ liệu và các mục tiêu ứng phó sự cố, phát hiện bất thường chạy trên chỉ mục tạo phẩm, và dữ liệu khả năng quan sát được đưa ngược trở lại vào việc điều chỉnh đánh giá và guardrail. |
+
+## Các vấn đề thường gặp cần lưu ý
+
+- Chỉ các đầu ra cuối cùng được ghi lại, nên những người ứng phó sự cố có thể thấy agent đã làm gì nhưng không thấy tại sao nó làm vậy, đó là câu hỏi đầu tiên được đặt ra trong gần như mọi cuộc điều tra.
+- Các tạo phẩm quyết định dùng chung thông tin xác thực và vòng đời với agent đã sinh ra chúng, nghĩa là một agent bị ảnh hưởng có thể chỉnh sửa hoặc xóa bản ghi của chính nó về những gì đã xảy ra.
+- Ngữ cảnh trace được tái sinh tại mọi ranh giới bất đồng bộ mà không có một định danh tương quan bổ trợ, làm gãy chuỗi đúng nơi các cuộc điều tra cần nó nhất.
+- Bảo vệ dữ liệu nhạy cảm được áp dụng tại thời điểm suy luận nhưng không tại thời điểm ghi log, nên các prompt và phản hồi chứa PII, bí mật hoặc các trường được quản chế kết thúc ở kho lưu trữ dài hạn mà không được che. CloudWatch Logs có các chính sách bảo vệ dữ liệu dựng sẵn che các loại nhạy cảm đã biết tại chỗ. Với các đích S3, việc che phải được áp dụng tại thời điểm ghi trước khi đối tượng đáp xuống bucket, và bất kỳ khắc phục hồi tố nào đều đòi hỏi xử lý lại các đối tượng hiện có. Hãy lập kế hoạch chiến lược che theo từng đích thay vì giả định một kiểm soát bao phủ cả hai.
+- Các tạo phẩm được lưu giữ vô thời hạn mà không có một chỉ mục có thể truy vấn, tạo ra các petabyte đối tượng S3 về mặt kỹ thuật là đầy đủ nhưng thực tế không thể tìm kiếm trong một sự cố nhạy về thời gian.
+
+###### Các thực hành tốt
+
+- [AGENTSEC05-BP01 Triển khai ghi log toàn diện và lưu trữ tạo phẩm quyết định](agentsec05-bp01.md)
+- [AGENTSEC05-BP02 Triển khai truy vết phân tán cho các tương tác của agent](agentsec05-bp02.md)

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luồng truy vấn RAG</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f8fb;--paper2:#f1f1f6;--ink:#2f3038;--muted:#676b7a;--soft:#85899a;--rule:rgba(47,48,56,.12);--accent:#6366f1;--accent-tint:rgba(99,102,241,.10);--link:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{padding:24px;font-family:Geist,system-ui,sans-serif}header{max-width:1120px;margin:0 auto 20px}.eyebrow{margin:0 0 8px;font:500 8px/1 Geist Mono,monospace;letter-spacing:.18em;color:var(--accent)}h1{margin:0;font:400 32px/1.05 Instrument Serif,serif}.subtitle{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.5}figure{margin:0 auto;max-width:1120px;overflow-x:auto}svg{display:block;width:100%;height:auto;min-width:720px}footer{max-width:1120px;margin:16px auto 0;padding-top:12px;border-top:1px solid var(--rule);font:400 8px/1.5 Geist Mono,monospace;color:var(--soft)}
+@media(max-width:700px){body{padding:16px}h1{font-size:28px}}
+@media(prefers-color-scheme:dark){:root{--paper:#18181b;--paper2:#27272a;--ink:#f4f4f5;--muted:#a1a1aa;--soft:#71717a;--rule:rgba(244,244,245,.12);--accent:#818cf8;--accent-tint:rgba(129,140,248,.14);--link:#a5b4fc}}
+</style></head><body><header><p class="eyebrow">DATA FLOW · RUNTIME</p><h1>Luồng truy vấn RAG</h1><p class="subtitle">Retrieval luôn chạy cục bộ; generation chỉ kích hoạt khi Ollama có model khả dụng.</p></header><figure><svg viewBox="0 0 1120 520" role="img" aria-labelledby="rag-flow-title rag-flow-desc">
+<title id="rag-flow-title">Luồng truy vấn RAG tại runtime</title><desc id="rag-flow-desc">Câu hỏi đi từ Chat UI qua vector search tới LanceDB; bốn đoạn liên quan trở về UI và tùy trạng thái Ollama được dùng làm context cho câu trả lời streaming.</desc><defs>
+<marker id="rag-flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#676b7a"/></marker>
+<marker id="rag-flow-accent" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#6366f1"/></marker>
+<marker id="rag-flow-link" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#4f46e5"/></marker>
+<style>.n{font:600 12px Geist,sans-serif;fill:#2f3038}.s{font:400 8px Geist Mono,monospace;fill:#676b7a}.t{font:500 8px Geist Mono,monospace;letter-spacing:.12em;fill:#85899a}.al{font:500 8px Geist Mono,monospace;letter-spacing:.06em;fill:#676b7a}@media(prefers-color-scheme:dark){.n{fill:#f4f4f5}.s,.al{fill:#a1a1aa}.t{fill:#71717a}}</style>
+</defs>
+<rect width="1120" height="520" fill="var(--paper)"/>
+<!-- step guides -->
+<text x="96" y="56" class="t">01 · ASK</text><text x="304" y="56" class="t">02 · EMBED</text><text x="512" y="56" class="t">03 · RETRIEVE</text><text x="720" y="56" class="t">04 · AUGMENT</text><text x="928" y="56" class="t">05 · ANSWER</text>
+<line x1="40" y1="72" x2="1080" y2="72" stroke="var(--rule)"/>
+<!-- arrows -->
+<line x1="208" y1="180" x2="264" y2="180" stroke="#4f46e5" marker-end="url(#rag-flow-link)"/>
+<line x1="424" y1="180" x2="480" y2="180" stroke="#676b7a" marker-end="url(#rag-flow-arrow)"/>
+<line x1="640" y1="180" x2="696" y2="180" stroke="#6366f1" stroke-width="1.2" marker-end="url(#rag-flow-accent)"/>
+<line x1="856" y1="180" x2="912" y2="180" stroke="#676b7a" stroke-dasharray="5 4" marker-end="url(#rag-flow-arrow)"/>
+<path d="M992 232 V328 Q992 336 984 336 H184 Q176 336 176 328 V232" fill="none" stroke="#676b7a" stroke-dasharray="5 4" marker-end="url(#rag-flow-arrow)"/>
+<rect x="652" y="156" width="32" height="12" fill="var(--paper)"/><text x="668" y="164" text-anchor="middle" class="al">TOP 4</text>
+<rect x="880" y="156" width="48" height="12" fill="var(--paper)"/><text x="904" y="164" text-anchor="middle" class="al">IF ONLINE</text>
+<rect x="536" y="348" width="64" height="12" fill="var(--paper)"/><text x="568" y="356" text-anchor="middle" class="al">STREAM / LIST</text>
+<!-- nodes -->
+<rect x="48" y="128" width="160" height="104" rx="8" fill="var(--accent-tint)" stroke="#6366f1"/><text x="128" y="176" text-anchor="middle" class="n">Chat UI</text><text x="128" y="200" text-anchor="middle" class="s">query · source links</text>
+<rect x="264" y="128" width="160" height="104" rx="8" fill="#fff" stroke="#2f3038"/><text x="344" y="176" text-anchor="middle" class="n">Search API</text><text x="344" y="200" text-anchor="middle" class="s">/api/search?q=…</text>
+<rect x="480" y="128" width="160" height="104" rx="8" fill="#fff" stroke="#2f3038"/><text x="560" y="168" text-anchor="middle" class="n">Embedding</text><text x="560" y="192" text-anchor="middle" class="s">all-MiniLM-L6-v2</text><text x="560" y="208" text-anchor="middle" class="s">mean · normalize</text>
+<rect x="696" y="128" width="160" height="104" rx="8" fill="rgba(47,48,56,.05)" stroke="#676b7a"/><text x="776" y="176" text-anchor="middle" class="n">LanceDB</text><text x="776" y="200" text-anchor="middle" class="s">wiki_chunks · limit 4</text>
+<rect x="912" y="128" width="160" height="104" rx="8" fill="rgba(47,48,56,.03)" stroke="rgba(47,48,56,.30)"/><text x="992" y="176" text-anchor="middle" class="n">Ollama</text><text x="992" y="200" text-anchor="middle" class="s">/api/generate · stream</text>
+<rect x="48" y="392" width="488" height="56" rx="8" fill="rgba(103,107,122,.08)" stroke="rgba(103,107,122,.30)"/><text x="72" y="416" class="t">OFFLINE FALLBACK</text><text x="72" y="436" class="s">Không có Ollama → UI hiển thị trực tiếp 4 đoạn liên quan cùng nguồn.</text>
+<rect x="584" y="392" width="488" height="56" rx="8" fill="rgba(99,102,241,.06)" stroke="rgba(99,102,241,.30)"/><text x="608" y="416" class="t">ONLINE MODE</text><text x="608" y="436" class="s">Có Ollama → ghép context, sinh và stream câu trả lời về UI.</text>
+</svg></figure><footer>LOCAL WIKI · ARCHITECTURE DOCUMENTATION · STATIC DIAGRAM</footer></body></html>

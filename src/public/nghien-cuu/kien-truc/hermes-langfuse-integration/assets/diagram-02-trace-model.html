@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mô hình dữ liệu Trace</title>
+<style>
+  :root{--fg:#e5e7eb;--mut:#9ca3af;--acc:#60a5fa;--acc2:#34d399;--acc3:#f59e0b;--acc4:#c084fc;--bd:#334155;--card:#1e293b;--bg:#0f172a;}
+  *{box-sizing:border-box}
+  body{margin:0;padding:18px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg)}
+  h1{font-size:15px;margin:0 0 14px;font-weight:600}
+  .tree{max-width:720px}
+  .lvl{position:relative;padding-left:22px}
+  .lvl::before{content:"";position:absolute;left:8px;top:0;bottom:14px;border-left:1px dashed var(--bd)}
+  .node{border:1px solid var(--bd);border-radius:9px;padding:9px 12px;margin:8px 0;background:var(--card);font-size:12.5px;line-height:1.45;position:relative}
+  .node::before{content:"";position:absolute;left:-14px;top:18px;width:12px;border-top:1px dashed var(--bd)}
+  .root{border-left:3px solid var(--acc)}
+  .root::before{display:none}
+  .trace{border-left:3px solid var(--acc2)}
+  .gen{border-left:3px solid var(--acc3)}
+  .tool{border-left:3px solid var(--acc4)}
+  .node b{color:var(--fg)}
+  .node small{display:block;color:var(--mut);font-size:11px;margin-top:3px}
+  code{background:rgba(255,255,255,.06);padding:1px 5px;border-radius:4px;font-size:11px}
+</style>
+</head>
+<body>
+  <h1>Ánh xạ vòng đời Hermes vào cây trace Langfuse</h1>
+  <div class="tree">
+    <div class="node root"><b>Langfuse Session</b> = Hermes <code>session_id</code><small>Gom mọi turn của một phiên <code>hermes chat</code></small></div>
+    <div class="lvl">
+      <div class="node trace"><b>Trace: "Hermes turn"</b> = 1 turn (<code>turn_id</code>)<small>Nhãn: platform · trigger:cron|interactive · metadata.profile · (kanban_task_id)</small></div>
+      <div class="lvl">
+        <div class="node gen"><b>generation</b> — API call #1<small>input messages · usage_details · cost_details · finish_reason</small></div>
+        <div class="node gen"><b>generation</b> — API call #2<small>khi có retry / vòng lặp tool</small></div>
+        <div class="node tool"><b>observation: tool</b> (pre/post_tool_call)<small>args + result (sanitized) · duration_ms · status</small></div>
+        <div class="node tool"><b>observation: subagent</b> (subagent_start/stop)<small>child_role · child_summary · parent/child session link</small></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

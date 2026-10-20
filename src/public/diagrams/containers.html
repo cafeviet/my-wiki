@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Container & runtime boundaries</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f8fb;--paper2:#f1f1f6;--ink:#2f3038;--muted:#676b7a;--soft:#85899a;--rule:rgba(47,48,56,.12);--accent:#6366f1;--accent-tint:rgba(99,102,241,.10);--link:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{padding:24px;font-family:Geist,system-ui,sans-serif}header{max-width:1120px;margin:0 auto 20px}.eyebrow{margin:0 0 8px;font:500 8px/1 Geist Mono,monospace;letter-spacing:.18em;color:var(--accent)}h1{margin:0;font:400 32px/1.05 Instrument Serif,serif}.subtitle{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.5}figure{margin:0 auto;max-width:1120px;overflow-x:auto}svg{display:block;width:100%;height:auto;min-width:720px}footer{max-width:1120px;margin:16px auto 0;padding-top:12px;border-top:1px solid var(--rule);font:400 8px/1.5 Geist Mono,monospace;color:var(--soft)}
+@media(max-width:700px){body{padding:16px}h1{font-size:28px}}
+@media(prefers-color-scheme:dark){:root{--paper:#18181b;--paper2:#27272a;--ink:#f4f4f5;--muted:#a1a1aa;--soft:#71717a;--rule:rgba(244,244,245,.12);--accent:#818cf8;--accent-tint:rgba(129,140,248,.14);--link:#a5b4fc}}
+</style></head><body><header><p class="eyebrow">C4 · LEVEL 2</p><h1>Container & runtime boundaries</h1><p class="subtitle">Hai luồng độc lập: runtime search trong dev server và indexing CLI chạy theo yêu cầu.</p></header><figure><svg viewBox="0 0 1120 600" role="img" aria-labelledby="containers-title containers-desc">
+<title id="containers-title">Các container của Local Wiki</title><desc id="containers-desc">Trình duyệt dùng VitePress UI; Vite dev middleware phục vụ vector search; CLI indexing đọc Markdown và ghi LanceDB; UI gọi Ollama trực tiếp khi có.</desc><defs>
+<marker id="containers-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#676b7a"/></marker>
+<marker id="containers-accent" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#6366f1"/></marker>
+<marker id="containers-link" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#4f46e5"/></marker>
+<style>.n{font:600 12px Geist,sans-serif;fill:#2f3038}.s{font:400 8px Geist Mono,monospace;fill:#676b7a}.t{font:500 8px Geist Mono,monospace;letter-spacing:.12em;fill:#85899a}.al{font:500 8px Geist Mono,monospace;letter-spacing:.06em;fill:#676b7a}@media(prefers-color-scheme:dark){.n{fill:#f4f4f5}.s,.al{fill:#a1a1aa}.t{fill:#71717a}}</style>
+</defs>
+<rect width="1120" height="600" fill="var(--paper)"/>
+<rect x="208" y="64" width="696" height="416" rx="8" fill="rgba(99,102,241,.025)" stroke="rgba(99,102,241,.30)" stroke-dasharray="4 4"/>
+<rect x="228" y="56" width="176" height="20" rx="4" fill="var(--paper)"/><text x="316" y="70" text-anchor="middle" class="t">LOCAL WIKI REPOSITORY</text>
+<!-- arrows -->
+<line x1="176" y1="184" x2="256" y2="184" stroke="#4f46e5" stroke-width="1.2" marker-end="url(#containers-link)"/>
+<line x1="448" y1="184" x2="520" y2="184" stroke="#4f46e5" marker-end="url(#containers-link)"/>
+<path d="M616 232 V320" stroke="#676b7a" fill="none" marker-end="url(#containers-arrow)"/>
+<path d="M352 344 H472 Q480 344 480 352 V384 Q480 392 488 392 H520" stroke="#676b7a" fill="none" marker-end="url(#containers-arrow)"/>
+<path d="M352 344 V296 Q352 288 360 288 H760 Q768 288 768 320" stroke="#676b7a" fill="none" marker-end="url(#containers-arrow)"/>
+<path d="M448 208 H936 Q944 208 944 216 V232" stroke="#676b7a" stroke-dasharray="5 4" fill="none" marker-end="url(#containers-arrow)"/>
+<!-- labels -->
+<rect x="460" y="160" width="48" height="12" fill="var(--paper)"/><text x="484" y="168" text-anchor="middle" class="al">HTTP</text>
+<rect x="588" y="264" width="56" height="12" fill="var(--paper)"/><text x="616" y="272" text-anchor="middle" class="al">SEARCH</text>
+<rect x="388" y="320" width="56" height="12" fill="var(--paper)"/><text x="416" y="328" text-anchor="middle" class="al">WRITE</text>
+<rect x="916" y="184" width="56" height="12" fill="var(--paper)"/><text x="944" y="192" text-anchor="middle" class="al">DIRECT</text>
+<!-- nodes -->
+<rect x="48" y="136" width="128" height="96" rx="8" fill="rgba(103,107,122,.10)" stroke="#85899a"/><text x="112" y="180" text-anchor="middle" class="n">Trình duyệt</text><text x="112" y="200" text-anchor="middle" class="s">người dùng</text>
+<rect x="256" y="128" width="192" height="112" rx="8" fill="var(--accent-tint)" stroke="#6366f1" stroke-width="1.2"/><text x="352" y="176" text-anchor="middle" class="n">VitePress Web UI</text><text x="352" y="200" text-anchor="middle" class="s">Vue 3 · docs · chat</text>
+<rect x="520" y="128" width="192" height="112" rx="8" fill="#fff" stroke="#2f3038"/><text x="616" y="176" text-anchor="middle" class="n">Vite Middleware</text><text x="616" y="200" text-anchor="middle" class="s">GET /api/search</text>
+<rect x="256" y="320" width="192" height="112" rx="8" fill="#fff" stroke="#2f3038"/><text x="352" y="368" text-anchor="middle" class="n">Indexing CLI</text><text x="352" y="392" text-anchor="middle" class="s">npm run index</text>
+<rect x="520" y="320" width="192" height="112" rx="8" fill="rgba(47,48,56,.05)" stroke="#676b7a"/><text x="616" y="368" text-anchor="middle" class="n">LanceDB</text><text x="616" y="392" text-anchor="middle" class="s">data/wiki-vector-db</text>
+<rect x="736" y="320" width="144" height="112" rx="8" fill="rgba(47,48,56,.03)" stroke="rgba(47,48,56,.30)"/><text x="808" y="368" text-anchor="middle" class="n">Markdown</text><text x="808" y="392" text-anchor="middle" class="s">src/**/*.md</text>
+<rect x="936" y="232" width="144" height="112" rx="8" fill="rgba(47,48,56,.03)" stroke="rgba(47,48,56,.30)"/><text x="1008" y="280" text-anchor="middle" class="n">Ollama</text><text x="1008" y="304" text-anchor="middle" class="s">localhost:11434</text>
+<line x1="40" y1="520" x2="1080" y2="520" stroke="var(--rule)"/><text x="48" y="548" class="t">RUNTIME NOTE</text><text x="176" y="548" class="s">/api/search thuộc Vite dev middleware; static build không tự cung cấp endpoint này.</text>
+</svg></figure><footer>LOCAL WIKI · ARCHITECTURE DOCUMENTATION · STATIC DIAGRAM</footer></body></html>

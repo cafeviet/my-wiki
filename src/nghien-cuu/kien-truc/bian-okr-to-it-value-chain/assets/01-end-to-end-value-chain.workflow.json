@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Chuỗi giá trị BIAN: từ OKR nghiệp vụ đến đo lường KR",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "01-chuoi-gia-tri-dau-cuoi.html",
+    "views": [
+      {
+        "id": "forward",
+        "label": "Chiều thuận",
+        "focus": ["objective", "biz_change", "impact", "it_demand", "release"],
+        "note": "Mục tiêu nghiệp vụ đi qua đánh giá tác động kiến trúc rồi thành nhu cầu và bản phát hành CNTT."
+      },
+      {
+        "id": "closed-loop",
+        "label": "Vòng đóng",
+        "focus": ["release", "outcome", "measure_kr", "corrective", "biz_change"],
+        "note": "Bản phát hành chỉ kết thúc vòng lặp khi nghiệp vụ đo được kết quả và đóng vòng về Business Unit Management / Direction."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "business", "label": "Business Direction & Execution — Định hướng & thực thi nghiệp vụ" },
+    { "id": "arch", "label": "Enterprise Architecture — Kiến trúc doanh nghiệp" },
+    { "id": "it", "label": "IT Demand & Delivery — Nhu cầu & triển khai CNTT" },
+    { "id": "measure", "label": "Business Outcome — Đo lường kết quả nghiệp vụ", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "why", "label": "Vì sao thay đổi?", "fromCol": 0, "toCol": 0 },
+    { "id": "what", "label": "Cái gì phải thay đổi?", "fromCol": 1, "toCol": 1, "variant": "emphasis" },
+    { "id": "how", "label": "Triển khai & đo lường", "fromCol": 2, "toCol": 4, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "biz_group", "label": "Business Unit Direction + Business Unit Management", "lane": "business", "fromCol": 0, "toCol": 0, "variant": "emphasis" },
+    { "id": "it_group", "label": "IT Systems Direction + System Development", "lane": "it", "fromCol": 2, "toCol": 4, "variant": "emphasis" },
+    { "id": "loop_group", "label": "Vòng đóng — Business Unit Management / Direction sở hữu Measure KR", "lane": "measure", "fromCol": 2, "toCol": 4, "variant": "security" }
+  ],
+  "mainPath": ["objective", "biz_change", "impact", "target_state", "it_demand", "it_initiative", "release"],
+  "nodes": [
+    { "id": "objective", "lane": "business", "col": 0, "type": "backend", "label": "Objective + KR", "sublabel": "BU Direction", "tag": "unit strategy", "width": 148 },
+    { "id": "biz_change", "lane": "business", "col": 1, "type": "backend", "label": "Business Change", "sublabel": "Initiative + Owner", "width": 148 },
+    { "id": "corrective", "lane": "business", "col": 2, "type": "security", "label": "Corrective Action", "sublabel": "KR lệch mục tiêu", "width": 148 },
+    { "id": "impact", "lane": "arch", "col": 1, "type": "security", "label": "Impact Assessment", "sublabel": "Capability/Process/Data", "width": 148 },
+    { "id": "target_state", "lane": "arch", "col": 2, "type": "security", "label": "Target State", "sublabel": "Gap + IT Impact", "width": 148 },
+    { "id": "it_demand", "lane": "it", "col": 2, "type": "cloud", "label": "IT Demand", "sublabel": "assess + prioritize", "tag": "IT Systems Direction", "width": 148 },
+    { "id": "it_initiative", "lane": "it", "col": 3, "type": "cloud", "label": "IT Initiative", "sublabel": "portfolio + roadmap", "width": 148 },
+    { "id": "release", "lane": "it", "col": 4, "type": "cloud", "label": "Release", "sublabel": "build → test → ship", "tag": "System Development", "width": 148 },
+    { "id": "outcome", "lane": "measure", "col": 4, "type": "messagebus", "label": "Business Outcome", "sublabel": "Adoption · Actual vs Target", "width": 148 },
+    { "id": "measure_kr", "lane": "measure", "col": 3, "type": "security", "label": "Measure KR", "sublabel": "đóng vòng nghiệp vụ", "tag": "BU Mgmt / Direction", "width": 148 }
+  ],
+  "edges": [
+    { "id": "objective-change", "from": "objective", "to": "biz_change", "label": "không phải IT Requirement", "variant": "emphasis" },
+    { "id": "change-impact", "from": "biz_change", "to": "impact", "label": "đánh giá tác động", "variant": "emphasis" },
+    { "id": "impact-target", "from": "impact", "to": "target_state" },
+    { "id": "target-demand", "from": "target_state", "to": "it_demand", "label": "IT Impact", "variant": "emphasis" },
+    { "id": "demand-initiative", "from": "it_demand", "to": "it_initiative", "label": "cam kết" },
+    { "id": "initiative-release", "from": "it_initiative", "to": "release", "label": "giao phẩm" },
+    { "id": "release-outcome", "from": "release", "to": "outcome", "label": "chuyển giao + đưa vào dùng", "variant": "emphasis" },
+    { "id": "outcome-measure", "from": "outcome", "to": "measure_kr", "label": "đo thực tế" },
+    { "id": "measure-corrective", "from": "measure_kr", "to": "corrective", "label": "KR không đạt", "variant": "security", "role": "return" },
+    { "id": "corrective-change", "from": "corrective", "to": "biz_change", "variant": "dashed", "role": "branch" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Ba nhóm logic", "items": ["Business Direction & Execution — hai BIAN Service Domain", "Enterprise Architecture — lớp tác động độc lập", "IT Demand & Delivery — định hướng và triển khai"] },
+    { "dot": "emerald", "title": "Vòng đóng bắt buộc", "items": ["Release KHÔNG phải điểm kết thúc", "Business Outcome → Measure KR → Business Unit Management / Direction", "Không đạt thì mở Corrective Action hoặc Initiative mới"] },
+    { "dot": "rose", "title": "Ranh giới trách nhiệm", "items": ["Nghiệp vụ sở hữu kết quả", "Kiến trúc sở hữu tác động và trạng thái mục tiêu", "CNTT sở hữu cam kết và triển khai"] }
+  ]
+}

@@ -2,7 +2,7 @@
 
 **Từ bản chất tác nhân AI đến khung quản trị tập trung và kiến trúc mục tiêu**
 
-**Phiên bản:** 1.3 (Thiết kế lại Mục 9–12) · **Ngày cập nhật:** 30/09/2026 · **Trạng thái:** Kiến trúc tham chiếu đề xuất; đã đối chiếu I3 do người dùng cung cấp, cần xác nhận hiện trạng công nghệ, nguồn I1–I2 và hợp đồng triển khai tại MB
+**Phiên bản:** 1.3 (Thiết kế lại Mục 9–12) · **Ngày cập nhật:** 30/09/2026 ·
 
 > **Tuyên ngôn Kiến trúc Cốt lõi (Architectural Tenets):**
 > 1. *"Tập trung hóa khung quản trị (Centralized Governance) — Phi tập trung hóa năng lực thực thi (Decentralized Execution)."*
@@ -22,41 +22,14 @@ Khi trí tuệ nhân tạo chuyển từ **trả lời thông tin** (Information
 Nghiên cứu này đề xuất mô hình **Môi trường Quản trị Agent Doanh nghiệp (Enterprise Agent Governance Environment)** gồm 5 cấu phần chính:
 
 1. **Mặt phẳng quản trị (Control Plane):** Quản lý danh mục và chủ sở hữu Agent (Ownership), phân hạng mức rủi ro và cấp tự chủ, quản trị vòng đời, chính sách bảo mật, phê duyệt thay đổi và cấu hình kiểm soát tập trung.
-2. **Các điểm thực thi chính sách (Policy Enforcement Points - PEP):** Cơ chế kiểm soát độc lập tại cổng vào (Ingress), cổng mô hình (Model Gateway), cổng tương tác giữa các Agent (Agent-to-Agent / A2A Gateway), cổng công cụ (Tool / MCP Gateway) và cổng ra hệ thống nghiệp vụ (Egress).
-3. **Môi trường thực thi (Execution Plane):** Bao gồm Agent và **Harness (Bộ khung điều phối thực thi tác nhân)**, quản lý phiên làm việc, trạng thái, bộ nhớ ngữ cảnh, cơ chế lưu vết (checkpoint), tiếp tục tác vụ và vùng cách ly an toàn (Sandbox).
+2. **AgentGateway - Các điểm thực thi chính sách (Policy Enforcement Points - PEP):** Cơ chế kiểm soát độc lập tại cổng vào (Ingress), cổng mô hình (Model Gateway), cổng tương tác giữa các Agent (Agent-to-Agent / A2A Gateway), cổng công cụ (Tool / MCP Gateway) và cổng ra hệ thống nghiệp vụ (Egress).
+3. **Môi trường thực thi (Execution Plane):** Là môi trường agent runtime, quản lý phiên làm việc, trạng thái, bộ nhớ ngữ cảnh, cơ chế lưu vết (checkpoint), tiếp tục tác vụ và vùng cách ly an toàn (Sandbox).
 4. **Năng lực bảo đảm xuyên suốt (Assurance & Observability):** Khung đánh giá tự động (Evals), kiểm chứng dữ liệu đầu vào và kết quả đầu ra, cơ chế con người can thiệp theo rủi ro (Human-in-the-loop), giám sát phân tán, nhật ký kiểm toán bất biến và quản lý kinh tế học AI (FinOps cho AI).
 5. **Nền tảng doanh nghiệp hiện hữu (Enterprise Foundations):** Quản lý định danh và truy cập (IAM), quản lý API (APIM), kho dữ liệu nguồn, quản lý khóa/bí mật (Secrets Manager) và hệ thống mạng. Các năng lực này được mở rộng ngữ nghĩa cho Agent, không loại bỏ hay xây dựng lại từ đầu.
 
-```text
-                 CONTROL PLANE: Registry • Owner • Policy Admin • PDP
-                    │ phiên bản chính sách      │ bằng chứng kiểm toán ▲
-                    ▼                         ▼                     │
-User / App / Trigger → Ingress PEP → Agent + Harness (Runtime/Sandbox)
-                           │               ├→ Model PEP → LLM
-        Delegated user      │               ├→ A2A PEP → Agent con
-        hoặc service ID     │               └→ Tool PEP ↔ PDP → Egress/API PEP
-                           │                                  │
-                           └── ngữ cảnh tác vụ ────────────────┼→ Core / LOS / CRM
-                                                              kiểm quyền + bất biến
-                                                              nghiệp vụ tại đích
-```
-
-*Luồng giao dịch* đi qua Harness và Tool PEP trước khi đến hệ thống đích; *luồng quản trị* phân phối chính sách, nhận trace/bằng chứng và không thay hệ thống đích quyết định giao dịch. Với thao tác ghi, chặn đường gọi API trực tiếp ngoài PEP bằng kiểm soát định danh và mạng; khi chính sách hoặc thuộc tính bắt buộc không khả dụng, mặc định từ chối ghi và chuyển xử lý thủ công. Token Exchange chỉ áp dụng khi có người dùng ủy nhiệm; tác vụ theo lịch/sự kiện dùng định danh dịch vụ được cấp quyền riêng. SPIFFE/mTLS xác thực workload, không tự cấp quyền nghiệp vụ.
-
-### Phạm vi kiểm chứng và quy ước tài liệu
-
-| Ký hiệu | Nguồn trích dẫn | Vai trò trong nghiên cứu | Giới hạn & Phạm vi |
-|---|---|---|---|
-| **I1** | *enterprise_ai_agent_governance_full_report.md* | Khung khái niệm, tính chất Agent, 5 nhóm vấn đề, 6 trụ cột, 9 nguyên tắc và 7 năng lực cốt lõi | Bản nghiên cứu/đề xuất kiến trúc |
-| **I2** | *agentic_ai_banking_finance_usecases_research_v2_detailed.md* | Diễn giải chuỗi nghiệp vụ tài chính, kịch bản lỗi ngân hàng bán lẻ và tín dụng | Phân biệt rõ kịch bản thực tế và kịch bản mô phỏng |
-| **I3** | *agent_platform_0.9 2 1-2.docx* (tệp người dùng cung cấp, không lưu trong repo) | Khảo sát nhu cầu, kiến trúc đề xuất và định hướng ưu tiên tại MB | Tư liệu định hướng nội bộ 07/2026; không xác nhận hiện trạng production |
-| **C1–C21** | Hồ sơ công khai: JPMorganChase, AWS FSI/Agentic AI Lens/AgentCore, Starling Bank, Google Cloud, Anthropic, RFC 8693, NIST SP 800-207 | Đối chiếu ví dụ triển khai, mẫu tham chiếu và định nghĩa tiêu chuẩn đúng theo từng URL | Không suy diễn kiến trúc nội bộ; không coi sản phẩm AWS là yêu cầu mua sắm |
-
-**Trạng thái chứng cứ:** I3 đã được đọc từ tệp đính kèm do người dùng cung cấp; tệp không nằm trong thư mục nghiên cứu. I1–I2 chỉ được liệt kê, chưa có tệp gốc tại đây để đối chiếu. Các nhận định riêng về MB cần chủ sở hữu xác nhận; hiện trạng nền tảng (Keycloak, Vault, Jenkins, K8s, Kafka, Elasticsearch/Kibana, Vector store, danh mục API trên MBL) lấy từ **khảo sát thực tế tại đơn vị** (Mục 9.1), dùng làm đầu vào thiết kế; phiên bản, phạm vi bao phủ và mức sẵn sàng production cần chủ hệ thống xác nhận lại. Các ngưỡng, mức quyền và giải pháp kỹ thuật trong bài là đề xuất cần kiểm chứng thực địa.
-
 ---
 
-## 2. Bối cảnh: Từ Luồng Tiền định đến Phần mềm Tự chọn Bước đi
+## 2. Bối cảnh:
 
 Trong các ứng dụng ngân hàng truyền thống, kỹ sư phần mềm định nghĩa trước luồng nghiệp vụ và điều kiện gọi API. Trợ lý AI (AI Assistant) thường cộng tác trực tiếp với con người; một quy trình có AI (AI Workflow) thường định trước các chốt xử lý; tác nhân AI (Agent) có thể nhận **mục tiêu (Goal)**, phân tích ngữ cảnh, lựa chọn công cụ và quyết định bước tiếp theo trong giới hạn được cấp. Đây là **các kiểu thiết kế**, không phải bốn cấp quyền cố định: một Assistant vẫn có thể gọi công cụ, còn Agent có thể chỉ được quyền đọc hoặc đề xuất.
 
@@ -89,30 +62,9 @@ Quản trị Agent không xuất phát từ định kiến rằng mô hình luô
 | **4. Hiệu năng đầu cuối (End-to-End Performance)** | Hành trình có đáp ứng thời gian thực thi nghiệp vụ (SLA)? | Vòng lặp suy luận ReAct và chuyển giao qua lại giữa các Agent làm tắc nghẽn giao dịch trực tiếp | Thời gian đáp ứng đầu cuối (E2E Latency P95/P99); tỷ lệ đáp ứng cam kết thời gian |
 | **5. Tối ưu Chi phí & FinOps (Cost Optimization & FinOps)** | Chi phí tiêu tốn cho một kết quả thành công có hợp lý? | Lạm dụng cụm Multi-Agent và mô hình đắt tiền cho bài toán quy tắc nghiệp vụ đơn giản | Chi phí trên mỗi hồ sơ/giao dịch hợp lệ (Cost per Valid Outcome); ROI so với luồng truyền thống |
 
-**Cảnh báo Anti-Pattern (Agent Washing):** Báo cáo của AWS trong lĩnh vực tài chính [C2] nhấn mạnh việc lạm dụng nhãn dán "Agentic AI": đưa vào các bộ điều phối đa tác tử phức tạp cho các tác vụ mang tính chất tuần tự đơn giản, gây bùng nổ độ trễ, tiêu tốn token vô ích và tăng nguy cơ lỗi tích lũy.
-
-::: warning Cảnh báo Kiến trúc: Rủi ro "Nợ nhận thức" (Cognitive Debt)
-Bên cạnh 5 dạng thất bại vận hành trên, báo cáo Gartner (09/2026) [I4, C22] cảnh báo một loại rủi ro hệ thống nguy hiểm hơn cả nợ kỹ thuật: **Nợ nhận thức (Cognitive Debt)** — sự xói mòn tích lũy về hiểu biết chung, óc phán đoán và năng lực giải quyết vấn đề của đội ngũ kỹ sư và chuyên viên ngân hàng khi hệ thống do AI tự động sinh ra ngày càng nhiều mà con người không theo kịp. Chi tiết phân tích và cơ chế kiểm soát bằng hệ thống **MB Landscape (MBL)** được trình bày tại [Mục 8.2 — Điểm mù Kiến trúc Chiến lược: Nợ Nhận Thức và Sứ mệnh Hệ thống MB Landscape](#82-diem-mu-kien-truc-chien-luoc-no-nhan-thuc-cognitive-debt-va-su-menh-he-thong-mb-landscape-mbl).
-:::
-
 ---
 
 ## 4. Phân tích Ba Tình huống Thực chiến & Ranh giới Bảo vệ
-
-```
-  ┌───────────────────────┐   ┌───────────────────────┐   ┌───────────────────────┐
-  │     TÌNH HUỐNG A      │   │     TÌNH HUỐNG B      │   │     TÌNH HUỐNG C      │
-  │   Ngân hàng Bán lẻ    │   │  Xử lý Hồ sơ Tín dụng │   │ Workstation Dev Agent │
-  ├───────────────────────┤   ├───────────────────────┤   ├───────────────────────┤
-  │ Tài sản cần bảo vệ:   │   │ Tài sản cần bảo vệ:   │   │ Tài sản cần bảo vệ:   │
-  │   TIỀN & TÀI KHOẢN    │   │  QUYẾT ĐỊNH RỦI RO    │   │  MÃ NGUỒN & BÍ MẬT    │
-  ├───────────────────────┤   ├───────────────────────┤   ├───────────────────────┤
-  │ Kiểm soát trọng tâm:  │   │ Kiểm soát trọng tâm:  │   │ Kiểm soát trọng tâm:  │
-  │ • Idempotency Key     │   │ • Rule Engine cứng    │   │ • Process Sandbox     │
-  │ • Contextual Consent  │   │ • Chỉ có quyền đề xuất│   │ • Egress Allowlist    │
-  │ • Step-up Auth        │   │ • Golden Test Suite   │   │ • Ephemeral Secrets   │
-  └───────────────────────┘   └───────────────────────┘   └───────────────────────┘
-```
 
 ### 4.1. Tình huống A: Agent Ngân hàng Bán lẻ Giao tiếp & Chuẩn bị Hành động
 
@@ -149,11 +101,11 @@ Càng ở các hành trình có tác động tài chính hoặc pháp lý không
 
 ---
 
-## 5. Ranh giới Khái niệm và Năm Đặc trưng Kiến trúc của Tác nhân AI
+## 5. Khái niệm và Năm Đặc trưng Kiến trúc của Tác nhân AI
 
-### 5.1. Ranh giới Khái niệm
+### 5.1. Khái niệm
 
-Bảng sau là **diễn giải kiến trúc của tác giả** cho bối cảnh ngân hàng, không phải các câu “nguyên văn” ghép từ nhiều nhà cung cấp. Mỗi nguồn chỉ được viện dẫn trong đúng phạm vi của trang đích: Google [C5] cho Harness, AWS [C7] cho bộ nhớ và [C8] cho định danh/quyền, RFC 8693 [C9] cho Token Exchange, NIST SP 800-207 [C10] cho kiến trúc Zero Trust. Các định nghĩa còn lại là quy ước thiết kế trong nghiên cứu này, không phải định nghĩa được các URL trên xác nhận.
+Bảng sau là **các khái niệm kiến trúc** cho bối cảnh ngân hàng
 
 | Thuật ngữ | Quy ước sử dụng trong tài liệu | Ranh giới cần giữ |
 |---|---|---|
@@ -167,20 +119,10 @@ Bảng sau là **diễn giải kiến trúc của tác giả** cho bối cảnh 
 | **Enterprise Control Plane (Mặt phẳng quản trị)** | Trong **kiến trúc đề xuất**: danh mục, owner, phân hạng rủi ro, phiên bản chính sách và phân phối cấu hình. | Không chạy mọi Agent và không sở hữu toàn bộ quyết định giao dịch; PAP/PDP, IdP và hệ thống đích có trách nhiệm khác nhau. |
 | **PDP / PEP (Bộ quyết định / Điểm thực thi chính sách)** | PDP đánh giá chính sách với thuộc tính hiện thời; PEP chặn, cho phép hoặc từ chối lời gọi theo quyết định, theo phân tách trong Zero Trust [C10]. | Model PEP kiểm soát gọi mô hình, không thay Tool PEP hay kiểm tra quyền/bất biến nghiệp vụ ở Core/LOS. PEP phải nằm trên đường bắt buộc, chống đi vòng. |
 
-**Hai đường cấp quyền:** (1) *Delegated*: người dùng khởi tạo, dịch vụ cấp token theo audience/scope/thời hạn và có thể biểu đạt actor `act` theo RFC 8693 [C9]; đây không phải bằng chứng người dùng đã phê duyệt một giao dịch cụ thể. (2) *Service-initiated*: lịch/sự kiện khởi tạo, Agent dùng workload identity và quyền dịch vụ được cấp cho mục đích hẹp, không gán giả `sub` là người dùng. Với cả hai, Tool PEP kiểm tra chính sách ở thời điểm gọi và hệ thống đích tự kiểm tra quyền trên tài nguyên cùng bất biến nghiệp vụ; hành động tài chính còn phải gắn phê duyệt với payload cụ thể.
-
 ### 5.2. Năm Đặc trưng Kiến trúc Khác biệt của Hệ thống Agent và Hệ quả Thiết kế
 
 Năm đặc tính sau **được kết hợp hoặc khuếch đại trong một số hệ thống Agent**, không phải năm phát minh hoàn toàn mới hay thuộc tính bắt buộc của mọi Agent. Chúng tương tác theo quan hệ **nhiều-nhiều** với các dạng thất bại ở Mục 3: một vòng lặp có thể đồng thời tăng độ trễ, chi phí và rủi ro gọi công cụ; một lỗi bộ nhớ có thể dẫn tới sai nghiệp vụ, rò rỉ dữ liệu và mất bằng chứng.
 
-```text
-ĐẶC TÍNH                           RỦI RO CÓ THỂ KHUẾCH ĐẠI (không ánh xạ 1–1)
-Vòng lặp suy luận              →   độ trễ • chi phí • sai thao tác
-Gọi công cụ theo ngữ cảnh      →   vượt quyền • sai nghiệp vụ • mất bằng chứng
-Hành vi mô hình bất định       →   sai kết quả • trôi hành vi • biến động chi phí
-Trạng thái/bộ nhớ nếu sử dụng  →   rò rỉ dữ liệu • nhiễm bẩn • khôi phục sai quyền
-Đa Agent nếu triển khai       →   lỗi lan truyền • vượt quyền • chi phí phối hợp
-```
 
 | Đặc trưng Kiến trúc (tổng hợp của nghiên cứu) | Bản chất Kỹ thuật Khác biệt | Rủi ro trong Môi trường Ngân hàng | Ràng buộc Thiết kế Kiến trúc (Design Constraints) |
 |---|---|---|---|
@@ -276,25 +218,6 @@ Tư duy Harness tổ chức các năng lực bao bọc quanh tác nhân AI thàn
 Ma trận này không tuyên bố Harness tự xử lý mọi rủi ro: một đặc tính có thể gây nhiều dạng thất bại, và một chốt độc lập có thể bảo vệ nhiều đặc tính.
 ---
 
-### 6.3. Phân vai Framework — Harness/Runtime — Enterprise Governance — Hệ thống đích
-
-| Lớp | Chịu trách nhiệm chính | Không được coi là |
-|---|---|---|
-| **Orchestration Framework** | SDK/logic xây dựng luồng Agent, công cụ và trạng thái ứng dụng. | Cơ quan cấp quyền hoặc bằng chứng phê duyệt nghiệp vụ. |
-| **Harness/Runtime** | Chạy tác vụ, quản lý ngữ cảnh, timeout, checkpoint, sandbox và tương tác tool. | Ranh giới tin cậy độc lập nếu chạy trong tiến trình do Agent/client kiểm soát. |
-| **Enterprise Control Plane & PEP/PDP** | Registry/owner, phân phối chính sách, quyết định và cưỡng chế truy cập ở các đường bắt buộc, ghi audit. | Nơi nắm *toàn bộ* thẩm quyền hoặc thực hiện giao dịch thay Core/LOS. |
-| **Hệ thống đích (Core/LOS/Payment Hub)** | Kiểm tra quyền trên tài nguyên, bất biến nghiệp vụ, phê duyệt và commit/đối soát giao dịch. | Thành phần có thể tin mù quáng vào dữ liệu do mô hình hoặc Harness gửi tới. |
-
->Một sản phẩm có thể gộp nhiều vai trò triển khai; bảng trên là **phân tách trách nhiệm và trust boundary**, không phải yêu cầu mua bốn sản phẩm. Client-side Harness chỉ phục vụ trải nghiệm và không giữ production secret, không tự cưỡng chế quyền ghi. Với lệnh ghi: `Agent đề xuất → Tool PEP hỏi PDP với thuộc tính hiện thời → Egress/API kiểm đường đi → hệ thống đích xác nhận quyền, phê duyệt và bất biến → commit/audit`. Nếu PDP/chính sách/thuộc tính bắt buộc không sẵn có thì từ chối ghi; không dùng cache quyền hết hạn để tiếp tục.
----
-
-### 6.4. Bốn Giới hạn Kỹ thuật và Quy tắc Vận hành
-
-1. **Harness không phải PDP hay hệ thống đích.** Guardrail và schema là lớp giảm thiểu; schema đúng vẫn có thể sai tài khoản/số tiền. Token có `sub`/`act` biểu đạt chủ thể/actor trong một mô hình ủy nhiệm, **không chứng minh đồng ý giao dịch** [C9]. Đánh giá quyền ở Tool PEP và tại Core/LOS, ràng buộc approval/step-up với payload và thời hạn; ngăn gọi vòng qua PEP bằng mạng và credential.
-2. **Checkpoint không bảo lưu thẩm quyền.** Khi resume, cấp mới/kiểm token phù hợp audience/scope, kiểm phiên bản policy, phê duyệt gắn payload và dữ liệu nhạy thời gian (lãi suất, CIC, hạn mức). Nếu thay đổi, quay lại bước đề xuất/phê duyệt; không tái phát lệnh ghi chỉ vì state ghi “đã duyệt”. Không lưu token/secret trong checkpoint.
-3. **Harness không cung cấp ACID xuyên hệ thống.** Phân loại từng bước *đọc / chuẩn bị / ghi có thể hủy / cam kết khó đảo ngược*. Với lệnh ghi có retry, dùng operation ID ổn định qua resume, khóa chống lặp được **hệ thống đích lưu bền và ràng buộc với payload**; timeout sau commit tạo trạng thái *chưa biết*, phải tra cứu/đối soát trước retry. Chỉ dùng Saga khi có nghiệp vụ bù trừ hợp lệ; bù trừ không xóa được mọi tác động, cần trạng thái chờ và quy trình xử lý ngoại lệ thủ công.
-4. **Đa Runtime không đồng nghĩa đa chính sách.** Nhóm triển khai có thể chọn công cụ phù hợp, nhưng trước khi được kết nối tài nguyên ngân hàng phải đăng ký owner, hành động và cấp rủi ro, danh tính workload, quyền dữ liệu, hợp đồng tool, chuẩn audit, chốt ngắt khẩn cấp và cách chứng minh không thể đi vòng PEP. Chính sách chung được phiên bản hóa; hệ thống đích giữ quyền quyết định nghiệp vụ cuối cùng.
----
 
 ## 7. Sáu Trụ cột Thiết kế và Chín Nguyên tắc Kiến trúc
 
@@ -415,31 +338,30 @@ Bên cạnh các thách thức kỹ thuật về an ninh hay phân quyền, nghi
 > 🔗 **[Giải pháp Chuyên sâu cho Năm Điểm mù Kỹ thuật Thực tế (Technical Deep Dives)](./giai-phap-chuyen-sau-diem-mu-ky-thuat)**  
 > *(Gồm: Khắc phục khoảng trống IAM & OAuth RFC 8693; Toàn vẹn giao dịch phân tán & Distributed Saga; Quản trị giao thức MCP Gateway; Đường ống kiểm thử hồi quy CI/CD Evals; và Mô hình phân quyền động ABAC/ReBAC thời gian thực).*
 
+> 🏗️ **[Kiến trúc Giải pháp & Đặc tả Triển khai Enterprise Agent Platform v5](./kien-truc-giai-phap-v5)**  
+> *(Solution Architecture v5.0 — Architecture Review Revision: mô hình phân vùng Z0–Z5, ma trận kết nối N01–N13, ba năng lực L1/L2/L3, Agent/Tool Registry, Runtime Guardrails, L3 Transaction Integrity, WBS/RACI và 18 ADR. Kèm 7 sơ đồ kiến trúc D1–D7.)*
+
 ---
 
 ## 9. Kiến trúc Mục tiêu: Kiểm soát Chung trên Hạ tầng Sẵn có
 
 ### 9.1. Cơ sở Thiết kế và Giả định
 
-**1. Định hướng từ Đơn vị Khảo sát (Tài liệu I3):**  
-Theo tài liệu *Định hướng kiến trúc và các việc ưu tiên triển khai Enterprise Agent Platform tại MB* (07/2026, tệp khảo sát nội bộ I3), tổ chức định hướng phát triển mô hình mở: cho phép đa dạng hóa framework và runtime ở các squad phát triển, nhưng bắt buộc thống nhất các bề mặt kiểm soát trọng yếu gồm: Ingress, Model Gateway, Tool/MCP Gateway, Egress, IAM, Registry, Runtime Authorization, Observability, Evals và Guardrails.  
-Tài liệu I3 xác định các ưu tiên giai đoạn đầu gồm: thí điểm Personal Agent Runtime trên máy trạm, thiết lập Model Gateway, kiểm soát Ingress/Egress, xây dựng Tool/MCP Gateway và đánh giá kênh tương tác Microsoft Teams như giải pháp bổ trợ. Báo cáo này tiếp cận I3 dưới dạng **Yêu cầu Kiến trúc Tham chiếu (Architecture Baseline Requirements)**; hiện trạng và mức độ sẵn sàng thực tế của từng cấu phần cần được xác thực thông qua hoạt động khảo sát kiểm kê chuyên sâu. [I3]
-
-**2. Tiêu chuẩn và Thực tiễn Tham chiếu Quốc tế:**  
+**1. Tiêu chuẩn và Thực tiễn Tham chiếu Quốc tế:**  
 * Khung đánh giá kiến trúc **AWS Agentic AI Lens** định hình các nguyên lý then chốt: tự chủ có giới hạn (bounded autonomy), quan sát hành vi bất định, kiểm thử dựa trên rủi ro, bảo vệ hệ thống nghiệp vụ cũ (legacy protection) và kiểm soát chi phí vòng lặp nhận thức. [C11, C13–C18]
 * Kiến trúc tham chiếu **Amazon Bedrock AgentCore** cung cấp bức tranh mô-đun hóa toàn diện cho hạ tầng tác nhân: Runtime, Identity, Gateway, Memory, Observability, Evaluations, Policy và Registry. [C12]  
 * *Lưu ý kiến trúc:* Việc đối chiếu với các mô-đun của AgentCore nhằm mục đích **chuẩn hóa danh mục năng lực**, không phải khuyến nghị bắt buộc chuyển dịch khối lượng công việc (workloads) lên nền tảng đám mây AWS, cũng như không mặc nhiên xem K8s tự quản có sẵn mọi tính năng của AgentCore.
 
-**3. Hiện trạng Hạ tầng Kỹ thuật (Kết quả Khảo sát tại Đơn vị):**  
+**2. Hiện trạng Hạ tầng Kỹ thuật (Kết quả Khảo sát tại Đơn vị):**  
 Khảo sát thực tế hiện trạng công nghệ phục vụ thiết kế kiến trúc ghi nhận các thành phần dưới đây. Đây là **đầu vào chính thức cho thiết kế** ở Mục 9.2–11. Kết quả vẫn cần chủ hệ thống xác nhận lại về phiên bản, phạm vi bao phủ và mức sẵn sàng production trước khi chốt thiết kế chi tiết; mọi điểm lệch phát hiện khi xác nhận sẽ được cập nhật ngược vào Mục 10.
-* **Nền tảng Quản lý Định danh (IAM/IdP):** Đã vận hành trên nền **Keycloak** (OpenID Connect/OAuth 2.0). Mức hỗ trợ OAuth 2.0 Token Exchange (RFC 8693) với `actor_token`/claim `act` theo phiên bản đang chạy **cần kiểm chứng riêng**, vì đây là tiền đề của Luồng 0.
+* **Nền tảng Quản lý Định danh (IAM/IdP):** Đã vận hành trên nền **Keycloak** (OpenID Connect/OAuth 2.0). 
 * **Quản lý API (APIM):** API hiện được quản lý trên **MB Landscape (MBL)** dưới dạng **tài sản kiến trúc** (danh mục, chủ sở hữu, đặc tả, quan hệ phụ thuộc), nhưng **chưa có lớp APIM runtime tập trung** (gateway cưỡng chế, policy, quota theo consumer, analytics). Định hướng: **mở rộng phạm vi từ danh mục API trên MBL thành APIM đầy đủ**, trong đó MBL tiếp tục là nguồn sự thật của danh mục và APIM runtime là nơi cưỡng chế (xem S03 tại Mục 10).
-* **Hạ tầng Khóa Công khai (PKI) & Quản lý Bí mật (Secrets Manager):** Đã vận hành trên nền **HashiCorp Vault** (lưu trữ secret, xoay vòng khóa, dynamic credentials).
-* **Đường ống CI/CD:** Đã chuẩn hóa trên nền **Jenkins** (sẵn sàng tích hợp các chốt kiểm thử tự động và Eval Pipeline).
+* **Hạ tầng Khóa Công khai (PKI) & Quản lý Bí mật (Secrets Manager):** Đã vận hành trên nền **Vault** (lưu trữ secret, xoay vòng khóa, dynamic credentials).
+* **CI/CD:** Đã chuẩn hóa trên nền **Jenkins** .
 * **Kho lưu trữ Dữ liệu & Vector (Data & Vector Store):** Đã có sẵn hạ tầng lưu trữ dữ liệu và cơ sở dữ liệu vector phục vụ RAG.
-* **Lưu trữ Kiểm toán & Giám sát (Audit & Observability):** Đã vận hành **Elasticsearch / Kibana** (cần cấu hình lưu trữ bất biến WORM logic và tách luồng audit evidence khỏi log telemetry).
+* **Lưu trữ Kiểm toán & Giám sát (Audit & Observability):** Đã vận hành **Elasticsearch / Kibana /Langfuse**.
 * **Hạ tầng Tính toán, Mạng & Dự phòng Thảm họa (Compute, Network & DR):** Cụm **Kubernetes (K8s)**, **Kafka**, **Phân vùng mạng (Network Segmentation)** và quy trình **Dự phòng Thảm họa (DR)** đã có trong môi trường vận hành.
-* *Nguyên tắc Tận dụng Tối đa:* **Tận dụng Keycloak, Vault, Jenkins, K8s, Kafka, Elasticsearch/Kibana, Vector store và danh mục API trên MBL; không mua sắm chồng lấn.** Phần xây mới chỉ gồm các năng lực chuyên biệt cho Agent mà nền tảng hiện hữu chưa có: Registry (S01), APIM runtime (S03), Model Gateway (S04), Tool/MCP PEP (S05), Long-term Memory (S08b), Guardrails (S13), PDP/PIP (S14) và kênh phê duyệt tin cậy (S15). Quyết định xây hay mở rộng cho từng cấu phần nằm ở Mục 10.
+* *Nguyên tắc Tận dụng Tối đa:* **Tận dụng Keycloak, Vault, Jenkins, K8s, Kafka, Elasticsearch/Kibana, Vector store và danh mục API trên MBL;.** Phần xây mới chỉ gồm các năng lực chuyên biệt cho Agent mà nền tảng hiện hữu chưa có: Registry (S01), APIM runtime (S03), Model Gateway (S04), Tool/MCP PEP (S05), Long-term Memory (S08b), Guardrails (S13), PDP/PIP (S14) và kênh phê duyệt tin cậy (S15). Quyết định xây hay mở rộng cho từng cấu phần nằm ở Mục 10.
 * *Ràng buộc Bất biến Nghiệp vụ:* Mọi thao tác Ghi lên Hệ thống Nghiệp vụ Nguồn (Core Banking, LOS, CRM, Payment Hub) bắt buộc do chính hệ thống đích kiểm tra thẩm quyền và bất biến nghiệp vụ tại thời điểm thực thi, ngay cả khi yêu cầu đã được các cổng kiểm soát cho phép đi qua.
 
 ### 9.2. Sơ đồ Ranh giới Tin cậy và Luồng Bắt buộc

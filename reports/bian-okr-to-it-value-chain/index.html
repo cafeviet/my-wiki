@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Kiến Trúc: Chuỗi Giá Trị Từ OKR Nghiệp Vụ Đến IT Và Vòng Đo Lường KR (BIAN)</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent: #2563eb;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --code-bg: #f1f5f9;
+      --table-stripe: #f8fafc;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 10px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --primary-light: #1e293b;
+      --accent: #60a5fa;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #0b0f19;
+      --surface: #131b2e;
+      --surface-border: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --text-light: #94a3b8;
+      --code-bg: #1e293b;
+      --table-stripe: #182238;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top utility bar */
+    .top-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+    }
+
+    .toolbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--primary);
+    }
+
+    .toolbar-brand svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.825rem;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--primary-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      color: #fff;
+    }
+
+    /* Layout wrapper */
+    .report-wrapper {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem 1.5rem;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 2.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .report-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .report-sidebar {
+        display: none;
+      }
+    }
+
+    /* Sidebar Navigation */
+    .report-sidebar {
+      position: sticky;
+      top: 4.5rem;
+      max-height: calc(100vh - 5rem);
+      overflow-y: auto;
+      padding-right: 0.75rem;
+    }
+
+    .toc-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .toc-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      font-size: 0.85rem;
+    }
+
+    .toc-list li {
+      margin-bottom: 0.35rem;
+    }
+
+    .toc-list a {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      background: var(--primary-light);
+      font-weight: 500;
+    }
+
+    /* Main Content */
+    .report-main {
+      min-width: 0;
+    }
+
+    /* Header document banner */
+    .report-header {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      margin-bottom: 2.25rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 50%, #38bdf8 100%);
+    }
+
+    .doc-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 9999px;
+      line-height: 1.4;
+    }
+
+    .badge-primary { background: #dbeafe; color: #1e40af; }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-neutral { background: #f1f5f9; color: #475569; }
+
+    [data-theme="dark"] .badge-primary { background: #1e3a8a; color: #93c5fd; }
+    [data-theme="dark"] .badge-success { background: #064e3b; color: #6ee7b7; }
+    [data-theme="dark"] .badge-neutral { background: #1e293b; color: #94a3b8; }
+
+    .doc-title {
+      font-size: 1.95rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--surface-border);
+      font-size: 0.85rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      color: var(--text-light);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+
+    .meta-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Content Cards & Sections */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 0;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    ul, ol {
+      margin-bottom: 1.25rem;
+      padding-left: 1.4rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--code-bg);
+      color: var(--text);
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--surface-border);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--table-stripe);
+    }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--primary-light);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.25rem 0;
+      font-size: 0.92rem;
+    }
+
+    .callout-principle {
+      border-left-color: var(--primary);
+    }
+
+    .callout-warning {
+      border-left-color: var(--warning);
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    [data-theme="dark"] .callout-warning {
+      background: #451a03;
+      color: #fde68a;
+    }
+
+    /* Flow blocks */
+    .flow-card {
+      background: var(--code-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    code {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      background: var(--code-bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: var(--primary);
+    }
+
+    /* Diagram Containers */
+    .diagram-wrapper {
+      margin: 1.5rem 0 2rem 0;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .diagram-header {
+      background: var(--code-bg);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .diagram-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+    }
+
+    .diagram-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .diagram-btn {
+      padding: 0.25rem 0.55rem;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+    }
+
+    .diagram-btn:hover {
+      background: var(--primary-light);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .diagram-frame-container {
+      width: 100%;
+      height: 740px;
+      position: relative;
+      background: #11141c;
+    }
+
+    .diagram-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Footer */
+    .report-footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--surface-border);
+      margin-top: 3rem;
+    }
+
+    /* Print styling */
+    @media print {
+      .top-toolbar, .report-sidebar, .diagram-actions, .btn {
+        display: none !important;
+      }
+      .report-wrapper {
+        grid-template-columns: 1fr;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+      }
+      .section-card, .report-header, .diagram-wrapper {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+      }
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .diagram-frame-container {
+        height: 600px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top toolbar -->
+  <header class="top-toolbar">
+    <div class="toolbar-brand">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span>BIAN EA Architecture Deliverable</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn" onclick="toggleTheme()" title="Đổi chế độ Sáng / Tối">
+        <span id="themeIcon">🌓</span> Giao diện
+      </button>
+      <button class="btn" onclick="window.print()" title="In ra giấy hoặc lưu thành tệp PDF">
+        🖨️ In / Xuất PDF
+      </button>
+      <a href="#sec-2" class="btn btn-primary">
+        📊 Xem chuỗi giá trị
+      </a>
+    </div>
+  </header>
+
+  <div class="report-wrapper">
+    <!-- Sticky Sidebar -->
+    <aside class="report-sidebar">
+      <div class="toc-card">
+        <div class="toc-title">
+          <span>📑</span> Mục lục báo cáo
+        </div>
+        <ul class="toc-list">
+          <li><a href="#sec-1">1. Executive Summary</a></li>
+          <li><a href="#sec-2">2. Chuỗi giá trị đầu-cuối (Value Chain)</a></li>
+          <li><a href="#sec-3">3. Business Direction & Execution</a></li>
+          <li><a href="#sec-4">4. Enterprise Architecture</a></li>
+          <li><a href="#sec-5">5. IT Demand & Delivery</a></li>
+          <li><a href="#sec-6">6. Sở hữu & ranh giới trách nhiệm</a></li>
+          <li><a href="#sec-7">7. Mô hình đối tượng truy vết</a></li>
+          <li><a href="#sec-8">8. Triển khai vs Kết quả nghiệp vụ</a></li>
+          <li><a href="#sec-9">9. Kiểm chứng chuẩn BIAN V14</a></li>
+          <li><a href="#sec-10">10. Nguồn tham chiếu chính thức</a></li>
+          <li><a href="#sec-11">11. Ghi chú kỹ thuật về sơ đồ</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="report-main">
+      <!-- Document Banner Header -->
+      <header class="report-header">
+        <div class="doc-badge-row">
+          <span class="badge badge-primary">Enterprise Architecture</span>
+          <span class="badge badge-success">BIAN V14 Validated</span>
+          <span class="badge badge-neutral">Executive Deliverable</span>
+        </div>
+        <h1 class="doc-title">Chuỗi giá trị từ OKR nghiệp vụ đến IT và vòng đo lường KR</h1>
+        <p class="doc-subtitle">Mô hình kiến trúc tham chiếu đóng vòng giá trị: Kết nối định hướng chiến lược nghiệp vụ với nhu cầu đầu tư và năng lực chuyển giao CNTT theo chuẩn BIAN V14</p>
+        
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Chuẩn tham chiếu</span>
+            <span class="meta-value">BIAN Service Landscape V14</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Phạm vi chuỗi</span>
+            <span class="meta-value">OKR → Business Change → EA → IT → Measure KR</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Ngày phát hành</span>
+            <span class="meta-value">15/09/2026</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Trạng thái</span>
+            <span class="meta-value">Chính thức (Approved)</span>
+          </div>
+        </div>
+
+        <div class="callout callout-principle" style="margin-top: 1.5rem; margin-bottom: 0;">
+          <strong>Nguyên tắc xuyên suốt:</strong> OKR/KR <strong>không phải</strong> IT Requirement. Cầu nối chuẩn giữa nghiệp vụ và công nghệ là:<br>
+          <code style="font-size: 0.95rem; font-weight: 600;">KR → Business Initiative / Business Change → Impact Assessment → IT Demand</code>
+        </div>
+      </header>
+
+      <!-- Section 1: Executive Summary -->
+      <section id="sec-1" class="section-card">
+        <h2>1. Executive Summary</h2>
+        <p>Báo cáo này mô tả một <strong>mô hình tham chiếu ổn định</strong> để Kiến trúc Doanh nghiệp (Enterprise Architecture) tiếp nhận yêu cầu nghiệp vụ bắt nguồn từ OKR đã đăng ký, phân rã thành thay đổi nghiệp vụ và tác động kiến trúc, chuyển tác động đủ điều kiện thành nhu cầu CNTT, triển khai CNTT, rồi <strong>đo lường xem KR ban đầu có đạt được hay không</strong>.</p>
+        
+        <p>Mô hình gồm <strong>ba nhóm logic</strong> (project-level grouping — <em>không phải</em> tên BIAN Service Domain) ánh xạ tới năm BIAN Service Domain chính thức:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nhóm logic (project-level grouping)</th>
+                <th>BIAN Service Domain chính thức</th>
+                <th>Câu hỏi chủ sở hữu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Business Direction & Execution</strong><br><span style="color:var(--text-light);font-size:0.8rem;">Định hướng & thực thi nghiệp vụ</span></td>
+                <td><strong>Business Unit Direction</strong> · <strong>Business Unit Management</strong></td>
+                <td>Vì sao thay đổi? Kết quả mong muốn là gì? Có đạt không?</td>
+              </tr>
+              <tr>
+                <td><strong>Enterprise Architecture</strong><br><span style="color:var(--text-light);font-size:0.8rem;">Kiến trúc doanh nghiệp</span></td>
+                <td><strong>Enterprise Architecture</strong></td>
+                <td>Cái gì phải thay đổi? Thành phần nào bị tác động? Có cần CNTT không?</td>
+              </tr>
+              <tr>
+                <td><strong>IT Demand & Delivery</strong><br><span style="color:var(--text-light);font-size:0.8rem;">Nhu cầu & triển khai CNTT</span></td>
+                <td><strong>IT Systems Direction</strong> · <strong>System Development</strong></td>
+                <td>Có nên đầu tư? Ưu tiên khi nào? Triển khai thế nào?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <strong>Điểm cốt lõi:</strong> Vòng đời giá trị <strong>không kết thúc ở thời điểm Release (Bàn giao kỹ thuật)</strong>. Nó bắt buộc phải khép vòng quay về:
+          <div class="flow-card" style="margin: 0.5rem 0 0 0;">Release → Business Adoption / Usage → Business Outcome → Measure KR → Business Unit Management / Direction</div>
+        </div>
+      </section>
+
+      <!-- Section 2: End-to-End Value Chain -->
+      <section id="sec-2" class="section-card">
+        <h2>2. Chuỗi giá trị đầu-cuối (End-to-End Value Chain)</h2>
+        <p>Chuỗi giá trị chạy qua bốn lane chức năng: <strong>Nghiệp vụ (Why/What)</strong> → <strong>Kiến trúc (Impact/State)</strong> → <strong>CNTT (How)</strong> → <strong>Đo lường & đóng vòng (Business Outcome)</strong>.</p>
+
+        <!-- Diagram 1 -->
+        <div class="diagram-wrapper">
+          <div class="diagram-header">
+            <div class="diagram-title">
+              <span>📊</span>
+              <strong>Sơ đồ 1: End-to-End Value Chain (4 Lanes)</strong>
+            </div>
+            <div class="diagram-actions">
+              <button class="diagram-btn" onclick="openFullscreen('diag1-frame')">⛶ Toàn màn hình</button>
+              <button class="diagram-btn" onclick="openNewTab('diag1')">↗ Mở tab mới</button>
+            </div>
+          </div>
+          <div class="diagram-frame-container">
+            <iframe id="diag1-frame" class="diagram-frame" src="assets/01-end-to-end-value-chain.html" title="Sơ đồ Chuỗi giá trị đầu-cuối"></iframe>
+          </div>
+        </div>
+
+        <ul>
+          <li><strong>Objective + KR</strong> (BU Direction) → <strong>Business Change</strong> (Initiative + Owner) → <strong>Corrective Action</strong> khi KR lệch mục tiêu.</li>
+          <li><strong>Impact Assessment</strong> (Capability/Process/Data) → <strong>Target State</strong> (Gap + IT Impact).</li>
+          <li><strong>IT Demand</strong> (assess + prioritize) → <strong>IT Initiative</strong> (portfolio + roadmap) → <strong>Release</strong> (build → test → ship).</li>
+          <li><strong>Business Outcome</strong> (Adoption · Actual vs Target) → <strong>Measure KR</strong> (đóng vòng nghiệp vụ) — thuộc <strong>Business Unit Management / Direction</strong>.</li>
+          <li>Nhánh <code>KR không đạt</code> quay về <em>Corrective Action</em>, tuyệt đối không sửa âm thầm phạm vi.</li>
+        </ul>
+      </section>
+
+      <!-- Section 3: Business Direction & Execution -->
+      <section id="sec-3" class="section-card">
+        <h2>3. Nhóm 1 — Business Direction & Execution</h2>
+        <p><strong>BIAN Service Domains:</strong> <code>Business Unit Direction</code> — <em>Định hướng đơn vị</em>; <code>Business Unit Management</code> — <em>Quản trị đơn vị</em>.</p>
+
+        <h3>Luồng giá trị cốt lõi</h3>
+        <div class="flow-card">Strategy → Objective → Key Result (KR) → Business Initiative → Business Change</div>
+
+        <h3>Vòng đóng kết quả (Closed Loop)</h3>
+        <div class="flow-card">Business Outcome → Measure KR → Actual vs Target → Corrective Action</div>
+
+        <p><strong>Phạm vi cốt lõi:</strong> Strategy / Objective / KR / Business Target · Business Initiative / Business Change · Business Plan / Activity / Deliverable · Business Owner / Business Priority · Business Outcome / KR Measurement · Performance Monitoring / Corrective Action.</p>
+
+        <h3>Câu hỏi then chốt</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Câu hỏi nghiệp vụ</th>
+                <th>Tiếng Anh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vì sao cần thay đổi?</td>
+                <td>Why are we changing?</td>
+              </tr>
+              <tr>
+                <td>Kết quả nghiệp vụ mong muốn là gì?</td>
+                <td>What business outcome do we expect?</td>
+              </tr>
+              <tr>
+                <td>Kết quả có đạt mục tiêu không?</td>
+                <td>Did we achieve the expected outcome?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <strong>Lưu ý mô hình:</strong> <code>Business Initiative</code> và <code>Business Change</code> là <strong>khái niệm project/domain-model</strong>, không phải tên BIAN Service Domain chính thức.
+        </div>
+      </section>
+
+      <!-- Section 4: Enterprise Architecture -->
+      <section id="sec-4" class="section-card">
+        <h2>4. Nhóm 2 — Enterprise Architecture (Kiến trúc doanh nghiệp)</h2>
+        <p><strong>BIAN Service Domain:</strong> <code>Enterprise Architecture</code>.</p>
+
+        <h3>Luồng giá trị cốt lõi</h3>
+        <div class="flow-card">Business Initiative / Business Change
+  → Impact Assessment
+  → Business Capability / Process / Data / Application / Technology / Security Impact
+  → Current State / Target State
+  → Gap Analysis
+  → IT Impact</div>
+
+        <p><strong>Phạm vi cốt lõi:</strong> Business Capability Impact · Process Impact · Information/Data Impact · Application Impact · Technology Impact · Security Impact · Dependency Analysis · Current / Target Architecture · Gap Analysis · Architecture Principles / Constraints / Recommendation · IT Impact Identification.</p>
+
+        <h3>Câu hỏi then chốt</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Câu hỏi kiến trúc</th>
+                <th>Tiếng Anh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cái gì phải thay đổi?</td>
+                <td>What needs to change?</td>
+              </tr>
+              <tr>
+                <td>Những thành phần nào bị tác động?</td>
+                <td>What is impacted?</td>
+              </tr>
+              <tr>
+                <td>Có cần thay đổi CNTT hay không?</td>
+                <td>Is IT change required?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <strong>Vị thế kiến trúc:</strong> Kiến trúc là <strong>một tầng độc lập</strong> — không gộp vào nghiệp vụ, không gộp vào CNTT. Đây là chốt chặn duy nhất sinh ra <code>IT Impact</code> một cách có kỷ luật và bài bản.
+        </div>
+      </section>
+
+      <!-- Section 5: IT Demand & Delivery -->
+      <section id="sec-5" class="section-card">
+        <h2>5. Nhóm 3 — IT Demand & Delivery (Nhu cầu & triển khai CNTT)</h2>
+        <p><strong>BIAN Service Domains:</strong> <code>IT Systems Direction</code> — <em>Định hướng hệ thống CNTT</em>; <code>System Development</code> — <em>Phát triển hệ thống</em>.</p>
+
+        <h3>Luồng giá trị cốt lõi</h3>
+        <div class="flow-card">IT Impact → IT Demand → Assessment → Priority → Capacity / Cost / Investment
+  → IT Portfolio / Roadmap → IT Initiative → Requirement → Build → Test → Release</div>
+
+        <p><strong>Phạm vi — IT Systems Direction:</strong> IT Demand Management / Assessment · IT Prioritization · IT Portfolio / Roadmap Planning · IT Capacity / Investment / Budget Planning · Business–IT Alignment · IT Commitment.</p>
+
+        <p><strong>Phạm vi — System Development:</strong> IT Requirement Management · Development Planning · Solution Implementation · Software Development / Integration / Testing · Defect Resolution · Release Preparation / Technical Delivery.</p>
+
+        <h3>Câu hỏi then chốt</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Câu hỏi CNTT</th>
+                <th>Tiếng Anh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CNTT có nên đầu tư cho thay đổi này không?</td>
+                <td>Should IT invest in this change?</td>
+              </tr>
+              <tr>
+                <td>Khi nào và với mức ưu tiên nào?</td>
+                <td>When and with what priority?</td>
+              </tr>
+              <tr>
+                <td>CNTT sẽ triển khai thay đổi đã cam kết như thế nào?</td>
+                <td>How will IT implement the committed change?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 6: Domain Ownership & Boundary -->
+      <section id="sec-6" class="section-card">
+        <h2>6. Sở hữu & ranh giới trách nhiệm (Domain Ownership & Boundary)</h2>
+        <p>Phân định ranh giới sở hữu rõ ràng giữa các bộ phận đảm bảo trách nhiệm giải trình không bị chồng chéo hay bỏ sót.</p>
+
+        <!-- Diagram 2 -->
+        <div class="diagram-wrapper">
+          <div class="diagram-header">
+            <div class="diagram-title">
+              <span>📐</span>
+              <strong>Sơ đồ 2: Domain Ownership & Boundary</strong>
+            </div>
+            <div class="diagram-actions">
+              <button class="diagram-btn" onclick="openFullscreen('diag2-frame')">⛶ Toàn màn hình</button>
+              <button class="diagram-btn" onclick="openNewTab('diag2')">↗ Mở tab mới</button>
+            </div>
+          </div>
+          <div class="diagram-frame-container">
+            <iframe id="diag2-frame" class="diagram-frame" src="assets/02-domain-ownership-boundary.html" title="Sơ đồ Ranh giới Trách nhiệm"></iframe>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nhóm logic</th>
+                <th>Trong phạm vi — sở hữu</th>
+                <th>Ngoài phạm vi</th>
+                <th>Điểm bàn giao (Hand-off)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Business Direction & Execution</strong></td>
+                <td>Strategy · Objective · KR · Business Initiative · Business Change · Business Outcome · Measure KR · Corrective Action</td>
+                <td>Thiết kế giải pháp kỹ thuật</td>
+                <td><code>Business Change → Impact Assessment</code></td>
+              </tr>
+              <tr>
+                <td><strong>Enterprise Architecture</strong></td>
+                <td>Impact Assessment · Capability/Process/Data/App/Tech/Security Impact · Current/Target State · Gap Analysis · IT Impact</td>
+                <td>Cam kết ngân sách, triển khai mã nguồn</td>
+                <td><code>IT Impact → IT Demand</code></td>
+              </tr>
+              <tr>
+                <td><strong>IT Demand & Delivery</strong></td>
+                <td>IT Demand · Priority · Portfolio/Roadmap · Commitment · Requirement · Build · Test · Release</td>
+                <td>Đo lường kết quả nghiệp vụ, sở hữu KR</td>
+                <td><code>Release → Business Outcome</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Tóm tắt trách nhiệm cốt lõi</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Vai trò</th>
+                <th>Sở hữu</th>
+                <th>Tiếng Anh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Nghiệp vụ</strong></td>
+                <td>Kết quả</td>
+                <td>Business owns Outcome</td>
+              </tr>
+              <tr>
+                <td><strong>Kiến trúc</strong></td>
+                <td>Đánh giá tác động & trạng thái mục tiêu</td>
+                <td>Architecture owns Impact & Target State</td>
+              </tr>
+              <tr>
+                <td><strong>CNTT</strong></td>
+                <td>Cam kết & triển khai</td>
+                <td>IT owns Commitment & Delivery</td>
+              </tr>
+              <tr>
+                <td><strong>Nghiệp vụ</strong></td>
+                <td>Đóng vòng bằng đo lường KR</td>
+                <td>Business closes the loop by measuring KR</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-warning">
+          <strong>Cảnh báo ngữ nghĩa:</strong> "Business Initiative", "Business Change", "IT Demand" và tên ba nhóm logic là <strong>khái niệm project/domain-model</strong>, trừ khi nguồn BIAN chính thức định nghĩa đối tượng tương đương. Không trình bày chúng như tên BIAN Service Domain chính thức.
+        </div>
+      </section>
+
+      <!-- Section 7: Traceability Object Model -->
+      <section id="sec-7" class="section-card">
+        <h2>7. Mô hình đối tượng truy vết (Traceability Object Model)</h2>
+        <p>Mô hình truy vết đảm bảo mọi dòng code phát hành hoặc ngân sách chi tiêu đều liên kết ngược về một mục tiêu chiến lược cụ thể.</p>
+
+        <!-- Diagram 3 -->
+        <div class="diagram-wrapper">
+          <div class="diagram-header">
+            <div class="diagram-title">
+              <span>🔗</span>
+              <strong>Sơ đồ 3: Traceability Object Model</strong>
+            </div>
+            <div class="diagram-actions">
+              <button class="diagram-btn" onclick="openFullscreen('diag3-frame')">⛶ Toàn màn hình</button>
+              <button class="diagram-btn" onclick="openNewTab('diag3')">↗ Mở tab mới</button>
+            </div>
+          </div>
+          <div class="diagram-frame-container">
+            <iframe id="diag3-frame" class="diagram-frame" src="assets/03-traceability-object-model.html" title="Sơ đồ Đối tượng Truy vết"></iframe>
+          </div>
+        </div>
+
+        <div class="flow-card">Objective → KR → Business Initiative → Business Change
+  → Impact Assessment → Gap Analysis → IT Demand
+  → IT Initiative → Release → Business Outcome → Measure KR
+  → (đóng vòng) Objective</div>
+
+        <h3>Ba cổng kiểm soát then chốt (Quality Gates)</h3>
+        <ol>
+          <li><code>Business Change → Impact Assessment</code> — Cổng vào kiến trúc.</li>
+          <li><code>Gap Analysis → IT Demand</code> — Cổng vào CNTT.</li>
+          <li><code>Measure KR → Objective</code> — Cổng đóng vòng (closed loop).</li>
+        </ol>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Đối tượng</th>
+                <th>Nhóm sở hữu</th>
+                <th>Domain BIAN</th>
+                <th>Câu hỏi kiểm soát</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Objective · KR</strong></td>
+                <td>Business Direction & Execution</td>
+                <td>Business Unit Direction</td>
+                <td>Vì sao? Kết quả mong muốn?</td>
+              </tr>
+              <tr>
+                <td><strong>Business Initiative · Business Change</strong></td>
+                <td>Business Direction & Execution</td>
+                <td>Business Unit Direction / Management</td>
+                <td>Cái gì thay đổi?</td>
+              </tr>
+              <tr>
+                <td><strong>Impact Assessment · Gap Analysis</strong></td>
+                <td>Enterprise Architecture</td>
+                <td>Enterprise Architecture</td>
+                <td>Tác động gì? Trạng thái mục tiêu?</td>
+              </tr>
+              <tr>
+                <td><strong>IT Demand · IT Initiative</strong></td>
+                <td>IT Demand & Delivery</td>
+                <td>IT Systems Direction</td>
+                <td>Có nên đầu tư? Ưu tiên?</td>
+              </tr>
+              <tr>
+                <td><strong>Release</strong></td>
+                <td>IT Demand & Delivery</td>
+                <td>System Development</td>
+                <td>Triển khai thế nào?</td>
+              </tr>
+              <tr>
+                <td><strong>Business Outcome · Measure KR</strong></td>
+                <td>Business Direction & Execution</td>
+                <td>Business Unit Management / Direction</td>
+                <td>Có đạt mục tiêu không?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 8: Delivery Success vs Outcome Success -->
+      <section id="sec-8" class="section-card">
+        <h2>8. Kết quả triển khai vs Kết quả nghiệp vụ</h2>
+        <p>Nếu CNTT hoàn thành bàn giao (Release) nhưng KR <strong>không</strong> đạt, bắt buộc phải ghi nhận <strong>hai loại thành công tách biệt</strong>:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Loại thành công</th>
+                <th>Ý nghĩa đánh giá</th>
+                <th>Bên sở hữu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Delivery success</strong></td>
+                <td>Đúng hạn, đúng phạm vi kỹ thuật, chất lượng đạt chuẩn, đã phát hành</td>
+                <td>IT Demand & Delivery</td>
+              </tr>
+              <tr>
+                <td><strong>Business outcome success</strong></td>
+                <td>Kết quả nghiệp vụ thực tế đạt các chỉ tiêu KR đề ra ban đầu</td>
+                <td>Business Direction & Execution</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <strong>Nguyên tắc xử lý:</strong> Khi KR không đạt: ghi nhận <code>Corrective Action</code> (Hành động khắc phục), hoặc điều chỉnh/tạo <code>Business Initiative</code> mới — <strong>tuyệt đối không</strong> gộp hai loại thành công này làm một để tránh che giấu thất bại nghiệp vụ đằng sau thành công kỹ thuật.
+        </div>
+      </section>
+
+      <!-- Section 9: BIAN V14 Verification -->
+      <section id="sec-9" class="section-card">
+        <h2>9. Kiểm chứng BIAN V14</h2>
+        <p>Các xác nhận sau được kiểm chứng trực tiếp từ dữ liệu chính thức của BIAN Service Landscape V14 (nguồn <code>https://bian.org/servicelandscape-14-0-0/</code>), được trích xuất và lưu tại hồ sơ chứng cứ đính kèm:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nội dung xác nhận</th>
+                <th>Nguồn đối soát BIAN V14</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Business Unit Direction</strong> tồn tại</td>
+                <td><code>object_15.html?object=36980</code>, <code>data/all_objects_data_15.js</code></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Business Unit Management</strong> tồn tại</td>
+                <td>Cùng file dữ liệu V14 (Capability 36980 | Class 36981)</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Enterprise Architecture</strong> tồn tại</td>
+                <td><code>object_14.html?object=29101</code> (Capability 29101 | Class 35592)</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>IT Systems Direction</strong> tồn tại</td>
+                <td><code>object_16.html?object=44281</code></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>System Development</strong> thuộc nhóm <strong>Solution Development</strong></td>
+                <td><code>object_31.html?object=48386</code> (hierarchy)</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Direct functional pattern V14</td>
+                <td><code>object_45.html?object=95219</code></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Quan hệ hierarchy <code>Solution Development ⊃ System Development</code></td>
+                <td><code>all_objects_relations.js</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Phân định rõ ràng</h3>
+        <ul>
+          <li><strong>Fact (Sự thật):</strong> Tên và quan hệ hierarchy của năm Service Domain nêu trên, theo dữ liệu BIAN V14 chính thức.</li>
+          <li><strong>Inference (Suy luận kiến trúc):</strong> Việc gom chúng thành ba nhóm logic và luồng giá trị đầu-cuối là mô hình kiến trúc của chúng ta, <strong>không</strong> phải định nghĩa có sẵn của BIAN.</li>
+          <li><strong>Recommendation (Khuyến nghị thực thi):</strong> Dùng <code>KR → Business Initiative / Business Change → Impact Assessment → IT Demand</code> làm cầu nối chuẩn; không đưa KR trực tiếp vào IT Requirement.</li>
+        </ul>
+      </section>
+
+      <!-- Section 10: Official References -->
+      <section id="sec-10" class="section-card">
+        <h2>10. Nguồn tham chiếu chính thức</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Tài liệu / Tiêu chuẩn</th>
+                <th>Liên kết tra cứu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BIAN Service Landscape V14</td>
+                <td><a href="https://bian.org/deliverables/service-landscape/" target="_blank" rel="noopener">https://bian.org/deliverables/service-landscape/</a></td>
+              </tr>
+              <tr>
+                <td>Business Unit Management V14</td>
+                <td><a href="https://bian.org/servicelandscape-14-0-0/object_15.html?object=36980" target="_blank" rel="noopener">https://bian.org/servicelandscape-14-0-0/object_15.html?object=36980</a></td>
+              </tr>
+              <tr>
+                <td>Enterprise Architecture V14</td>
+                <td><a href="https://bian.org/servicelandscape-14-0-0/object_14.html?object=29101" target="_blank" rel="noopener">https://bian.org/servicelandscape-14-0-0/object_14.html?object=29101</a></td>
+              </tr>
+              <tr>
+                <td>IT Systems Direction V14</td>
+                <td><a href="https://bian.org/servicelandscape-14-0-0/object_16.html?object=44281" target="_blank" rel="noopener">https://bian.org/servicelandscape-14-0-0/object_16.html?object=44281</a></td>
+              </tr>
+              <tr>
+                <td>Direct functional pattern V14</td>
+                <td><a href="https://bian.org/servicelandscape-14-0-0/object_45.html?object=95219" target="_blank" rel="noopener">https://bian.org/servicelandscape-14-0-0/object_45.html?object=95219</a></td>
+              </tr>
+              <tr>
+                <td>Solution Development grouping V14</td>
+                <td><a href="https://bian.org/servicelandscape-14-0-0/object_31.html?object=48386" target="_blank" rel="noopener">https://bian.org/servicelandscape-14-0-0/object_31.html?object=48386</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 11: Technical Notes on Diagrams -->
+      <section id="sec-11" class="section-card">
+        <h2>11. Ghi chú kỹ thuật về sơ đồ</h2>
+        <p>Ba sơ đồ trong báo cáo được tác giả bằng <strong>Archify</strong> (Typed JSON IR), validate qua lệnh <code>archify validate workflow &lt;file&gt; --quality showcase</code> trước khi render. Toàn bộ mã nguồn sơ đồ được lưu trữ kèm theo giao phẩm báo cáo:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Sơ đồ kiến trúc</th>
+                <th>Nguồn Archify JSON</th>
+                <th>Giao phẩm HTML tương tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>a. End-to-End Value Chain</strong></td>
+                <td><code>assets/01-end-to-end-value-chain.workflow.json</code></td>
+                <td><code>assets/01-end-to-end-value-chain.html</code></td>
+              </tr>
+              <tr>
+                <td><strong>b. Domain Ownership & Boundary</strong></td>
+                <td><code>assets/02-domain-ownership-boundary.workflow.json</code></td>
+                <td><code>assets/02-domain-ownership-boundary.html</code></td>
+              </tr>
+              <tr>
+                <td><strong>c. Traceability Object Model</strong></td>
+                <td><code>assets/03-traceability-object-model.workflow.json</code></td>
+                <td><code>assets/03-traceability-object-model.html</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="report-footer">
+        <p><strong>Báo Cáo Kiến Trúc Doanh Nghiệp</strong> · Xác minh BIAN Service Landscape V14 (2026-09-15) · Tài liệu chính thức</p>
+        <p style="margin-top: 0.35rem; font-size: 0.8rem;">Được đóng gói hoàn chỉnh với sơ đồ tương tác Archify & chuẩn tham chiếu BIAN V14.</p>
+      </footer>
+    </main>
+  </div>
+
+  
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('report-theme', next);
+      document.getElementById('themeIcon').textContent = next === 'dark' ? '☀️' : '🌓';
+      syncDiagramThemes(next);
+    }
+
+    function syncDiagramThemes(theme) {
+      ['diag1-frame', 'diag2-frame', 'diag3-frame'].forEach(id => {
+        try {
+          const frame = document.getElementById(id);
+          if (frame && frame.contentWindow && frame.contentWindow.document) {
+            frame.contentWindow.document.documentElement.setAttribute('data-theme', theme);
+          }
+        } catch (e) {}
+      });
+    }
+
+    // Fullscreen helper
+    function openFullscreen(iframeId) {
+      const el = document.getElementById(iframeId);
+      if (el) {
+        if (el.requestFullscreen) {
+          el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          el.msRequestFullscreen();
+        }
+      }
+    }
+
+    // Open diagram in new tab
+    function openNewTab(diagKey) {
+      
+      const map = {
+        'diag1': 'assets/01-end-to-end-value-chain.html',
+        'diag2': 'assets/02-domain-ownership-boundary.html',
+        'diag3': 'assets/03-traceability-object-model.html'
+      };
+      if (map[diagKey]) {
+        window.open(map[diagKey], '_blank');
+      }
+      
+    }
+
+    // Load single file diagram frames if applicable
+    
+
+    // Check saved theme
+    (function() {
+      const saved = localStorage.getItem('report-theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        document.getElementById('themeIcon').textContent = saved === 'dark' ? '☀️' : '🌓';
+      }
+    })();
+  </script>
+</body>
+</html>

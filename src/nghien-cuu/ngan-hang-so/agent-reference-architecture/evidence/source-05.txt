@@ -1,0 +1,136 @@
+Agent goal alignment and manipulation prevention - Agentic AI Lens
+View a markdown version of this page
+Agent goal alignment and manipulation prevention - Agentic AI Lens
+DocumentationAWS Well-ArchitectedAWS Well-Architected Framework
+Capability intentMaturity levelsCommon issues to watch       for
+Agent goal alignment and manipulation prevention
+Agents can be directed to pursue unintended objectives or exhibit
+behaviors outside their defined scope. Without goal alignment
+mechanisms, agents might take actions that conflict with
+organizational policies or user intent. Implementing guardrails,
+layered validation controls, and human-in-the-loop approvals helps
+verify that agents operate within intended boundaries.
+AGENTSEC04: How do you support agent goal alignment and
+prevent manipulation?
+Capability intent
+Operational and policy boundaries for each agent are defined
+up front and enforced through layered controls rather than
+prompt instructions alone.
+Deterministic enforcement (IAM scoping, input schema
+validation, and policy engines) and probabilistic content
+controls (input and output filtering, behavioral evaluation)
+operate at distinct stages of the call chain, so a failure
+at one layer rarely results in a boundary violation.
+Risk classification is deterministic, with high-risk
+operations routed to human review before execution and
+routine low-risk operations proceeding autonomously.
+Reviewers receive sufficient decision context, timeout
+policies, and escalation paths to make informed approvals
+without stalling the workflow or defaulting to
+rubber-stamping.
+Guardrail interventions, approval decisions, and evaluation
+results are logged, alerted on, and reviewed on a defined
+cadence to keep policies current with emerging patterns.
+Maturity levels
+These levels summarize what each stage of maturity looks like
+for agent goal alignment and manipulation prevention as a whole.
+Level
+Name
+What it looks like
+1
+Initial
+Operational boundaries exist only as natural-language
+instructions in the system prompt. No content
+guardrails, input validation, or human-in-the-loop
+controls are in place. Alignment depends on the model
+following instructions, and a single adversarial input
+can redirect the agent with no defense in depth.
+2
+Emerging
+Amazon
+Bedrock Guardrails are configured with basic
+content
+filters covering inputs and outputs. A single
+approval tier exists for a subset of consequential
+actions, implemented through built-in mechanisms such as
+Amazon
+Bedrock Agents user confirmation or routed
+through ad-hoc channels such as email or chat. Guardrail
+interventions are captured in logs but reviewed
+irregularly.
+3
+Defined
+Tiered guardrail configurations align filter strengths
+to each agent's use case, and
+denied
+topics and word filters are calibrated per risk
+profile. Deterministic risk classification routes
+approvals through a structured workflow mechanism such
+as
+AWS Step Functions callback workflows or
+return
+of control, with defined timeouts and escalation
+paths.
+Amazon CloudWatch alarms fire on intervention spikes,
+and guardrail versioning supports rollback of policy
+changes.
+4
+Proactive
+Validation runs at every stage of the call chain: input,
+inference, output, and tool invocation.
+Amazon
+Bedrock AgentCore Evaluations run on a defined
+cadence with alarms on correctness, tool selection
+accuracy, and safety score drift. Persistent trust
+grants are scoped narrowly by command and parameter
+shape, tiered by risk, and made auditable and revocable.
+Full decision context is written to durable storage
+before approval notifications, and approval records are
+linked to the centralized audit trail.
+5
+Optimized
+Alignment controls are calibrated from intervention and
+evaluation data, and risk classification adapts to
+dynamic signals such as operation frequency, time of
+day, and source location. Multi-reviewer consensus is
+available for the highest-risk operations, including
+asynchronous workflows running on
+Amazon
+Bedrock AgentCore Runtime. Policy updates flow
+through versioned configurations with provable change
+history, and the feedback loop from logged interventions
+back into policy is automated rather than manual.
+Common issues to watch for
+Alignment is treated as a prompt-engineering exercise rather
+than a layered enforcement problem, so a single adversarial
+input that influences the model can collapse multiple
+boundaries at once.
+Content filtering is applied only to model outputs, leaving
+the inference path open to prompt injection and consuming
+capacity on adversarial inputs that could have been rejected
+up front.
+A single guardrail profile is applied to every agent, which
+either over-constrains low-risk informational agents or
+leaves high-risk operational agents under-constrained.
+Approval workflows either route every action through human
+review (producing reviewer fatigue and rubber-stamping) or
+skip review for operations that warrant it, giving the worst
+of both extremes.
+Risk classification is delegated to an LLM exposed to the
+same untrusted content as the request it is evaluating,
+which can be influenced into marking that request as
+low-risk.
+Best practices
+AGENTSEC04-BP01 Implement guardrails and alignment controls
+AGENTSEC04-BP02 Human-in-the-loop for critical decisions
+Document Conventions
+AGENTSEC03-BP04 Regular permission audits and access
+reviews
+AGENTSEC04-BP01 Implement guardrails and alignment
+controls
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

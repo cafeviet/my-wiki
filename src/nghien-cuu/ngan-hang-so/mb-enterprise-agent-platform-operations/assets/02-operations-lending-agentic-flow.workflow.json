@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Quy trình Agentic AI Vận hành & Tín dụng: Phân luồng STP và Điều phối 4 Tác tử",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "02-operations-lending-agentic-flow.html",
+    "views": [
+      {
+        "id": "full-flow",
+        "label": "Toàn cảnh Luồng Xử lý Hồ sơ",
+        "focus": ["intake_docs", "first_check", "case_orch", "ai_classify_extract", "ai_rule_check", "human_review", "final_disburse"],
+        "note": "Mô hình kết hợp quy tắc xác định (First Check) và mạng lưới 4 Agent chuyên trách."
+      },
+      {
+        "id": "agentic-core",
+        "label": "Mạng lưới 4 Tác tử Chuyên trách",
+        "focus": ["case_orch", "ai_classify_extract", "ai_rule_check", "central_store", "human_review"],
+        "note": "Xử lý 80% hồ sơ phức tạp, tự động đối chiếu quy chế và bàn giao bằng chứng cho chuyên viên."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "lane_intake", "label": "Tiếp nhận & Sàng lọc Ban đầu (Intake & Deterministic First Check)" },
+    { "id": "lane_stp", "label": "Luồng Thẳng STP 20% (Straight-Through Processing - Hồ sơ Đơn giản)" },
+    { "id": "lane_agentic", "label": "Luồng Agentic AI 80% (Case Orchestrator & 4 Specialized AI Agents)", "variant": "exception" },
+    { "id": "lane_human", "label": "Kho Dữ liệu & Phê duyệt Nghiệp vụ (Central Store & Human Governance)" }
+  ],
+  "phases": [
+    { "id": "ph_screen", "label": "1. Sàng lọc Đầu vào", "fromCol": 0, "toCol": 1 },
+    { "id": "ph_route", "label": "2. Phân luồng & Bóc tách", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "ph_decide", "label": "3. Đối chiếu Policy & Phê duyệt", "fromCol": 4, "toCol": 5, "variant": "emphasis" }
+  ],
+  "groups": [
+    { "id": "grp_agents", "label": "BỘ TỨ AGENT CHUYÊN TRÁCH (AI 1, 2, 3, 4)", "lane": "lane_agentic", "fromCol": 2, "toCol": 4, "variant": "security" },
+    { "id": "grp_governance", "label": "NGUYÊN TẮC: RULES MAKE DECISIONS - HUMANS OWN ACCOUNTABILITY", "lane": "lane_human", "fromCol": 4, "toCol": 5, "variant": "emphasis" }
+  ],
+  "mainPath": ["intake_docs", "first_check", "case_orch", "ai_classify_extract", "ai_rule_check", "human_review"],
+  "nodes": [
+    { "id": "intake_docs", "lane": "lane_intake", "col": 0, "type": "backend", "label": "Hồ sơ Tín dụng / Bảo lãnh", "sublabel": "Vốn lưu động · Trung dài hạn", "tag": "Input Dossier", "width": 235 },
+
+    { "id": "first_check", "lane": "lane_intake", "col": 1, "type": "security", "label": "First Check (Rule-based)", "sublabel": "Kiểm tra CIC · CRA · Hạn mức Limit", "tag": "Deterministic Gate", "width": 235 },
+
+    { "id": "stp_flow", "lane": "lane_stp", "col": 2, "type": "cloud", "label": "Luồng STP Tự động (20%)", "sublabel": "Hồ sơ mẫu chuẩn · Ít rủi ro", "tag": "Straight-Through", "width": 235 },
+    { "id": "case_orch", "lane": "lane_agentic", "col": 2, "type": "cloud", "label": "Case Orchestrator (80%)", "sublabel": "Tạo Loan Case · Điều phối Agent", "tag": "Workflow Master", "width": 235 },
+
+    { "id": "ai_classify_extract", "lane": "lane_agentic", "col": 3, "type": "cloud", "label": "AI 1 & 2: Phân loại & Bóc tách", "sublabel": "Checklist đúng đủ · Trích xuất trường", "tag": "DocAI Stack", "width": 235 },
+
+    { "id": "ai_rule_check", "lane": "lane_agentic", "col": 4, "type": "cloud", "label": "AI 3 & 4: Policy & Đối chiếu", "sublabel": "Match 155 văn bản · Check điều kiện", "tag": "Compliance AI", "width": 235 },
+    { "id": "central_store", "lane": "lane_human", "col": 4, "type": "backend", "label": "Kho Dữ liệu Tập trung", "sublabel": "Hợp nhất bằng chứng từ AI 1-4", "tag": "Shared State", "width": 235 },
+
+    { "id": "final_disburse", "lane": "lane_stp", "col": 5, "type": "messagebus", "label": "Tự động Giải ngân / Phát hành", "sublabel": "Không cần can thiệp thủ công", "tag": "Full STP Output", "width": 235 },
+    { "id": "human_review", "lane": "lane_human", "col": 5, "type": "messagebus", "label": "Phê duyệt Nghiệp vụ (HITL)", "sublabel": "Phê duyệt 1 cấp / 2 cấp · RM/TD", "tag": "Human Sign-off", "width": 235 }
+  ],
+  "edges": [
+    { "id": "e_in_check", "from": "intake_docs", "to": "first_check", "variant": "emphasis" },
+    { "id": "e_check_stp", "from": "first_check", "to": "stp_flow", "label": "Đạt chuẩn STP (20%)" },
+    { "id": "e_check_orch", "from": "first_check", "to": "case_orch", "label": "Hồ sơ phức tạp (80%)", "variant": "emphasis" },
+
+    { "id": "e_stp_disburse", "from": "stp_flow", "to": "final_disburse", "variant": "emphasis" },
+
+    { "id": "e_orch_ai12", "from": "case_orch", "to": "ai_classify_extract", "variant": "emphasis" },
+    { "id": "e_ai12_ai34", "from": "ai_classify_extract", "to": "ai_rule_check", "variant": "emphasis" },
+
+    { "id": "e_ai34_store", "from": "ai_rule_check", "to": "central_store", "label": "Lưu bằng chứng" },
+    { "id": "e_ai34_human", "from": "ai_rule_check", "to": "human_review", "label": "Trình duyệt HITL", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Bối cảnh Thực tế tại Khối Vận hành",
+      "items": [
+        "Giải ngân KHDN: 155 văn bản quy chuẩn, 106 điều kiện/PA (104 điều kiện thủ công!)",
+        "Bảo lãnh: 70 điều kiện/PA (74 điều kiện thuộc Nhóm 5 phải check bằng tay)",
+        "Tỷ lệ hồ sơ chính xác 100% của AI hiện tại chỉ đạt 5% (TSBD) đến 30% (UNC)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Bẫy Tiếp cận STP Đơn lẻ",
+      "items": [
+        "Mục tiêu STP giải ngân tối đa 20%, thực tế pilot mới đạt 5% - 11%",
+        "STP bị nghẽn do mẫu biểu giới hạn, thời gian cấu hình SP mới mất 2-3 tháng",
+        "Agentic AI giải quyết 80% hồ sơ phi chuẩn mực mà STP không thể chạm tới"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Bài học từ Case Study Ngân hàng X tại Úc",
+      "items": [
+        "AI runs the loan workflow. Humans approve (Tự động hóa 90-95% happy path)",
+        "AI làm việc lặp lại; Rules đưa ra quyết định cứng; Con người chịu trách nhiệm",
+        "Mọi bước ghi bằng chứng vào một hồ sơ duy nhất (Single Governed Loan Case)"
+      ]
+    }
+  ]
+}

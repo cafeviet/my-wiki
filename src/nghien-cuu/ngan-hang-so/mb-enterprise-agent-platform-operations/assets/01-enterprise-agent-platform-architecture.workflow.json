@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Kiến trúc Enterprise Agent Platform: Khung Kiểm soát Tập trung & Runtime Mở",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "01-enterprise-agent-platform-architecture.html",
+    "views": [
+      {
+        "id": "full-platform",
+        "label": "Toàn cảnh Nền tảng Agent Platform",
+        "focus": ["agent_frontend", "ingress_gw", "agent_runtimes", "model_gw", "tool_gw", "egress_gw", "observability"],
+        "note": "Khung điều phối và kiểm soát tập trung cho toàn bộ hệ sinh thái AI Agent ngân hàng."
+      },
+      {
+        "id": "gateways-focus",
+        "label": "Bộ ba Cổng Kiểm soát (Gateways)",
+        "focus": ["ingress_gw", "model_gw", "tool_gw", "egress_gw"],
+        "note": "Ngăn chặn Agent Sprawl và rủi ro rò rỉ dữ liệu hoặc gọi tool trái phép."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "lane_frontend", "label": "Tầng Kênh Tương tác (Agent Frontend: Web, Teams, Desktop)" },
+    { "id": "lane_runtimes", "label": "Môi trường Thực thi & Điều phối (Personal & Enterprise Runtimes)" },
+    { "id": "lane_gateways", "label": "Lớp Cổng Kiểm soát Tập trung (Ingress, Model, Tool/MCP, Egress)", "variant": "exception" },
+    { "id": "lane_governance", "label": "Tầng Quản trị, Giám sát & An toàn (Control Plane, IAM & Guardrails)" }
+  ],
+  "phases": [
+    { "id": "ph_in", "label": "1. Tiếp nhận & Định danh", "fromCol": 0, "toCol": 1 },
+    { "id": "ph_exec", "label": "2. Thực thi & Gọi Mô hình", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "ph_out", "label": "3. Kết nối Năng lực & Giám sát", "fromCol": 4, "toCol": 5, "variant": "emphasis" }
+  ],
+  "groups": [
+    { "id": "grp_runtimes", "label": "HỆ SINH THÁI RUNTIME ĐA DẠNG (PERSONAL & ENTERPRISE)", "lane": "lane_runtimes", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "grp_gateways", "label": "BỘ CỔNG KIỂM SOÁT TẬP TRUNG (GATEWAY SUITE)", "lane": "lane_gateways", "fromCol": 3, "toCol": 5, "variant": "security" }
+  ],
+  "mainPath": ["agent_frontend", "ingress_gw", "agent_runtimes", "model_gw", "tool_gw", "egress_gw"],
+  "nodes": [
+    { "id": "agent_frontend", "lane": "lane_frontend", "col": 0, "type": "cloud", "label": "Agent Frontend", "sublabel": "Web Portal · MS Teams · Desktop", "tag": "Omnichannel", "width": 210 },
+    { "id": "agent_iam", "lane": "lane_governance", "col": 0, "type": "security", "label": "Agent IAM & PKI", "sublabel": "Agent ID · Delegated Access", "tag": "Zero Trust", "width": 210 },
+
+    { "id": "ingress_gw", "lane": "lane_gateways", "col": 1, "type": "security", "label": "Ingress Agent Gateway", "sublabel": "Auth · Định tuyến · Rate Limit", "tag": "Point of Entry", "width": 210 },
+    { "id": "registries", "lane": "lane_governance", "col": 1, "type": "backend", "label": "AI Asset Registries", "sublabel": "Agent · Tool · Model Catalog", "width": 210 },
+
+    { "id": "agent_runtimes", "lane": "lane_runtimes", "col": 2, "type": "cloud", "label": "Agent Runtimes", "sublabel": "Personal (Hermes) & Enterprise", "tag": "Flexible Stack", "width": 210 },
+
+    { "id": "model_gw", "lane": "lane_gateways", "col": 3, "type": "security", "label": "Enterprise Model Gateway", "sublabel": "Quota · Chuyển mạch · PII Mask", "tag": "Core Gateway", "width": 210 },
+    { "id": "guardrails", "lane": "lane_governance", "col": 3, "type": "security", "label": "Agent Guardrails", "sublabel": "Chống Injection · Kiểm soát Output", "width": 210 },
+
+    { "id": "tool_gw", "lane": "lane_gateways", "col": 4, "type": "security", "label": "Tool / MCP Gateway", "sublabel": "Model Context Protocol · Read/Write RBAC", "tag": "Action Control", "width": 210 },
+
+    { "id": "egress_gw", "lane": "lane_gateways", "col": 5, "type": "security", "label": "Egress Agent Gateway", "sublabel": "Kiểm soát Outbound · Allowlist", "tag": "Boundary Shield", "width": 210 },
+    { "id": "observability", "lane": "lane_governance", "col": 5, "type": "messagebus", "label": "Observability & Tracing", "sublabel": "Audit Logs · Latency · Tool Trace", "tag": "Full Visibility", "width": 210 },
+    { "id": "control_plane", "lane": "lane_runtimes", "col": 5, "type": "messagebus", "label": "Agent Control Plane", "sublabel": "Quản lý vòng đời · Tạm dừng / Thu hồi", "tag": "Central Governance", "width": 210 }
+  ],
+  "edges": [
+    { "id": "e_front_in", "from": "agent_frontend", "to": "ingress_gw", "variant": "emphasis" },
+    { "id": "e_in_rt", "from": "ingress_gw", "to": "agent_runtimes", "label": "Định tuyến runtime", "variant": "emphasis" },
+    { "id": "e_rt_model", "from": "agent_runtimes", "to": "model_gw", "label": "Truy vấn LLM", "variant": "emphasis" },
+    { "id": "e_model_tool", "from": "model_gw", "to": "tool_gw", "label": "Tool Call", "variant": "emphasis" },
+    { "id": "e_tool_egress", "from": "tool_gw", "to": "egress_gw", "variant": "emphasis" },
+    { "id": "e_egress_obs", "from": "egress_gw", "to": "observability", "variant": "emphasis" },
+    { "id": "e_obs_plane", "from": "observability", "to": "control_plane", "label": "Dừng khẩn cấp", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Nguyên tắc thiết kế cốt lõi",
+      "items": [
+        "Tập trung hóa lớp kiểm soát & năng lực dùng chung",
+        "Mở ở lớp phát triển, không áp đặt cứng một framework hay một runtime",
+        "Mọi Agent truy cập model/tool/data bắt buộc phải qua Gateway"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Bộ ba Gateway Kiểm soát Rủi ro",
+      "items": [
+        "Model Gateway: Quản lý Quota, Token, Chi phí và che chắn PII",
+        "Tool/MCP Gateway: Chuẩn hóa Model Context Protocol, phân quyền Read/Write",
+        "Egress Gateway: Chặn kết nối mạng tự do ra bên ngoài, áp allowlist"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Khả năng Quản trị & Vận hành",
+      "items": [
+        "Agent IAM: Định danh rõ Agent ID, Tool ID và Identity Delegation",
+        "AI Registries: Biết chính xác Agent nào đang chạy, ai là Owner",
+        "Control Plane: Khả năng ngắt mạch (Kill-switch) thu hồi Agent tức thì"
+      ]
+    }
+  ]
+}

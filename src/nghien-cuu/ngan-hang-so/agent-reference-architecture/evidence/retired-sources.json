@@ -1,0 +1,17 @@
+{
+  "reason": "Internal design document, not an independent retrievable source. Registered localhost URL returned an empty body (SPA); the attached quote came from the repo Markdown file, not that URL. Cited in-text as [TK] (de-xuat thiet ke) with a relative internal link instead.",
+  "retired": [
+    {
+      "id": 10,
+      "url": "http://localhost:6677/nghien-cuu/ngan-hang-so/mb-enterprise-agent-governance",
+      "title": "Bài gốc — Quản trị Agent Doanh nghiệp Ngân hàng (bản Markdown tại repo)",
+      "accessed": "2026-09-30",
+      "quotes": [
+        {
+          "text": "Tư duy Harness tổ chức các năng lực bao bọc quanh tác nhân AI thành bốn góc phần tư cốt lõi",
+          "added": "2026-09-30"
+        }
+      ]
+    }
+  ]
+}

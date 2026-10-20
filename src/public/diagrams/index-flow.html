@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline lập chỉ mục</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f8fb;--paper2:#f1f1f6;--ink:#2f3038;--muted:#676b7a;--soft:#85899a;--rule:rgba(47,48,56,.12);--accent:#6366f1;--accent-tint:rgba(99,102,241,.10);--link:#4f46e5}
+*{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink)}body{padding:24px;font-family:Geist,system-ui,sans-serif}header{max-width:1120px;margin:0 auto 20px}.eyebrow{margin:0 0 8px;font:500 8px/1 Geist Mono,monospace;letter-spacing:.18em;color:var(--accent)}h1{margin:0;font:400 32px/1.05 Instrument Serif,serif}.subtitle{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.5}figure{margin:0 auto;max-width:1120px;overflow-x:auto}svg{display:block;width:100%;height:auto;min-width:720px}footer{max-width:1120px;margin:16px auto 0;padding-top:12px;border-top:1px solid var(--rule);font:400 8px/1.5 Geist Mono,monospace;color:var(--soft)}
+@media(max-width:700px){body{padding:16px}h1{font-size:28px}}
+@media(prefers-color-scheme:dark){:root{--paper:#18181b;--paper2:#27272a;--ink:#f4f4f5;--muted:#a1a1aa;--soft:#71717a;--rule:rgba(244,244,245,.12);--accent:#818cf8;--accent-tint:rgba(129,140,248,.14);--link:#a5b4fc}}
+</style></head><body><header><p class="eyebrow">DATA FLOW · OFFLINE JOB</p><h1>Pipeline lập chỉ mục</h1><p class="subtitle">Một batch job có tính quyết định: đọc Markdown, sinh embedding và ghi đè vector store.</p></header><figure><svg viewBox="0 0 1120 520" role="img" aria-labelledby="index-flow-title index-flow-desc">
+<title id="index-flow-title">Pipeline lập chỉ mục tài liệu</title><desc id="index-flow-desc">Lệnh npm run index quét ba thư mục Markdown, tách frontmatter và nội dung, chia đoạn, sinh embedding rồi ghi đè bảng wiki_chunks trong LanceDB.</desc><defs>
+<marker id="index-flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#676b7a"/></marker>
+<marker id="index-flow-accent" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#6366f1"/></marker>
+<marker id="index-flow-link" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#4f46e5"/></marker>
+<style>.n{font:600 12px Geist,sans-serif;fill:#2f3038}.s{font:400 8px Geist Mono,monospace;fill:#676b7a}.t{font:500 8px Geist Mono,monospace;letter-spacing:.12em;fill:#85899a}.al{font:500 8px Geist Mono,monospace;letter-spacing:.06em;fill:#676b7a}@media(prefers-color-scheme:dark){.n{fill:#f4f4f5}.s,.al{fill:#a1a1aa}.t{fill:#71717a}}</style>
+</defs>
+<rect width="1120" height="520" fill="var(--paper)"/>
+<text x="72" y="56" class="t">TRIGGER</text><text x="256" y="56" class="t">DISCOVER</text><text x="440" y="56" class="t">PARSE</text><text x="624" y="56" class="t">CHUNK</text><text x="808" y="56" class="t">EMBED</text><text x="992" y="56" class="t">STORE</text>
+<line x1="40" y1="72" x2="1080" y2="72" stroke="var(--rule)"/>
+<!-- arrows -->
+<line x1="176" y1="184" x2="208" y2="184" stroke="#676b7a" marker-end="url(#index-flow-arrow)"/><line x1="360" y1="184" x2="392" y2="184" stroke="#676b7a" marker-end="url(#index-flow-arrow)"/><line x1="544" y1="184" x2="576" y2="184" stroke="#676b7a" marker-end="url(#index-flow-arrow)"/><line x1="728" y1="184" x2="760" y2="184" stroke="#6366f1" stroke-width="1.2" marker-end="url(#index-flow-accent)"/><line x1="912" y1="184" x2="944" y2="184" stroke="#676b7a" marker-end="url(#index-flow-arrow)"/>
+<rect x="732" y="160" width="24" height="12" fill="var(--paper)"/><text x="744" y="168" text-anchor="middle" class="al">TEXT</text><rect x="916" y="160" width="24" height="12" fill="var(--paper)"/><text x="928" y="168" text-anchor="middle" class="al">384D</text>
+<!-- nodes -->
+<rect x="24" y="128" width="152" height="112" rx="8" fill="rgba(103,107,122,.10)" stroke="#85899a"/><text x="100" y="176" text-anchor="middle" class="n">npm run index</text><text x="100" y="200" text-anchor="middle" class="s">manual CLI</text>
+<rect x="208" y="128" width="152" height="112" rx="8" fill="#fff" stroke="#2f3038"/><text x="284" y="168" text-anchor="middle" class="n">Quét Markdown</text><text x="284" y="192" text-anchor="middle" class="s">tai-lieu · nghien-cuu</text><text x="284" y="208" text-anchor="middle" class="s">dich-thuat</text>
+<rect x="392" y="128" width="152" height="112" rx="8" fill="#fff" stroke="#2f3038"/><text x="468" y="176" text-anchor="middle" class="n">Parse tài liệu</text><text x="468" y="200" text-anchor="middle" class="s">frontmatter · route · body</text>
+<rect x="576" y="128" width="152" height="112" rx="8" fill="#fff" stroke="#2f3038"/><text x="652" y="168" text-anchor="middle" class="n">Chia đoạn</text><text x="652" y="192" text-anchor="middle" class="s">800 chars max</text><text x="652" y="208" text-anchor="middle" class="s">150 overlap cho đoạn dài</text>
+<rect x="760" y="128" width="152" height="112" rx="8" fill="var(--accent-tint)" stroke="#6366f1" stroke-width="1.2"/><text x="836" y="168" text-anchor="middle" class="n">Sinh vector</text><text x="836" y="192" text-anchor="middle" class="s">all-MiniLM-L6-v2</text><text x="836" y="208" text-anchor="middle" class="s">mean · normalize</text>
+<rect x="944" y="128" width="152" height="112" rx="8" fill="rgba(47,48,56,.05)" stroke="#676b7a"/><text x="1020" y="168" text-anchor="middle" class="n">LanceDB</text><text x="1020" y="192" text-anchor="middle" class="s">wiki_chunks</text><text x="1020" y="208" text-anchor="middle" class="s">mode: overwrite</text>
+<rect x="208" y="320" width="336" height="88" rx="8" fill="rgba(103,107,122,.06)" stroke="rgba(103,107,122,.30)"/><text x="232" y="348" class="t">OUTPUT METADATA</text><text x="232" y="372" class="s">vector · text · title (Đoạn N) · link</text><text x="232" y="392" class="s">route index.md → đường dẫn thư mục</text>
+<rect x="608" y="320" width="488" height="88" rx="8" fill="rgba(99,102,241,.06)" stroke="rgba(99,102,241,.30)"/><text x="632" y="348" class="t">UPDATE CONTRACT</text><text x="632" y="372" class="s">Thêm hoặc sửa Markdown không tự cập nhật DB.</text><text x="632" y="392" class="s">Chạy lại npm run index để tái tạo toàn bộ bảng vector.</text>
+</svg></figure><footer>LOCAL WIKI · ARCHITECTURE DOCUMENTATION · STATIC DIAGRAM</footer></body></html>

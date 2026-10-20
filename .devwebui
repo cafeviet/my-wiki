@@ -1,0 +1,19 @@
+{
+  "name": "My Local Wiki",
+  "processes": [
+    {
+      "id": "dev",
+      "name": "Dev",
+      "command": "npm run dev",
+      "color": "#6366f1",
+      "port": 6677
+    },
+    {
+      "id": "preview",
+      "name": "Preview",
+      "command": "npm run preview",
+      "color": "#10b981",
+      "port": 6677
+    }
+  ]
+}

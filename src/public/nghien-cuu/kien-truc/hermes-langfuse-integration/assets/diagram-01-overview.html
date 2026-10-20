@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiến trúc tổng thể Hermes → Langfuse</title>
+<style>
+  :root{
+    --fg:#e5e7eb; --mut:#9ca3af; --acc:#60a5fa; --acc2:#34d399; --acc3:#f59e0b;
+    --bd:#334155; --card:#1e293b; --bg:#0f172a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:18px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg);}
+  h1{font-size:15px;margin:0 0 14px;color:var(--fg);font-weight:600}
+  .flow{display:flex;gap:14px;align-items:stretch;flex-wrap:wrap}
+  .col{flex:1;min-width:200px;border:1px solid var(--bd);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+  .col h2{font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 10px;color:var(--mut)}
+  .node{border:1px solid var(--bd);border-radius:9px;padding:9px 11px;margin:8px 0;background:var(--card);font-size:12.5px;line-height:1.45}
+  .node b{color:var(--fg)}
+  .node small{color:var(--mut);display:block;margin-top:2px;font-size:11px}
+  .c1{border-left:3px solid var(--acc)}
+  .c2{border-left:3px solid var(--acc2)}
+  .c3{border-left:3px solid var(--acc3)}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--acc);font-size:20px;font-weight:700}
+  .lbl{text-align:center;color:var(--mut);font-size:11px;margin-top:6px}
+  @media(max-width:720px){.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+  <h1>Luồng Observability: Hermes Agent Core → Langfuse Plugin → Langfuse Self-Hosted</h1>
+  <div class="flow">
+    <div class="col">
+      <h2>Hermes Agent Core</h2>
+      <div class="node c1"><b>Agent Loop</b><small>run_conversation — turn, API call, tool call</small></div>
+      <div class="node c1"><b>Plugin Manager</b><small>phát sự kiện vòng đời theo **kwargs</small></div>
+      <div class="lbl">payload sanitized · has_hook() mới dựng</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col">
+      <h2>Langfuse Plugin (observer, fail-open)</h2>
+      <div class="node c2"><b>register(ctx)</b><small>pre/post_api_request · pre/post_tool_call · pre/post_llm_call · subagent_* · session_*</small></div>
+      <div class="node c2"><b>Langfuse Python SDK</b><small>hàng đợi nền có giới hạn · không chặn turn</small></div>
+      <div class="lbl">lỗi → no-op (không treo agent)</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col">
+      <h2>Langfuse Self-Hosted · localhost:3001 (v4)</h2>
+      <div class="node c3"><b>Ingestion API</b><small>nhận trace qua HTTP batch</small></div>
+      <div class="node c3"><b>ClickHouse</b><small>lưu Traces / Observations</small></div>
+      <div class="node c3"><b>Web UI — Tracing / Sessions</b><small>trace "Hermes turn"</small></div>
+      <div class="lbl">events_only: chỉ ingest, tắt API đọc</div>
+    </div>
+  </div>
+</body>
+</html>
