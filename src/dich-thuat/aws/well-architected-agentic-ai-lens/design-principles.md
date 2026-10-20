@@ -1,0 +1,9 @@
+# Nguyên tắc thiết kế
+
+Agentic AI Lens được xây dựng dựa trên một tập hợp các nguyên tắc thiết kế phản ánh những đặc điểm riêng của các Agent AI tự chủ. Những nguyên tắc này định hướng các quyết định kiến trúc trên tất cả sáu trụ cột và cung cấp nền tảng để đánh giá các thiết kế hệ thống agentic AI.
+
+- **Phân rã các workload agentic thành các Agent chuyên biệt, có giới hạn:** Các Agent đơn mục đích với phạm vi được khai báo, giới hạn rõ ràng và thẩm quyền minh bạch thì dễ đánh giá, bảo mật, mở rộng, tiến hóa và thay thế hơn so với các Agent nguyên khối (monolithic). Phân rã là nền tảng mà các biện pháp kiểm soát của mọi trụ cột đều phụ thuộc vào.
+- **Làm cho mọi hành động của Agent có thể quan sát và truy vết từ đầu đến cuối:** Các bước suy luận, lần gọi công cụ, lượt truy cập bộ nhớ và các bàn giao giữa các Agent cần một kết cấu truy vết (trace fabric) duy nhất để cùng một dữ liệu đo lường có thể trả lời các câu hỏi về chi phí, độ trễ, chất lượng, bảo mật và dấu chân tài nguyên. Khả năng quan sát hành vi agentic khác biệt về bản chất so với giám sát hạ tầng.
+- **Xem hành vi của Agent như mã (code):** Prompt, danh mục công cụ, định nghĩa vai trò, lựa chọn mô hình và chính sách là các tạo tác có phiên bản, trải qua rà soát đồng cấp (peer review), kiểm thử, triển khai theo giai đoạn và cuộn ngược (rollback) cùng với phần còn lại của mã nguồn.
+- **Kết hợp tính tự chủ với sự giám sát tương xứng của con người:** Xác định trước các mức độ tự chủ (người quan sát, trợ lý, tự chủ, điều phối) và các đường leo thang. Độ sâu của rà soát bởi con người tăng theo hệ quả của hành động, một cách chủ đích theo thiết kế chứ không phải phản ứng bị động.
+- **Neo hành vi tự chủ vào các hợp đồng rõ ràng:** Lược đồ (schema), sổ đăng ký (registry), tiêu chí thành công có cấu trúc và các tín hiệu độ tin cậy thay thế cho các giả định ngầm về việc một Agent sẽ làm gì. Những gì trước đây nằm bên trong một Prompt trở thành một giao diện có thể thực thi được.
