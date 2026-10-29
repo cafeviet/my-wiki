@@ -13,9 +13,6 @@ hero:
       text: Bắt đầu đọc tài liệu
       link: /tai-lieu/huong-dan-dung
     - theme: alt
-      text: Nghiên cứu khoa học
-      link: /nghien-cuu/
-    - theme: alt
       text: Bài viết dịch thuật
       link: /dich-thuat/
 

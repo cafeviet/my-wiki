@@ -88,7 +88,6 @@ const vitePressConfig = {
     nav: [
       { text: 'Trang chủ', link: '/' },
       { text: 'Tài liệu', link: '/tai-lieu/' },
-      { text: 'Nghiên cứu', link: '/nghien-cuu/' },
       { text: 'Dịch thuật', link: '/dich-thuat/' },
       { text: 'Trợ lý AI 🤖', link: '/chat' }
     ],
@@ -151,18 +150,6 @@ export default withMermaid(
       documentRootPath: 'src',
       scanStartPath: 'tai-lieu',
       resolvePath: '/tai-lieu/',
-      useTitleFromFileHeading: true,
-      useFolderTitleFromIndexFile: true,
-      useFolderLinkFromIndexFile: true,
-      hyphenToSpace: true,
-      keepMarkdownSyntaxFromTitle: true,
-      collapsed: false,
-      collapseDepth: 2
-    },
-    {
-      documentRootPath: 'src',
-      scanStartPath: 'nghien-cuu',
-      resolvePath: '/nghien-cuu/',
       useTitleFromFileHeading: true,
       useFolderTitleFromIndexFile: true,
       useFolderLinkFromIndexFile: true,
